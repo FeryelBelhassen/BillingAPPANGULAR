@@ -1,0 +1,56 @@
+h5{
+  text-align: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: bold;
+  font-size: x-large;
+  margin-bottom: 20px;
+  bottom: 50%;
+  
+  
+}
+.formgroup {
+  justify-content: center;
+}
+
+  
+  .card {
+    background-color: #f7f7f7;
+    padding: 20px 25px 30px;
+    margin: 0 auto 25px;
+    margin-top: 50px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .profile-img-card {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+  }
+  
+  .form{
+    display:flex;
+    justify-content: center;
+  }
+label,input {
+  display: block;
+  width: 150px;
+  float: left;
+  margin-bottom: 10px;
+ }
+ 
+ label {
+  text-align: right;
+  width: 75px;
+  padding-right: 20px;
+ }
+
+ 

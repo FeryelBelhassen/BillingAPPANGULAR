@@ -1,0 +1,113 @@
+<head>
+  <style>
+    div{
+      text-align: center;
+    }
+  </style>
+</head>
+
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+  <div class="flex flex-column align-items-center justify-content-center">
+      <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+          <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+              <div class="text-center mb-5">
+                <img
+                id="profile-img"
+                src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                class="profile-img-card"
+              />
+                  <div class="text-900 text-3xl font-medium mb-3">Welcome</div>
+                  <span class="text-600 font-medium">Sign in to continue</span>
+              </div>
+            
+<div class="row justify-content-center">
+    <body>
+<form
+    *ngIf="!isLoggedIn"
+    name="form"
+    (ngSubmit)="f.form.valid && onSubmit()"
+    #f="ngForm"
+    novalidate>
+<div class="form-group">
+   <div class="grid p-fluid">
+    <div class="col-12 md:col-12">
+     <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+        <input type="text" 
+            pInputText placeholder="Username"
+            class="form-control"
+            name="username"
+            [(ngModel)]="form.username"
+            required
+            #username="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && username.errors }"
+            />
+    </div>
+    </div>
+    </div>
+  </div>
+    <div class="grid p-fluid">
+      <div class="col-12 md:col-12">
+       <div class="p-inputgroup">
+            <div *ngIf="username.errors && f.submitted" class="invalid-feedback">
+                Username is required!
+              </div>
+        </div>
+      </div>
+  </div>    
+        
+<div class="grid p-fluid">
+    <div class="col-12 md:col-12">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon" id="show_hide_password"><i class="pi pi-lock"></i></span>
+            <input type="password" 
+            pInputText placeholder="Password"
+            class="form-control"
+            name="password"
+            [(ngModel)]="form.password"
+            required
+            minlength="6"
+            #password="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && password.errors }"
+          />
+        </div>
+    </div>
+</div>
+<div class="grid p-fluid">
+  <div class="col-12 md:col-12">
+   <div class="p-inputgroup">
+          <div *ngIf="password.errors && f.submitted" class="invalid-feedback">
+            <div *ngIf="password.errors['required']">Password is required!</div>
+            <div *ngIf="password.errors['minlength']">Password must be at least 6 characters </div>  
+          </div>
+  </div>
+ </div>
+</div>
+
+        <div class="form-group">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-2"></div>
+            <div class="ui-grid-col-6">
+              <button  pButton type="submit" label="Sign In" [routerLink]="['/']"></button>
+              
+            </div>
+            <div class="ui-grid-col-4"></div>
+        </div>
+        <div class="form-group">
+          
+          <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger" role="alert">
+            Login failed: {{ errorMessage }}
+          </div>
+        </div>
+        </div>
+    
+    </form>
+  
+      <div class="alert alert-success" *ngIf="isLoggedIn" >
+        Logged in as {{ roles }}. 
+      </div>
+    
+   </body> 
+    </div>
+  </div>
+  </div>

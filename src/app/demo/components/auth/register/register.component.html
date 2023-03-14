@@ -1,0 +1,137 @@
+<head>
+  <style>
+    div{
+      text-align: center;
+    }
+  </style>
+</head>
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+  <div class="flex flex-column align-items-center justify-content-center">
+      <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+          <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+              <div class="text-center mb-5">
+                  <div class="text-900 text-3xl font-medium mb-3">Welcome</div>
+                  <span class="text-600 font-medium">Sign up </span>
+              </div>   
+<form
+  *ngIf="!isSuccessful"
+  (ngSubmit)="onSubmit()"
+  name="f"
+  [formGroup]="form"
+  #f="ngForm"
+  novalidate
+>
+    <div class="grid p-fluid">
+      <div class="col-12 md:col-12">
+       <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+          <input type="text" 
+              pInputText placeholder="Username"
+              class="form-control"
+              name="username"
+              formControlName="username"
+              required
+              minlength="3"
+              maxlength="20"
+              [ngClass]="{ 'is-invalid':  form.errors?.['username'] }"
+              />  
+             <div class="invalid-feedback" *ngIf="form.errors?.['username']  ">
+                <div *ngIf="form.errors?.['username']['required']">Username is required</div>
+                <div *ngIf="form.errors?.['username']['minlength']">
+                  Username must be at least 3 characters
+                </div>
+                <div *ngIf="form.errors?.['username']['maxlength']">
+                  Username must be at most 20 characters
+                </div>
+      
+  </div>
+  </div>
+  </div>
+  </div>
+            
+  <div class="grid p-fluid">
+    <div class="col-12 md:col-12">
+     <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+        <input type="email" 
+            pInputText placeholder="Email"
+            class="form-control"
+            name="email"
+            formControlName="email"
+            required
+            minlength="3"
+            required
+            email
+            [ngClass]="{ 'is-invalid': form.errors  }"
+            />  
+            <div class="invalid-feedback" *ngIf="form.errors  ">
+              <div *ngIf="form.errors?.['email']['required']">Email is required</div>
+              <div *ngIf="form.errors?.['email']">
+                Email must be a valid email address 
+              </div>    
+            </div>    
+        </div>
+    </div>
+</div>
+<div class="grid p-fluid">
+  <div class="col-12 md:col-12">
+   <div class="p-inputgroup">
+      <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
+      <input type="password" 
+          pInputText placeholder="Password"
+          class="form-control"
+          name="password"
+          formControlName="password"
+          required
+          minlength="6"
+          />  
+          <div class="invalid-feedback" *ngIf="form.errors  ">
+            <div *ngIf="form.errors?.['password']['required']">Password is required</div>
+            <div *ngIf="form.errors?.['password']['minlength']">
+              Password must be at least 6 characters 
+            </div>    
+          </div>    
+      </div>
+  </div>
+</div>
+<div class="grid p-fluid">
+  <div class="col-12 md:col-12">
+   <div class="p-inputgroup">
+    <span class="p-inputgroup-addon"><i class="pi pi-users"></i></span>   
+    <select formControlName="role" style="width: 300px;">
+      <option [ngValue]="null" disabled>Select Role</option>
+      <option *ngFor="let role of roles" [ngValue]="role.id">{{role.name}}</option>
+    </select>     
+        
+    </div>
+  </div>
+</div>
+      
+<div class="form-group">
+  <div class="ui-grid-row">
+        <button  pButton type="submit" label="Sign Up"></button> 
+      </div>
+  </div>
+
+    <div class="grid p-fluid">
+      <div class="col-12 md:col-12">
+       <div class="p-inputgroup">  
+    <div *ngIf="isSignUpFailed" class="alert alert-danger" role="alert">
+      Signup failed: {{ errorMessage }}
+    </div>
+  </div>
+  </div>
+  </div>
+</form>
+
+<div class="alert alert-success" *ngIf="isSuccessful">
+  Your registration is successful!
+</div>
+
+</div>  
+        
+    
+    </div>
+  </div>
+  </div>
+  
