@@ -11,9 +11,11 @@ import { AuthGuard } from 'src/app/_helpers/auth.guard';
         { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
         { path: 'register', loadChildren: () => import('./register/register.module').then(m => m.RegisterModule) },
         { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule), 
+       
         canActivate:[AuthGuard] },
         { path: '**', redirectTo: '/notfound' }
     ])],
-    exports: [RouterModule]
+    exports: [RouterModule],
+    providers:[AuthGuard]
 })
 export class AuthRoutingModule { }

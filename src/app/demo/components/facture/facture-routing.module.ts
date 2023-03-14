@@ -4,7 +4,7 @@ import { FactureComponent } from './facture.component';
 
 @NgModule({
 	imports: [RouterModule.forChild([
-		{ path: 'facture', component: FactureComponent }
+		{ path: '', component: FactureComponent }
 	])],
 	exports: [RouterModule]
 })

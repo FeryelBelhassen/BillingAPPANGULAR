@@ -42,19 +42,25 @@ export class LoginComponent implements OnInit {
   });
 
   }
-
-  onSubmit(): void {
+  
+  onSubmit():void {
     const { username, password } = this.form;
-
-
-    this.authService.login(username, password).subscribe(
-      data => {
+    this.authService.login(username,password).subscribe(data => {
+      {
         this.tokenService.saveToken(data.accessToken);
         this.tokenService.saveRefreshToken(data.refreshToken);
         this.tokenService.saveUser(data);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.tokenService.getUser().roles;      
+        this.roles = this.tokenService.getUser().roles; 
+        if(this.isLoggedIn){
+          this.route.navigate(['pages/home']);  
+        } 
+        else{
+          console.log("Failed")
+        }
+      }
+         
       },
       err => {
         this.errorMessage = err.error.message;
@@ -63,8 +69,6 @@ export class LoginComponent implements OnInit {
     );
 
   }
-
-  
   reloadPage(): void {
     window.location.reload();
   }

@@ -19,11 +19,23 @@ import { ButtonModule } from 'primeng/button';
 
 import {TreeSelectModule} from 'primeng/treeselect';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { AuthService } from './demo/services/auth.service';
+import { AuthGuard } from './_helpers/auth.guard';
+import { PagesModule } from './demo/components/pages/pages.module';
+import { DashboardComponent } from './demo/components/pages/dashboard/dashboard.component';
+import { LoginModule } from './demo/components/auth/login/login.module';
+import { LoginComponent } from './demo/components/auth/login/login.component';
+import { Router, RouterModule } from '@angular/router';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppLayoutComponent } from './layout/app.layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NotfoundComponent
+    NotfoundComponent,
+   
+    
+    
     
   ],
   imports: [
@@ -33,13 +45,17 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
     PanelModule,
     InputTextModule,
     ButtonModule,
-    TreeSelectModule
+    TreeSelectModule,
+    PagesModule,
+    
+    
     
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LocationStrategy, useClass: HashLocationStrategy},
         UserService, FactureService, EventService, IconService, NodeService,
-        PhotoService, ProductService,JwtHelperService,
+        PhotoService, ProductService,JwtHelperService, AuthService, AuthGuard, 
+      
         { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
 
     ],

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../api/user';
+import { Router } from '@angular/router';
 
 const AUTH_API = 'http://localhost:8080/api/auth/';
 
@@ -16,6 +17,8 @@ const httpOptions = {
 export class AuthService {
   
   loggenIn$ = new BehaviorSubject(false);
+  userValue = new Observable();
+    
 
 
   constructor(private http: HttpClient, public jwtHelper: JwtHelperService ) {
@@ -28,6 +31,9 @@ export class AuthService {
     // true or false
     return !this.jwtHelper.isTokenExpired(token);
   }
+  get isLoggedIn() {
+    return true;
+  }
 
 
  login(username: string, password: string):Observable<any>{
@@ -37,6 +43,7 @@ export class AuthService {
         username,
         password,
       },
+     
       httpOptions
     )
   }
@@ -59,7 +66,9 @@ export class AuthService {
     return this.http.post(AUTH_API + 'signout', { }, httpOptions);
   }
 
-
+  getToken(){
+    return localStorage.getItem('token');
+  }
   refreshToken(token: string) {
     return this.http.post(AUTH_API + 'refreshtoken', { refreshToken: token}, httpOptions);
   }

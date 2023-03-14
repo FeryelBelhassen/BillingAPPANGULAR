@@ -5,7 +5,7 @@ import { UserComponent } from './user.component';
 
 @NgModule({
 	imports: [RouterModule.forChild([
-		{ path: 'user', component: UserComponent }
+		{ path: '', component: UserComponent }
 	])],
 	exports: [RouterModule]
 })
