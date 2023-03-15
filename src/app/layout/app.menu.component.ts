@@ -17,31 +17,17 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'home',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/home'] }
-                ]
-            },
-            {
-                label: 'UI Components',
-                items: [
-                    { label: 'aaaa', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                
-                  /*  { label: 'Overlay', icon: 'pi pi-fw pi-clone', routerLink: ['/uikit/overlay'] },
-                    { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-                    { label: 'Menu', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/menu'], routerLinkActiveOptions: { paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' } },
-                    { label: 'Message', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/message'] },
-                    { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
-                    { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                    { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }*/
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/pages/home'] }
                 ]
             },
             
-           
+                  
             {
                 label: 'Pages',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                    
-                    {
+                   /* {
                         label: 'Auth',
                         icon: 'pi pi-fw pi-user-plus',
                         items: [
@@ -73,11 +59,11 @@ export class AppMenuComponent implements OnInit {
                                 routerLink: ['/auth/access']
                             }
                         ]
-                    },
+                    },*/
                     {
-                        label: 'User',
-                        icon: 'pi pi-fw pi-user',
-                        routerLink: ['/user']
+                        label: 'Product',
+                        icon: 'pi pi-fw pi-box',
+                        routerLink: ['/product']
                     },
                     
                     {
@@ -85,23 +71,15 @@ export class AppMenuComponent implements OnInit {
                         icon: 'pi pi-fw pi-book',
                         routerLink: ['/facture']
                     },
-                   
 
                     {
-                        label: 'Timeline',
-                        icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/pages/timeline']
+                        label: 'Client',
+                        icon: 'pi pi-fw pi-user',
+                        routerLink: ['/client']
                     },
-                    {
-                        label: 'Not Found',
-                        icon: 'pi pi-fw pi-exclamation-circle',
-                        routerLink: ['/notfound']
-                    },
-                    {
-                        label: 'Empty',
-                        icon: 'pi pi-fw pi-circle-off',
-                        routerLink: ['/pages/empty']
-                    },
+                   
+
+                    
                 ]
             },
           /*  {
@@ -153,7 +131,7 @@ export class AppMenuComponent implements OnInit {
                         label: 'Documentation', icon: 'pi pi-fw pi-question', routerLink: ['/documentation']
                     },
                     {
-                        label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/feryelbelhassen'], target: '_blank'
+                        label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/feryelbelhassen/pfe'], target: '_blank'
                     }
                 ]
             }

@@ -23,18 +23,18 @@ export class UserService {
 
 
   getAllUsers() {
-      return this.http.get<User[]>('http://localhost:8080/api/users');
+      return this.http.get<User[]>('http://localhost:8081/api/user');
       }
   
   public updateUser(user: User) {
-        return this.http.put<User>("http://localhost:8080/api/users" + "/"+ user.username,user);
+        return this.http.put<User>("http://localhost:8081/api/user" + "/"+ user.username,user);
         }  
   
   public deleteUser(user: { username: string; }) {
-          return this.http.delete<User>("http://localhost:8080/api/users" + "/"+ user.username);
+          return this.http.delete<User>("http://localhost:8081/api/user" + "/"+ user.username);
         }
   public createUser(user: {username: string}) {
-          return this.http.post<User>("http://localhost:8080/api/users", user);
+          return this.http.post<User>("http://localhost:8081/api/user", user);
         }
 
   getPublicContent(): Observable<any> {
