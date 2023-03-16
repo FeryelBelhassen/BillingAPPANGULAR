@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Facture } from '../../api/facture';
+import { Facture } from '../../domain/facture';
 import { FactureService } from '../../services/facture.service';
 
 @Component({

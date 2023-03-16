@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FactoryTarget } from '@angular/compiler';
-import { Facture } from '../api/facture';
+import { Facture } from '../domain/facture';
 //import { Factures } from '../models/factures.model';
 
 const baseUrl = 'http://localhost:8081/api/factures';

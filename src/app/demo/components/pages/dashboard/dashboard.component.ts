@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Product } from 'src/app/demo/api/product';
+import { Product } from 'src/app/demo/domain/product';
 import { ProductService } from 'src/app/demo/services/product.service';
 import { FactureService } from 'src/app/demo/services/facture.service';
-import { Facture } from 'src/app/demo/api/facture';
+import { Facture } from 'src/app/demo/domain/facture';
 import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 

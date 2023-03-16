@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/demo/api/product';
+import { Product } from 'src/app/demo/domain/product';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { UserService } from '../../services/user.service';
-import { User } from '../../api/user';
+import { User } from '../../domain/user';
 
 @Component({
     templateUrl: './user.component.html',

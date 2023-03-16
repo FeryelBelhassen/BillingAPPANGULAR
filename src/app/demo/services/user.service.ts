@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../api/user';
+import { User } from '../domain/user';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
+import { Useer } from '../domain/useer';
 
 
 
@@ -19,7 +20,10 @@ export class UserService {
 
   
   constructor(private authService : AuthService, private router: Router,
-    private http: HttpClient) {}
+    private http: HttpClient) {
+      this.currentUser = new BehaviorSubject<User>(this.authService.userValue);
+      this.user = this.currentUser.asObservable();
+    }
 
 
   getAllUsers() {

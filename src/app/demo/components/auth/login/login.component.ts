@@ -9,6 +9,7 @@ import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { Panel } from 'primeng/panel';
 import { ActivatedRoute, Router } from '@angular/router';
+import {first} from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -27,11 +28,17 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
+  returnUrl: string = '/' ;
+  error = '';
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private storageService: StorageService,
-    public layoutService: LayoutService, private route:Router,private tokenService: TokenService) {
+    public layoutService: LayoutService, private route:Router,private tokenService: TokenService,
+    private router:ActivatedRoute) {
+      if (this.authService.userValue) { 
+        this.route.navigate(['/pages/home'])
     
      }
+    }
   
 
   ngOnInit(): void {
@@ -39,36 +46,33 @@ export class LoginComponent implements OnInit {
     this.form = new FormGroup({
       'login': new FormControl('', Validators.required),
       'password': new FormControl('', Validators.required)
-  });
-
+    });
+    this.returnUrl = this.router.snapshot.queryParams['returnUrl'] || '/';
   }
   
   onSubmit():void {
+
+
+    
     const { username, password } = this.form;
-    this.authService.login(username,password).subscribe(data => {
-      {
-        this.tokenService.saveToken(data.accessToken);
-        this.tokenService.saveRefreshToken(data.refreshToken);
-        this.tokenService.saveUser(data);
+    
+    this.authService.login(username,password)
+    .subscribe({
+      next: (data: any) => {
         this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.tokenService.getUser().roles; 
-        if(this.isLoggedIn){
-          this.route.navigate(['pages/home']);  
-        } 
-        else{
-          console.log("Failed")
-        }
-      }
-         
+        this.isLoggedIn = true; 
+        this.route.navigate(['pages/home']);
       },
-      err => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
+      error: err => {
+        console.log(err )
+         this.isLoginFailed = true;
       }
-    );
+    });
+   
 
   }
+
+  
   reloadPage(): void {
     window.location.reload();
   }
