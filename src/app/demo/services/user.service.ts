@@ -6,13 +6,12 @@ import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { Useer } from '../domain/useer';
 
-
-
-const API_URL = 'http://localhost:8080/api/test/';
+const API_URL = 'http://localhost:8081/api/test/';
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class UserService {
 
   private currentUser!: BehaviorSubject<User>;
@@ -25,10 +24,19 @@ export class UserService {
       this.user = this.currentUser.asObservable();
     }
 
-
-  getAllUsers() {
-      return this.http.get<User[]>('http://localhost:8081/api/user');
-      }
+    getAllUsers() {
+      return this.http.get<any>('http://localhost:8081/api/users')
+      //return this.http.get<any>('assets/demo/data/products.json')
+          .toPromise()
+          .then(res => res.data as User[])
+          .then(data => data);
+          
+  }
+  /*getAllUsers(): Observable<User[]>{
+    console.log('heloooo')
+    return this.http.get<User[]>('http://localhost:8081/api/users');
+      }*/
+     
   
   public updateUser(user: User) {
         return this.http.put<User>("http://localhost:8081/api/user" + "/"+ user.username,user);

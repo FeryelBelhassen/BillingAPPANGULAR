@@ -28,34 +28,34 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 3rem">
+                        <th style="width: 4rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="username" >Username <p-sortIcon field="username"></p-sortIcon></th>
                         <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
                         <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
-                        <th><i class="pi pi-cog"></i></th>
+                        <th><i style="width: 5rem" class="pi pi-cog"></i></th>
                         </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-user>
+                <ng-template pTemplate="body" *ngFor="let user of users">
                     <tr>
                         <td>
                             <p-tableCheckbox [value]="user"></p-tableCheckbox>
                         </td>
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">ID</span>
+                        <td style="width:20%; min-width:10rem;"><span class="p-column-title">ID</span>
                             {{user.id}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width:20%; min-width:10rem;">
                             <span class="p-column-title">Username</span>
                             {{user.username}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width:20%; min-width:10rem;">
                             <span class="p-column-title">Email</span>
                             {{user.email}}
                         </td>
                        
-                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Role</span>
+                        <td style="width:20%; min-width: 10rem;"><span class="p-column-title">Role</span>
                             {{user.role}}
                         </td>
                         <td>

@@ -33,10 +33,8 @@ export class ProductComponent implements OnInit {
     constructor(private productService: ProductService, private messageService: MessageService) { }
 
     ngOnInit() {
-        this.productService.getProducts().subscribe(products =>{ 
-            products = products
-            console.log(products)
-        });
+        ///this.productService.getProducts().then(data => this.products = data);
+        this.productService.getProducts();
 
         this.cols = [
             { field: 'product', header: 'Product' },

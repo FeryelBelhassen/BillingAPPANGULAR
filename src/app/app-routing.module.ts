@@ -27,7 +27,7 @@ import { DashboardComponent } from './demo/components/pages/dashboard/dashboard.
       children: [
         { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule)},
         { path: 'home', loadChildren: () => import('./demo/components/pages/dashboard/dashboard.module').then(m => m.DashboardModule)},
-        { path: 'user', loadChildren: () => import('./demo/components/user/user.module').then(m => m.UserModule)},
+        { path: 'users', loadChildren: () => import('./demo/components/user/user.module').then(m => m.UserModule)},
         { path: 'facture', loadChildren: () => import('./demo/components/facture/facture.module').then(m => m.FactureModule)},
         { path: 'product', loadChildren: () => import('./demo/components/product/product.module').then(m => m.ProductModule)},
       ]   

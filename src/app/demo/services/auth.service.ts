@@ -68,15 +68,6 @@ export class AuthService {
     }))
   
 
-   /* return this.http.post(
-      AUTH_API + 'signin',
-      {
-        username,
-        password,
-      },
-     
-      httpOptions
-    )*/
   }
   
   register(username: string, email: string, password: string, role: {id: number, name: string }[]): Observable<any> {

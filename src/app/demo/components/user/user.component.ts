@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { UserService } from '../../services/user.service';
 import { User } from '../../domain/user';
+import { Observable } from 'rxjs';
 
 @Component({
     templateUrl: './user.component.html',
@@ -20,6 +21,9 @@ export class UserComponent implements OnInit {
     users: User[] = [];
 
     user: User = {};
+
+    //users: Observable<User[]>;
+
     roles = [
         { id: 3, name: "User" },
         { id: 1, name: "Admin" },
@@ -38,28 +42,27 @@ export class UserComponent implements OnInit {
 
     constructor(private userService: UserService, private messageService: MessageService) { }
 
-    ngOnInit() {
-        this.userService.getAllUsers().subscribe(users =>{ 
-            users = users
-            console.log(users)
-        });
-
-        this.cols = [
-            { field: 'name', header: 'Name' },
-            { field: 'email', header: 'Email' },
-            { field: 'role', header: 'Role' }
-        ];
-
-        this.roles = [
-            { id: 1, name: "Admin" },
-            { id: 2, name: "Agent" },
-            { id: 3, name: "User" },
-            { id: 4, name: "Magasinier" },
-            { id: 5, name: "Client" }
-           
-        ];
-    }
-
+    ngOnInit() {   
+        console.log(this.userService.getAllUsers());
+            this.cols = [
+                { field: 'name', header: 'Name' },
+                { field: 'email', header: 'Email' },
+                { field: 'role', header: 'Role' }
+            ];
+    
+            this.roles = [
+                { id: 1, name: "Admin" },
+                { id: 2, name: "Agent" },
+                { id: 3, name: "User" },
+                { id: 4, name: "Magasinier" },
+                { id: 5, name: "Client" }
+               
+            ];
+          }
+        
+         
+   
+   
     openNew() {
         this.user = {};
         this.submitted = false;
