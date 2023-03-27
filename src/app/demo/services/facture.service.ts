@@ -5,7 +5,7 @@ import { FactoryTarget } from '@angular/compiler';
 import { Facture } from '../domain/facture';
 //import { Factures } from '../models/factures.model';
 
-const baseUrl = 'http://localhost:8081/api/factures';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,33 +17,23 @@ export class FactureService {
   constructor(private http: HttpClient) { }
 
   getAllFactures() {
-    return this.http.get<Facture[]>('http://localhost:8081/api/factures');
-    }
-   
-
-  get(id: any): Observable<Facture> {
-    return this.http.get<Facture>(`${baseUrl}/${id}`);
-  }
-
-  create(data: any): Observable<any> {
-    return this.http.post(baseUrl, data);
-  }
-
-  
-  update(id: any, data: any): Observable<any> {
-    return this.http.put(`${baseUrl}/${id}`, data);
-  }
-
-  delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
-  }
-
-  deleteAll(): Observable<any> {
-    return this.http.delete(baseUrl);
-  }
-
-  findByNumero(numero: any): Observable<Facture[]> {
-    return this.http.get<Facture[]>(`${baseUrl}?title=${numero}`);
-  }
+    return this.http.get<any>('http://localhost:8081/api/facture')
+    //return this.http.get<any>('assets/demo/data/products.json')
+        .toPromise()
+        .then(res => res.data as Facture[])
+        .then(data => data);
+        
 }
 
+  public updateFacture(facture: Facture) {
+        return this.http.put<Facture>("http://localhost:8081/api/facture" + "/"+ facture.numerofacture,facture);
+        }  
+  
+  public deleteFacture(facture: { numerofacture: string; }) {
+          return this.http.delete<Facture>("http://localhost:8081/api/facture" + "/"+ facture.numerofacture);
+        }
+  public createFacture(facture: {numerofacture: string}) {
+          return this.http.post<Facture>("http://localhost:8081/api/facture", facture);
+        }
+
+}

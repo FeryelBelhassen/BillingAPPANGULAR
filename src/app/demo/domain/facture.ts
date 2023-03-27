@@ -1,11 +1,11 @@
 export interface Facture {
-    id?:number;
+    id?:string;
     numerofacture?: string;
     clientid?: number;
     datefacture?: Date;
     datevalidation?: Date;
-    montantht?: number;
     montanttc?: number;
+    montantht?: number;
     annee?: string;
     
 

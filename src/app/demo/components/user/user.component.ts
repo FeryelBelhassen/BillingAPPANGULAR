@@ -18,9 +18,11 @@ export class UserComponent implements OnInit {
 
     deleteUsersDialog: boolean = false;
 
-    users: User[] = [];
+    users:Array<User> = [];
 
     user: User = {};
+
+    half_cast: any =  [];
 
     //users: Observable<User[]>;
 
@@ -43,7 +45,7 @@ export class UserComponent implements OnInit {
     constructor(private userService: UserService, private messageService: MessageService) { }
 
     ngOnInit() {   
-        console.log(this.userService.getAllUsers());
+        
             this.cols = [
                 { field: 'name', header: 'Name' },
                 { field: 'email', header: 'Email' },
@@ -58,9 +60,24 @@ export class UserComponent implements OnInit {
                 { id: 5, name: "Client" }
                
             ];
-          }
+        this.getUsers();}
+        private getUsers(){
+    this.userService.getAllUsers()
+    .subscribe((data)=>{
+        //this.isLoading = false
+        //this.half_cast = JSON.parse(JSON.stringify(data))
+    this.half_cast.forEach((user: { [x: string]: any; }) => this.users.push({
+            'id': user['id'],
+            'username': user['username'],
+            'email': user['email'],
+            'role': user['roles']
+           
+          }));
+   
+          })
         
-         
+        } 
+       
    
    
     openNew() {

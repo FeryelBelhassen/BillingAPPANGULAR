@@ -19,7 +19,7 @@
             <p-table #dt [value]="factures" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedFactures" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Manage Factures</h5>
+                        <h5 class="m-0">List of Factures</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
@@ -31,13 +31,15 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
+                        <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="numero">Numero Facture <p-sortIcon field="numero"></p-sortIcon></th>
                         <th pSortableColumn="idclient">ClientID <p-sortIcon field="idclient"></p-sortIcon></th>
                         <th pSortableColumn="datefacture">Date Facture <p-sortIcon field="datefacture"></p-sortIcon></th>
                         <th pSortableColumn="datevalidation">Date Validation <p-sortIcon field="datevalidation"></p-sortIcon></th>
-                        <th pSortableColumn="montantht">Montant HT <p-sortIcon field="monatntht"></p-sortIcon></th>
                         <th pSortableColumn="montantttc">Montant TTC <p-sortIcon field="monatntttc"></p-sortIcon></th>
+                        <th pSortableColumn="montantht">Montant HT <p-sortIcon field="monatntht"></p-sortIcon></th>
                         <th pSortableColumn="annee">Annee <p-sortIcon field="annee"></p-sortIcon></th>
+                        <th><i style="width: 5rem" class="pi pi-cog"></i></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -46,32 +48,36 @@
                         <td>
                             <p-tableCheckbox [value]="facture"></p-tableCheckbox>
                         </td>
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Numero facture</span>
-                            {{facture.numerofacture || facture.numerofacture}}
+                        <td style="width:14%; min-width:10rem;">
+                            {{facture.id}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">ClientID</span>
+                            {{facture.numerofacture}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">                           
                             {{facture.clientid}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Date Facture</span>
+                          
                             {{facture.datefacture}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Date Validation</span>
+                            
                             {{facture.datevalidation}}
+                        </td>
+
+                        <td style="width:14%; min-width:8rem;">
+                           
+                            {{facture.montanttc | currency:'USD'}}
                         </td>
         
                         <td style="width:14%; min-width:8rem;">
-                            <span class="p-column-title">Montant HT</span>
+                           
                             {{facture.montantht | currency:'USD'}}
                         </td>
-                        <td style="width:14%; min-width:8rem;">
-                            <span class="p-column-title">Montant TTC</span>
-                            {{facture.montantttc | currency:'USD'}}
-                        </td>
+                       
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Annee</span>
+                          
                             {{facture.annee}}
                         </td>
                         
@@ -84,49 +90,46 @@
                 </ng-template>
             </p-table>
         </div>
-
+        
         <p-dialog [(visible)]="DialogFacture" [style]="{width: '450px'}" header="Facture Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                
                 <div class="field">
-                    <label for="numero">Numero Facture</label>
-                    <p-inputNumber id="numero" [(ngModel)]="facture.numerofacture"></p-inputNumber>
+                    <label for="numerofacture">Numero Facture</label>
+                    <input type="text" pInputText id="numerofacture" [(ngModel)]="facture.numerofacture" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !facture.numerofacture}"/>
                 </div>
                 <div class="field">
                     <label for="clientid">ClientID</label>
                     <p-inputNumber id="clientid" [(ngModel)]="facture.clientid"></p-inputNumber>
                 </div>
                 <div class="field">
-                    <label for="datefacture">Date Facture</label>
-                    <input type="date"  pInputText id="datefacture" [(ngModel)]="facture.datefacture" />
+                <label for="datefacture">Date Facture</label>
+                <input type="date" pInputText id="datefacture" [(ngModel)]="facture.datefacture" >
                 </div>
                 <div class="field">
                     <label for="datevalidation">Date Validation</label>
-                    <input type="date"  pInputText id="datevalidation" [(ngModel)]="facture.datevalidation" />
+                    <input type="date" pInputText id="datevalidation" [(ngModel)]="facture.datevalidation" >
+                    </div>
+                <div class="field">
+                     <label for="monatntttc">Montant TTC</label>
+                    <p-inputNumber id="monatntttc" [(ngModel)]="facture.montanttc" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                    </div>
+                <div class="field">
+                    <label for="montantht">Montant HT</label>
+                    <p-inputNumber id="montantht" [(ngModel)]="facture.montantht" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
                 </div>
-                <div class="formgrid grid">
-                    <div class="field col">
-                        <label for="monatntht">Montant HT</label>
-                        <p-inputNumber id="montantht" [(ngModel)]="facture.montantht" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
-                    </div>
-                    <div class="field col">
-                        <label for="monatntttc">Montant TTC</label>
-                        <p-inputNumber id="monatntttc" [(ngModel)]="facture.montanttc" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
-                    </div>
-                    <div class="field">
-                        <label for="annee">Annee</label>
-                        <input type="text"  pInputText id="annee" [(ngModel)]="facture.annee" />
-                    </div>
+               
+                <div class="field">
+                    <label for="annee">Annee</label>
+                    <input type="text" pInputText id="annee" [(ngModel)]="facture.annee" >
                 </div>
+                
             </ng-template>
-
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
                 <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveFacture()"></button>
             </ng-template>
         </p-dialog>
-
-        <p-dialog [(visible)]="DialogFacture" [style]="{width: '450px'}" header="Facture Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="deleteFactureDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span *ngIf="facture">Are you sure you want to delete <b>{{facture.numerofacture}}</b>?</span>

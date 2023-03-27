@@ -31,12 +31,14 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
+                        <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
                         <th pSortableColumn="designation">Designation <p-sortIcon field="designation"></p-sortIcon></th>
                         <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
                         <th pSortableColumn="supplier">Supplier <p-sortIcon field="supplier"></p-sortIcon></th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                        <th><i style="width: 5rem" class="pi pi-cog"></i></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -45,23 +47,26 @@
                         <td>
                             <p-tableCheckbox [value]="product"></p-tableCheckbox>
                         </td>
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
-                            {{product.code || product.id}}
+                        <td style="width:14%; min-width:10rem;">
+                            {{product.id }}
+                        </td>
+
+                        <td style="width:14%; min-width:10rem;">
+                            {{product.code }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Designation</span>
+                       
                             {{product.designation}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Quantity</span>
                             {{product.quantity}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Supplier</span>
+                         
                             {{product.supplier}}
                         </td>
                         <td style="width:14%; min-width:8rem;">
-                            <span class="p-column-title">Price</span>
+                         
                             {{product.price | currency:'USD'}}
                         </td>
                         <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Status</span>
@@ -80,6 +85,10 @@
 
         <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="code">Code</label>
+                    <input type="text" pInputText id="code" [(ngModel)]="product.code" />
+                </div>
                 <div class="field">
                     <label for="designation">Designation</label>
                     <input type="text" pInputText id="designation" [(ngModel)]="product.designation" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.designation}"/>

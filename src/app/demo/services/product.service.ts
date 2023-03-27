@@ -22,17 +22,16 @@ export class ProductService {
             .then(data => data);
             
     }
-    getProductsMixed() {
-        return this.http.get<any>('assets/demo/data/products-mixed.json')
-            .toPromise()
-            .then(res => res.data as Product[])
-            .then(data => data);
-    }
-
-    getProductsWithOrdersSmall() {
-        return this.http.get<any>('assets/demo/data/products-orders-small.json')
-            .toPromise()
-            .then(res => res.data as Product[])
-            .then(data => data);
-    }
+    
+      public updateProduct(product: Product) {
+            return this.http.put<Product>("http://localhost:8081/api/product" + "/"+ product.designation,product);
+            }  
+      
+      public deleteProduct(product: { designation: string; }) {
+              return this.http.delete<Product>("http://localhost:8081/api/product" + "/"+ product.designation);
+            }
+      public createProduct(product: {designation: string}) {
+              return this.http.post<Product>("http://localhost:8081/api/product", product);
+            }
+    
 }

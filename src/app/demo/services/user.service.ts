@@ -4,9 +4,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../domain/user';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
-import { Useer } from '../domain/useer';
 
-const API_URL = 'http://localhost:8081/api/test/';
+
+
+const API_URL = 'http://localhost:8081/api/v1/users';
+
 
 @Injectable({
   providedIn: 'root',
@@ -24,29 +26,28 @@ export class UserService {
       this.user = this.currentUser.asObservable();
     }
 
-    getAllUsers() {
+   /* getAllUsers() {
       return this.http.get<any>('http://localhost:8081/api/users')
       //return this.http.get<any>('assets/demo/data/products.json')
           .toPromise()
           .then(res => res.data as User[])
           .then(data => data);
           
-  }
-  /*getAllUsers(): Observable<User[]>{
+  }*/
+  getAllUsers(): Observable<any>{
     console.log('heloooo')
-    return this.http.get<User[]>('http://localhost:8081/api/users');
-      }*/
-     
-  
-  public updateUser(user: User) {
-        return this.http.put<User>("http://localhost:8081/api/user" + "/"+ user.username,user);
+    return this.http.get<User[]>(`${API_URL}`);
+  }
+    
+  public updateUser(user: User, id:number) {
+        return this.http.put<User>(`${API_URL}/${id}`, user);
         }  
   
   public deleteUser(user: { username: string; }) {
-          return this.http.delete<User>("http://localhost:8081/api/user" + "/"+ user.username);
+          return this.http.delete<User>(API_URL + "/"+ user.username);
         }
   public createUser(user: {username: string}) {
-          return this.http.post<User>("http://localhost:8081/api/user", user);
+          return this.http.post<User>(API_URL, user);
         }
 
   getPublicContent(): Observable<any> {

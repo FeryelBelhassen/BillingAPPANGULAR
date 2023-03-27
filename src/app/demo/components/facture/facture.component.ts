@@ -33,15 +33,17 @@ export class FactureComponent implements OnInit {
     constructor(private factureService: FactureService, private messageService: MessageService) { }
 
     ngOnInit() {
-        this.factureService.getAllFactures().subscribe(users => this.factures = this.factures);
+        ///this.productService.getProducts().then(data => this.products = data);
+        this.factureService.getAllFactures();
 
         this.cols = [
-            { field: 'Numero Facture', header: 'Numero Facture' },
-            { field: 'ClientID', header: 'ClientID' },
-            { field: 'Date Facture', header: 'Date Facture' },
-            { field: 'Date Validation', header: 'Date Validation' },
-            { field: 'Montant HT', header: 'Montant HT' },
-            { field: 'Montant TTC', header: 'Monatnt TTC' }
+            { field: 'numerofacture', header: 'NumeroFacture' },
+            { field: 'clientid', header: 'ClientID' },
+            { field: 'datefacture', header: 'DateFacture' },
+            { field: 'datevalidation', header: 'DateValidation' },
+            { field: 'montantht', header: 'MontantHT'  },
+            { field: 'montantttc', header: 'MonatntTTC' },
+            { field: 'annee', header: 'Annee' }
         ];
 
         
@@ -88,42 +90,41 @@ export class FactureComponent implements OnInit {
 
     saveFacture() {
         this.submitted = true;
-
-        if (this.facture.numerofacture?.trim()) {
-            if (this.facture.numerofacture) {
+       if (this.facture.clientid) {
+            if (this.facture.id) {
                 // @ts-ignore
-              
                 this.factures[this.findIndexById(this.facture.id)] = this.facture;
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Updated', life: 3000 });
             } else {
-                this.facture.id;
+                this.facture.id = this.createId();
                 this.facture.numerofacture;
-                this.facture.clientid;
-                this.facture.datefacture;
-                this.facture.datevalidation;
-                this.facture.montantht;
-                this.facture.montanttc;
-                this.facture.annee;
-                
+                this.facture.clientid ;
+                this.facture.datefacture ;
+                this.facture.datevalidation ;
+                this.facture.montanttc ;
+                this.facture.montantht ;
+                this.facture.annee ;
+                 
                 // @ts-ignore
-                
                 this.factures.push(this.facture);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Created', life: 3000 });
             }
-
+            
             this.factures = [...this.factures];
             this.DialogFacture = false;
             this.facture = {};
-        }
+        } 
+        
+
     }
 
     findIndexById(id: string): number {
         let index = -1;
         for (let i = 0; i < this.factures.length; i++) {
-            /*if (this.factures[i].id === id) {
+            if (this.factures[i].id === id) {
                 index = i;
                 break;
-            }*/
+            }
         }
 
         return index;

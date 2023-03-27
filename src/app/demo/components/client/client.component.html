@@ -6,7 +6,7 @@
                 <ng-template pTemplate="left">
                     <div class="my-2">
                         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedUsers()" [disabled]="!selectedUsers || !selectedUsers.length"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClients()" [disabled]="!selectedClients || !selectedClients.length"></button>
                     </div>
                 </ng-template>
 
@@ -16,10 +16,11 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="users" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedUsers" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="clients
+            " [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedClients" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Liste Of Users</h5>
+                        <h5 class="m-0">Liste Of Clients</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
@@ -34,35 +35,41 @@
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="username" >Username <p-sortIcon field="username"></p-sortIcon></th>
                         <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
-                        <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
+                        <th pSortableColumn="adresse">Adresse <p-sortIcon field="adresse"></p-sortIcon></th>
+                        <th pSortableColumn="telephone">Telephone <p-sortIcon field="telephone"></p-sortIcon></th>
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
                         </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-user>
-                    <tr scope="row" *ngFor="let user of users">
+                <ng-template pTemplate="body" let-client>
+                    <tr scope="row" *ngFor="let client of this.clients">
                         <td>
-                            <p-tableCheckbox [value]="user"></p-tableCheckbox>
+                            <p-tableCheckbox [value]="client"></p-tableCheckbox>
                         </td>
                         <td style="width:20%; min-width:10rem;">
                            
-                            {{user.id}}
+                            {{client.id}}
                         </td>
                         <td style="width:20%; min-width:10rem;">
                             
-                            {{user.username}}
+                            {{client.username}}
                         </td>
                         <td style="width:20%; min-width:10rem;">
-                            {{user.email}}
+                            {{client.email}}
                         </td>
                        
                         <td style="width:20%; min-width: 10rem;">
                            
-                            {{user.role}}
+                            {{client.adresse}}
+                        </td>
+
+                        <td style="width:20%; min-width: 10rem;">
+                           
+                            {{client.telephone}}
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteUser(user)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editClient(client)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteClient(client)"></button>
                             </div>
                         </td>
                     </tr>
@@ -70,62 +77,59 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="User Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="clientDialog" [style]="{width: '450px'}" header="Client Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 
                 <div class="field">
                     <label for="username">Username</label>
                     <input type="text" pInputText id="name" 
-                    [(ngModel)]="user.username" required autofocus
-                     [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.username}" />
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.username"> Username is required.</small>
+                    [(ngModel)]="client.username" required autofocus
+                     [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.username}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.username"> Username is required.</small>
                 </div>
                 <div class="field">
                     <label for="email">Email</label>
-                    <input type="email" id="email" pInputText [(ngModel)]="user.email" required />
+                    <input type="email" id="email" pInputText [(ngModel)]="client.email" required />
                 </div>
                 <div class="field">
                     <label for="password">Password</label>
-                    <input type="password" id="password" pInputText [(ngModel)]="user.password" required />
+                    <input type="password" id="password" pInputText [(ngModel)]="client.password" required />
                 </div>
-            
                 <div class="field">
-                    <label for="roles">Role</label>
-                    <p-dropdown [(ngModel)]="user.role" inputId="role" optionValue="name" [options]="roles" placeholder="Select">
-                        <ng-template pTemplate="selectedItem">
-                            <span *ngIf="user && user.role" [class]="'product-badge status-' + user.role.toString().toLowerCase()">{{user.role}}</span>
-                        </ng-template>
-                        <ng-template let-option pTemplate="item">
-                            <span [class]="'product-badge status-' + option.id">{{option.name}}</span>
-                        </ng-template>
-                    </p-dropdown>
+                    <label for="adresse">Adresse</label>
+                    <input type="text" id="adresse" pInputText [(ngModel)]="client.adresse" required />
                 </div>
+                <div class="field">
+                    <label for="telephone">Telephone</label>
+                    <input type="text" id="telephone" pInputText [(ngModel)]="client.telephone" required />
+                </div>
+                
             </ng-template>
 
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveClient()"></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteUserDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteClientDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="user">Are you sure you want to delete <b> {{user.username}}</b>?</span>
+                <span *ngIf="client">Are you sure you want to delete <b> {{client.username}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUserDialog = false"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteClientDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteUsersDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteClientsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Are you sure you want to delete selected users?</span>
+                <span>Are you sure you want to delete selected clients?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUserDialog = false"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteClientDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
             </ng-template>
         </p-dialog>

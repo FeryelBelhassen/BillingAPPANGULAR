@@ -28,11 +28,14 @@ import { LoginComponent } from './demo/components/auth/login/login.component';
 import { Router, RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppLayoutComponent } from './layout/app.layout.component';
+import { UserComponent } from './demo/components/user/user.component';
+import { UserModule } from './demo/components/user/user.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotfoundComponent,
+    
    
     
     
@@ -47,6 +50,7 @@ import { AppLayoutComponent } from './layout/app.layout.component';
     ButtonModule,
     TreeSelectModule,
     PagesModule,
+    UserModule
     
     
     
