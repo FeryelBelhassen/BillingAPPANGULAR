@@ -43,22 +43,17 @@ export class ClientComponent implements OnInit {
                 { field: 'telephone', header: 'Telephone' }
             ];
     
-    this.clientService.getAllClients()
-    .subscribe((data)=>{
-        //this.isLoading = false
-        //this.half_cast = JSON.parse(JSON.stringify(data))
-    this.half_cast.forEach((client: { [x: string]: any; }) => this.clients.push({
-            'id': client['id'],
-            'username': client['username'],
-            'email': client['email'],
-            'adresse': client['adresse'],
-            'telephone': client['telephone']
-           
-          }));
-   
-          })
-        
-        } 
+    this.getClients();
+    }
+
+    private getClients(){
+        this.clientService.getAllClients()
+        .subscribe((data)=>{
+        this.clients=data;
+         })
+                
+    }
+    
        
    
    

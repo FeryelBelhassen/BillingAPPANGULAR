@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Devis } from '../domain/devis';
 import { Router } from '@angular/router';
 
-const API_URL = 'http://localhost:8081/api/';
+const API_URL = 'http://localhost:8080/api/devis';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +17,10 @@ export class DevisService {
     }
 
   
-  getAllDevis(): Observable<any>{
-    console.log('heloooo')
-    return this.http.get(API_URL + 'devis');
-  }
+    getAllDevis(){
+      return this.http.get<Devis[]>(`${API_URL}`);
+              
+    }
     
   public updateDevis(devis: Devis) {
         return this.http.put<Devis>("http://localhost:8081/api/devis" + "/"+ devis.numerodevis,devis);

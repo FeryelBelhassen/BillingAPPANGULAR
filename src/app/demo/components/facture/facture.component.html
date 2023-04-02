@@ -35,16 +35,14 @@
                         <th pSortableColumn="numero">Numero Facture <p-sortIcon field="numero"></p-sortIcon></th>
                         <th pSortableColumn="idclient">ClientID <p-sortIcon field="idclient"></p-sortIcon></th>
                         <th pSortableColumn="datefacture">Date Facture <p-sortIcon field="datefacture"></p-sortIcon></th>
-                        <th pSortableColumn="datevalidation">Date Validation <p-sortIcon field="datevalidation"></p-sortIcon></th>
                         <th pSortableColumn="montantttc">Montant TTC <p-sortIcon field="monatntttc"></p-sortIcon></th>
                         <th pSortableColumn="montantht">Montant HT <p-sortIcon field="monatntht"></p-sortIcon></th>
-                        <th pSortableColumn="annee">Annee <p-sortIcon field="annee"></p-sortIcon></th>
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-facture>
-                    <tr>
+                    <tr scope="row">
                         <td>
                             <p-tableCheckbox [value]="facture"></p-tableCheckbox>
                         </td>
@@ -61,11 +59,6 @@
                           
                             {{facture.datefacture}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            
-                            {{facture.datevalidation}}
-                        </td>
-
                         <td style="width:14%; min-width:8rem;">
                            
                             {{facture.montanttc | currency:'USD'}}
@@ -76,11 +69,6 @@
                             {{facture.montantht | currency:'USD'}}
                         </td>
                        
-                        <td style="width:14%; min-width:10rem;">
-                          
-                            {{facture.annee}}
-                        </td>
-                        
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFacture(facture)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteFacture(facture)"></button>
@@ -106,10 +94,6 @@
                 <input type="date" pInputText id="datefacture" [(ngModel)]="facture.datefacture" >
                 </div>
                 <div class="field">
-                    <label for="datevalidation">Date Validation</label>
-                    <input type="date" pInputText id="datevalidation" [(ngModel)]="facture.datevalidation" >
-                    </div>
-                <div class="field">
                      <label for="monatntttc">Montant TTC</label>
                     <p-inputNumber id="monatntttc" [(ngModel)]="facture.montanttc" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
                     </div>
@@ -118,11 +102,6 @@
                     <p-inputNumber id="montantht" [(ngModel)]="facture.montantht" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
                 </div>
                
-                <div class="field">
-                    <label for="annee">Annee</label>
-                    <input type="text" pInputText id="annee" [(ngModel)]="facture.annee" >
-                </div>
-                
             </ng-template>
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>

@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Client } from '../domain/client';
 import { Router } from '@angular/router';
+import { Facture } from '../domain/facture';
 
-const API_URL = 'http://localhost:8081/api/';
+const API_URL = 'http://localhost:8080/api/clients';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +18,9 @@ export class ClientService {
     }
 
   
-  getAllClients(): Observable<any>{
-    console.log('heloooo')
-    return this.http.get(API_URL + 'clients');
+  getAllClients(){
+    return this.http.get<Client[]>(`${API_URL}`);
+            
   }
     
   public updateClient(client: Client) {

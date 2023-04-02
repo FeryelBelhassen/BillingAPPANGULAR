@@ -5,9 +5,7 @@ import { User } from '../domain/user';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
-
-
-const API_URL = 'http://localhost:8081/api/v1/users';
+const API_URL = 'http://localhost:8080/api/users';
 
 
 @Injectable({
@@ -26,14 +24,7 @@ export class UserService {
       this.user = this.currentUser.asObservable();
     }
 
-   /* getAllUsers() {
-      return this.http.get<any>('http://localhost:8081/api/users')
-      //return this.http.get<any>('assets/demo/data/products.json')
-          .toPromise()
-          .then(res => res.data as User[])
-          .then(data => data);
-          
-  }*/
+  
   getAllUsers(): Observable<any>{
     console.log('heloooo')
     return this.http.get<User[]>(`${API_URL}`);
@@ -43,11 +34,14 @@ export class UserService {
         return this.http.put<User>(`${API_URL}/${id}`, user);
         }  
   
-  public deleteUser(user: { username: string; }) {
+  /*public deleteUser(user: { username: string; }) {
           return this.http.delete<User>(API_URL + "/"+ user.username);
-        }
+        }*/
   public createUser(user: {username: string}) {
           return this.http.post<User>(API_URL, user);
+        }
+    deleteUser(id: number): Observable<Object>{
+          return this.http.delete(`${API_URL}/${id}`);
         }
 
   getPublicContent(): Observable<any> {

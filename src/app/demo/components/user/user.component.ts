@@ -19,6 +19,7 @@ export class UserComponent implements OnInit {
     deleteUsersDialog: boolean = false;
 
     users:Array<User> = [];
+    usersData  = {};
 
     user: User = {};
 
@@ -33,6 +34,7 @@ export class UserComponent implements OnInit {
         { id: 4, name: "Magasinier" },
         { id: 5, name: "Client" }
       ];
+    
 
     selectedUsers: User[] = [];
 
@@ -60,22 +62,21 @@ export class UserComponent implements OnInit {
                 { id: 5, name: "Client" }
                
             ];
-        this.getUsers();}
-        private getUsers(){
-    this.userService.getAllUsers()
-    .subscribe((data)=>{
-        //this.isLoading = false
-        //this.half_cast = JSON.parse(JSON.stringify(data))
-    this.half_cast.forEach((user: { [x: string]: any; }) => this.users.push({
-            'id': user['id'],
-            'username': user['username'],
-            'email': user['email'],
-            'role': user['roles']
-           
-          }));
-   
-          })
-        
+
+        this.getUsers();
+    }
+
+    private getUsers(){
+        this.userService.getAllUsers()
+        .subscribe((data)=>{
+            console.log("hello !"+data)
+                this.users=data;
+                this.usersData=data
+                console.log("data ! -> "+this.usersData)
+
+                console.log("Array -> "+this.users)
+            })
+            
         } 
        
    
@@ -132,7 +133,8 @@ export class UserComponent implements OnInit {
                 this.user.id = this.createId();
                 this.user.username ;
                 this.user.email ;
-                this.user.role = this.user.role ? this.user.role : 'ADMIN';    
+                this.user.appRoles;
+                //this.user.role = this.user.role ? this.user.role : 'ADMIN';    
                 // @ts-ignore
                 this.users.push(this.user);
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });

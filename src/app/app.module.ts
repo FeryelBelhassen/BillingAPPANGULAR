@@ -31,10 +31,12 @@ import { AppLayoutComponent } from './layout/app.layout.component';
 import { UserComponent } from './demo/components/user/user.component';
 import { UserModule } from './demo/components/user/user.module';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     NotfoundComponent,
+
     
    
     

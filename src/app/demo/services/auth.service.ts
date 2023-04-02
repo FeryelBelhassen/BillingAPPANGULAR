@@ -77,7 +77,7 @@ export class AuthService {
         username,
         email,
         password,
-        role
+        //role
       }
     );
   }

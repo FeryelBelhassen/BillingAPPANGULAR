@@ -1,8 +1,11 @@
+import { AppRole } from "./appRole";
+
 export class User {
     id?: string;
     username?: string;
     email?: string;
     password?: string;
-    role?: string;
+    appRoles?: Array<AppRole>;
+   
     
 }

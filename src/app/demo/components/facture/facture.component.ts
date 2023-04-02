@@ -33,21 +33,28 @@ export class FactureComponent implements OnInit {
     constructor(private factureService: FactureService, private messageService: MessageService) { }
 
     ngOnInit() {
-        ///this.productService.getProducts().then(data => this.products = data);
-        this.factureService.getAllFactures();
+   
+        this.getFactures();
 
         this.cols = [
             { field: 'numerofacture', header: 'NumeroFacture' },
             { field: 'clientid', header: 'ClientID' },
             { field: 'datefacture', header: 'DateFacture' },
-            { field: 'datevalidation', header: 'DateValidation' },
             { field: 'montantht', header: 'MontantHT'  },
             { field: 'montantttc', header: 'MonatntTTC' },
-            { field: 'annee', header: 'Annee' }
         ];
 
         
     }
+
+    private getFactures(){
+        this.factureService.getAllFactures()
+        .subscribe((data)=>{
+            console.log("hello !"+data)
+                this.factures=data;
+            })
+            
+        }
 
     openNew() {
         this.facture = {};
@@ -100,10 +107,8 @@ export class FactureComponent implements OnInit {
                 this.facture.numerofacture;
                 this.facture.clientid ;
                 this.facture.datefacture ;
-                this.facture.datevalidation ;
                 this.facture.montanttc ;
                 this.facture.montantht ;
-                this.facture.annee ;
                  
                 // @ts-ignore
                 this.factures.push(this.facture);

@@ -39,7 +39,7 @@
                         </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-user>
-                    <tr scope="row" *ngFor="let user of users">
+                    <tr scope="row" >
                         <td>
                             <p-tableCheckbox [value]="user"></p-tableCheckbox>
                         </td>
@@ -54,11 +54,11 @@
                         <td style="width:20%; min-width:10rem;">
                             {{user.email}}
                         </td>
-                       
-                        <td style="width:20%; min-width: 10rem;">
-                           
-                            {{user.role}}
+
+                        <td style="width:20%; min-width:10rem;">
+                            {{user.appRoles}}
                         </td>
+                       
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)"></button>
@@ -91,9 +91,9 @@
             
                 <div class="field">
                     <label for="roles">Role</label>
-                    <p-dropdown [(ngModel)]="user.role" inputId="role" optionValue="name" [options]="roles" placeholder="Select">
+                    <p-dropdown [(ngModel)]="user.appRoles" inputId="role" optionValue="name" [options]="roles" placeholder="Select">
                         <ng-template pTemplate="selectedItem">
-                            <span *ngIf="user && user.role" [class]="'product-badge status-' + user.role.toString().toLowerCase()">{{user.role}}</span>
+                            <span *ngIf="user && user.appRoles" [class]="'product-badge status-' + user.appRoles.toString().toLowerCase()">{{user.appRoles}}</span>
                         </ng-template>
                         <ng-template let-option pTemplate="item">
                             <span [class]="'product-badge status-' + option.id">{{option.name}}</span>
@@ -131,4 +131,3 @@
         </p-dialog>
     </div>
 </div>
-

@@ -34,7 +34,7 @@ export class ProductComponent implements OnInit {
 
     ngOnInit() {
         ///this.productService.getProducts().then(data => this.products = data);
-        this.productService.getProducts();
+        this.getProducts();
 
         this.cols = [
             { field: 'product', header: 'Product' },
@@ -51,6 +51,15 @@ export class ProductComponent implements OnInit {
             { label: 'OUTOFSTOCK', value: 'outofstock' }
         ];
     }
+
+    private getProducts(){
+        this.productService.getProducts()
+        .subscribe((data)=>{
+            console.log("hello !"+data)
+                this.products=data;
+            })
+            
+        } 
 
     openNew() {
         this.product = {};

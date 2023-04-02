@@ -35,7 +35,7 @@ export class DevisComponent implements OnInit {
 
     ngOnInit() {
         ///this.productService.getProducts().then(data => this.products = data);
-        this.devisService.getAllDevis();
+        
 
         this.cols = [
             { field: 'numerodevis', header: 'NumeroDevis' },
@@ -50,7 +50,18 @@ export class DevisComponent implements OnInit {
             { label: 'LOWSTOCK', value: 'lowstock' },
             { label: 'OUTOFSTOCK', value: 'outofstock' }
         ];
+
+    this.getDevis();
     }
+
+    private getDevis(){
+        this.devisService.getAllDevis()
+        .subscribe((data)=>{
+            console.log("hello !"+data)
+                this.deviss=data;
+            })
+            
+        }
 
     openNew() {
         this.devis = {};

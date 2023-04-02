@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../domain/product';
 
+const API_URL = 'http://localhost:8080/api/products';
 @Injectable()
 export class ProductService {
 
@@ -15,11 +16,7 @@ export class ProductService {
     }
 
     getProducts() {
-        return this.http.get<any>('http://localhost:8081/api/product')
-        //return this.http.get<any>('assets/demo/data/products.json')
-            .toPromise()
-            .then(res => res.data as Product[])
-            .then(data => data);
+      return this.http.get<Product[]>(`${API_URL}`);
             
     }
     

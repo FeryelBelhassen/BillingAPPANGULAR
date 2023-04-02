@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FactoryTarget } from '@angular/compiler';
 import { Facture } from '../domain/facture';
-//import { Factures } from '../models/factures.model';
 
 
+const API_URL = 'http://localhost:8080/api/factures';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,13 +17,9 @@ export class FactureService {
   constructor(private http: HttpClient) { }
 
   getAllFactures() {
-    return this.http.get<any>('http://localhost:8081/api/facture')
-    //return this.http.get<any>('assets/demo/data/products.json')
-        .toPromise()
-        .then(res => res.data as Facture[])
-        .then(data => data);
-        
-}
+    return this.http.get<Facture[]>(`${API_URL}`);
+          
+  }
 
   public updateFacture(facture: Facture) {
         return this.http.put<Facture>("http://localhost:8081/api/facture" + "/"+ facture.numerofacture,facture);
