@@ -55,11 +55,11 @@ export class UserComponent implements OnInit {
             ];
     
             this.roles = [
-                { id: 1, name: "Admin" },
-                { id: 2, name: "Agent" },
-                { id: 3, name: "User" },
-                { id: 4, name: "Magasinier" },
-                { id: 5, name: "Client" }
+                { id: 1, name: "ADMIN" },
+                { id: 2, name: "AGENT" },
+                { id: 3, name: "USER" },
+                { id: 4, name: "MAGASINIER" },
+                { id: 5, name: "CLIENT" }
                
             ];
 
@@ -160,13 +160,14 @@ export class UserComponent implements OnInit {
 
     createId(): string {
         let id = '';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const chars = '0';
         for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
+          id += chars.charAt(Math.floor(Math.random() * chars.length));
+       }
         return id;
     }
 
+   
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
