@@ -19,7 +19,6 @@ export class UserComponent implements OnInit {
     deleteUsersDialog: boolean = false;
 
     users:Array<User> = [];
-    usersData  = {};
 
     user: User = {};
 
@@ -71,9 +70,6 @@ export class UserComponent implements OnInit {
         .subscribe((data)=>{
             console.log("hello !"+data)
                 this.users=data;
-                this.usersData=data
-                console.log("data ! -> "+this.usersData)
-
                 console.log("Array -> "+this.users)
             })
             

@@ -5,6 +5,6 @@ export class User {
     username?: string;
     email?: string;
     password?: string;
-    appRoles?: Array<Role>;
+    appRoles?: Role;
       
 }
