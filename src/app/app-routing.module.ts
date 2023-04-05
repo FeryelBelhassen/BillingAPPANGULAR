@@ -23,6 +23,7 @@ import { User } from './demo/domain/user';
         { path: 'product', loadChildren: () => import('./demo/components/product/product.module').then(m => m.ProductModule)},
         { path: 'client', loadChildren: () => import('./demo/components/client/client.module').then(m => m.ClientModule)},
         { path: 'devis', loadChildren: () => import('./demo/components/devis/devis.module').then(m => m.DevisModule)},
+        { path: 'factureavoir', loadChildren: () => import('./demo/components/factureavoir/factureavoir.module').then(m => m.FactureAvoirModule)},
         
       ]   
     },

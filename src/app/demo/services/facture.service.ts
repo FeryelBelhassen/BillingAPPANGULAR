@@ -22,14 +22,14 @@ export class FactureService {
   }
 
   public updateFacture(facture: Facture) {
-        return this.http.put<Facture>("http://localhost:8081/api/facture" + "/"+ facture.numerofacture,facture);
+        return this.http.put<Facture>("http://localhost:8081/api/updatefacture" + "/"+ facture.id,facture);
         }  
   
-  public deleteFacture(facture: { numerofacture: string; }) {
-          return this.http.delete<Facture>("http://localhost:8081/api/facture" + "/"+ facture.numerofacture);
+  public deleteFacture(facture: { id: string; }) {
+          return this.http.delete<Facture>("http://localhost:8081/api/deletefacture" + "/"+ facture.id);
         }
-  public createFacture(facture: {numerofacture: string}) {
-          return this.http.post<Facture>("http://localhost:8081/api/facture", facture);
+  public createFacture(facture: {id: string}) {
+          return this.http.post<Facture>("http://localhost:8081/api/createfacture", facture);
         }
 
 }
