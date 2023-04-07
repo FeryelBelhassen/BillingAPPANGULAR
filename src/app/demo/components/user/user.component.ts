@@ -5,6 +5,9 @@ import { Table } from 'primeng/table';
 import { UserService } from '../../services/user.service';
 import { User } from '../../domain/user';
 import { Observable } from 'rxjs';
+import { Role } from '../../domain/Role';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './user.component.html',
@@ -20,7 +23,7 @@ export class UserComponent implements OnInit {
 
     users:Array<User> = [];
 
-    user: User = {};
+    user!: User ;
 
     half_cast: any =  [];
 
@@ -41,11 +44,15 @@ export class UserComponent implements OnInit {
 
     cols: any[] = [];
 
+
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private userService: UserService, private messageService: MessageService) { }
+    constructor(private userService: UserService, private messageService: MessageService,
+        public formBuilder: FormBuilder, public router:Router) { 
+        }
 
     ngOnInit() {   
+       
         
             this.cols = [
                 { field: 'name', header: 'Name' },
@@ -67,9 +74,10 @@ export class UserComponent implements OnInit {
 
     private getUsers(){
         this.userService.getAllUsers()
-        .subscribe((data)=>{
-            console.log("hello !"+data)
-                this.users=data;
+        .subscribe((users)=>{
+            console.log("hello !"+users)
+                this.users=users;
+                
                 console.log("Array -> "+this.users)
             })
             
@@ -95,28 +103,63 @@ export class UserComponent implements OnInit {
     deleteUser(user: User) {
         this.deleteUserDialog = true;
         this.user = { ...user };
+        this.userService.deleteUser(user)
+      .subscribe( data => {
+        this.ngOnInit();
+        alert("User Deleted successfully.");
+      });
     }
 
     confirmDeleteSelected() {
         this.deleteUsersDialog = false;
         this.users = this.users.filter(val => !this.selectedUsers.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
-        this.selectedUsers = [];
-    }
+        this.userService.deleteUser(this.user).subscribe(data => {
+            this.ngOnInit();
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
+            this.selectedUsers = [];
+        });
+
+        }
+       
+    
 
     confirmDelete() {
         this.deleteUserDialog = false;
         this.users = this.users.filter(val => val.id !== this.user.id);
+        this.userService.deleteUser(this.user).subscribe(data => {
+            this.ngOnInit();
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
         this.user = {};
-    }
+    })
+
+}
 
     hideDialog() {
         this.userDialog = false;
         this.submitted = false;
     }
-
     saveUser() {
+        const user: User = {
+            //id: this.user.id,
+            'username': this.user.username,
+            'email' :this.user.email ,
+            'appRoles' :this.user.appRoles
+          };
+
+          this.userService.createUser(user).subscribe( data =>{
+            console.log(data);
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
+            this.ngOnInit();
+            
+          },
+          error => console.log(error));
+          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+
+        this.userDialog = false;
+      } 
+           
+         
+    /*saveUser() {
         this.submitted = true;
 
         if (this.user.username?.trim()) {
@@ -126,13 +169,13 @@ export class UserComponent implements OnInit {
                 this.users[this.findIndexById(this.user.id)] = this.user;
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
             } else {
-                this.user.id = this.createId();
+                this.user.id;
                 this.user.username ;
                 this.user.email ;
                 this.user.appRoles;
-                //this.user.role = this.user.role ? this.user.role : 'ADMIN';    
                 // @ts-ignore
                 this.users.push(this.user);
+                console.log("done !")
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
             }
 
@@ -140,7 +183,10 @@ export class UserComponent implements OnInit {
             this.userDialog = false;
             this.user = {};
         }
-    }
+    }*/
+    
+
+    
 
     findIndexById(id: string): number {
         let index = -1;

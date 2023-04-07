@@ -59,7 +59,6 @@
                             
                             {{user.appRoles[0].name}}
                         
-                            {{user.appRoles}}
                         
                         </td>
                        
@@ -74,7 +73,7 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="User Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="userDialog" [style]="{width: '450px', height: '600px'}" header="User Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 
                 <div class="field">

@@ -29,20 +29,23 @@ export class UserService {
     console.log('heloooo')
     return this.http.get<User[]>(`${API_URL}`);
   }
-    
-  public updateUser(user: User, id:number) {
-        return this.http.put<User>(`${API_URL}/${id}`, user);
-        }  
+
+  createUser(user: User): Observable<any> {
+    return this.http.post(`${API_URL}`, user);
+  }
+
+  public deleteUser(user: User) {
+    return this.http.delete<User>(`${API_URL}` + "/"+ user.username);
+  }
   
-  /*public deleteUser(user: { username: string; }) {
-          return this.http.delete<User>(API_URL + "/"+ user.username);
-        }*/
-  public createUser(user: {username: string}) {
-          return this.http.post<User>(API_URL, user);
-        }
-    deleteUser(id: number): Observable<Object>{
-          return this.http.delete(`${API_URL}/${id}`);
-        }
+  getUser(id: number): Observable<Object> {  
+    return this.http.get(`${API_URL}/user/${id}`);  
+  }  
+  
+  updateUser(id: number, value: any): Observable<Object> {  
+    return this.http.post(`${API_URL}/updateuser/${id}`, value);  
+  } 
+    
 
   getPublicContent(): Observable<any> {
     return this.http.get(API_URL + 'all', { responseType: 'text' });

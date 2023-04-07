@@ -99,8 +99,28 @@ export class ProductComponent implements OnInit {
         this.productDialog = false;
         this.submitted = false;
     }
-
     saveProduct() {
+        const product: Product = {
+            //id: this.user.id,
+            'code':this.product.code,
+            'designation':this.product.designation ,
+            'quantity':this.product.quantity ,
+            'supplier': this.product.supplier ,
+            'price': this.product.price 
+          };
+
+          this.productService.createProduct(product).subscribe( data =>{
+            console.log(data);
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+            this.ngOnInit();
+            
+          },
+          error => console.log(error));
+          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+
+        this.productDialog = false;
+      } 
+   /* saveProduct() {
         this.submitted = true;
 
         if (this.product.designation?.trim()) {
@@ -126,7 +146,7 @@ export class ProductComponent implements OnInit {
             this.productDialog = false;
             this.product = {};
         }
-    }
+    }*/
 
     findIndexById(id: string): number {
         let index = -1;

@@ -17,7 +17,7 @@ export class FactureAvoirService {
   constructor(private http: HttpClient) { }
 
   getAllFactureAvoir() {
-    return this.http.get<FactureAvoir[]>(`${API_URL}` + '/factureavoir');
+    return this.http.get<FactureAvoir[]>(`${API_URL} /factureavoir`);
           
   }
 

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../domain/product';
+import { Observable } from 'rxjs';
 
 const API_URL = 'http://localhost:8080/api/products';
 @Injectable()
@@ -19,6 +20,9 @@ export class ProductService {
       return this.http.get<Product[]>(`${API_URL}`);
             
     }
+    createProduct(product: Product): Observable<any> {
+      return this.http.post(`${API_URL}`, product);
+    }
     
       public updateProduct(product: Product) {
             return this.http.put<Product>("http://localhost:8081/api/product" + "/"+ product.designation,product);
@@ -27,8 +31,6 @@ export class ProductService {
       public deleteProduct(product: { designation: string; }) {
               return this.http.delete<Product>("http://localhost:8081/api/product" + "/"+ product.designation);
             }
-      public createProduct(product: {designation: string}) {
-              return this.http.post<Product>("http://localhost:8081/api/product", product);
-            }
+     
     
 }
