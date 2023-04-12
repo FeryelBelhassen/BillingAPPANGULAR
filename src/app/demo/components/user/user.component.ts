@@ -48,7 +48,19 @@ export class UserComponent implements OnInit {
     idToDel:number=NaN;
     idToUpdate:number=NaN;
 
-
+    /*userUpdated: User={
+        username: this.user.username,
+        email:this.user.email,
+        password:this.user.password,
+        roles: this.user.roles
+    }*/
+    userUp: User = {
+        username: '',
+        email:'',
+        password: '',
+        roles: []
+      }
+      searchText: any;
     rowsPerPageOptions = [5, 10, 20];
 
 
@@ -65,12 +77,7 @@ export class UserComponent implements OnInit {
                 { field: 'role', header: 'Role' }
             ];
 
-            this.user = {
-                id: 0,
-                username: '',
-                password: '',
-                roles: []
-              }
+           
 
         this.getUsers();
     }
@@ -85,46 +92,42 @@ export class UserComponent implements OnInit {
         } 
     
         
-   /* getUser(id): void{
-        this.userService.getUser(id).subscribe(data=>{
-            this.user =data;
+    getUser(id: number){
+        this.userService.getUser(this.user.id!).subscribe(data=>{
+            this.users =data;
             console.log(data)
         },error=>{
             console.log(error);
         });
 
-    }*/
+    }
     openNew() {
         this.user = new User();
         this.submitted = false;
         this.userDialog = true;
     }
 
-    editUser(id: number) {
-        this.user = { ...this.user };
-        this.userDialog = true;  
-        this.idToUpdate = id;
-        const data = {
-            username : this.user.username,
-            email :this.user.email ,
-            password: this.user.password,
-            roles : this.user.roles// Set<Role> -- table mtaa role
+    editUser(data: User) {
+        this.user = data;
+        this.userDialog = true; 
+        //this.idToUpdate = id;
+        
+        const user: User=  {
+            'username' : data.username,
+            'email' :data.email ,
+            'password': data.password,
+            'roles' : data.roles// Set<Role> -- table mtaa role
           }
-            this.userService.updateUser(this.idToUpdate, data).subscribe( data =>{
-                console.log(data);
+           console.log(data)
+            this.userService.updateUser(user).subscribe( (data) =>{
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
-                this.userDialog = false;
                 this.ngOnInit();   
               }, error => {
                 console.log(error);
                 this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-                this.userDialog = false;
                 } );
      }
         
-    
-    
-
     deleteUser(id: number) {
         this.deleteUserDialog = true;
         this.user = { ...this.user }   
@@ -190,8 +193,6 @@ export class UserComponent implements OnInit {
         }
         
            
-         
-
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }

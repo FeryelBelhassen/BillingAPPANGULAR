@@ -45,12 +45,13 @@ export class UserService {
     return this.http.get(`${API_URL}/users/${id}`);  
   }  
 
-  public updateUser(id: any, data: any): Observable<any> {
-    return this.http.put(`${API_URL}/updateuser/${id}`, data);
+  public updateUser(user: User): Observable<any> {
+    return this.http.put(`${API_URL}/updateuser`, user);
   }
+
   
   findByUsername(){
-    
+
   }
 
   getPublicContent(): Observable<any> {

@@ -5,7 +5,7 @@ import { Client } from '../domain/client';
 import { Router } from '@angular/router';
 import { Facture } from '../domain/facture';
 
-const API_URL = 'http://localhost:8080/api/clients';
+const API_URL = 'http://localhost:8080/api';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class ClientService {
 
   
   getAllClients(){
-    return this.http.get<Client[]>(`${API_URL}`);
+    return this.http.get<Client[]>(`${API_URL}/clients`);
             
   }
     
@@ -30,9 +30,10 @@ export class ClientService {
   public deleteClient(client: { username: string; }) {
           return this.http.delete<Client>("http://localhost:8081/api/client" + "/"+ client.username);
         }
-  public createClient(client: {username: string}) {
-          return this.http.post<Client>("http://localhost:8081/api/client", client);
-        }
+  public createClient(client: Client): Observable<any> {
+      return this.http.post(`${API_URL}/addclient`, client);
+    }
+      
   
   
 }

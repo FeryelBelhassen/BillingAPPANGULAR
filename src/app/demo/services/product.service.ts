@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Product } from '../domain/product';
 import { Observable } from 'rxjs';
 
-const API_URL = 'http://localhost:8080/api/products';
+const API_URL = 'http://localhost:8080/api';
 @Injectable()
 export class ProductService {
 
@@ -16,21 +16,28 @@ export class ProductService {
             .then(data => data);
     }
 
-    getProducts() {
-      return this.http.get<Product[]>(`${API_URL}`);
-            
+
+    public getProducts(): Observable<any>{
+      console.log('heloooo')
+      return this.http.get<Product[]>(`${API_URL}/products`);
     }
-    createProduct(product: Product): Observable<any> {
-      return this.http.post(`${API_URL}`, product);
-    }
+
     
-      public updateProduct(product: Product) {
-            return this.http.put<Product>("http://localhost:8081/api/product" + "/"+ product.designation,product);
-            }  
-      
-      public deleteProduct(product: { designation: string; }) {
-              return this.http.delete<Product>("http://localhost:8081/api/product" + "/"+ product.designation);
-            }
-     
+    public createProduct(product: Product): Observable<any> {
+      return this.http.post(`${API_URL}/addproduct`, product);
+    }
+  
+    public deleteProduct(id: number) {
+      return this.http.delete(`${API_URL}/deleteproduct/${id}`);
+    }
+  
+    
+    public getProduct(id: number): Observable<any> {  
+      return this.http.get(`${API_URL}/products/${id}`);  
+    }  
+  
+    public updateProduct(id: any, product: Product): Observable<any> {
+      return this.http.put(`${API_URL}/updateproduct/${id}`, product);
+    }     
     
 }

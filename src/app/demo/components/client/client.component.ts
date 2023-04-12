@@ -101,18 +101,42 @@ export class ClientComponent implements OnInit {
 
         if (this.client.username?.trim()) {
             if (this.client.id) {
+                const client: Client = {
+                    'username':this.client.username ,
+                    'email':this.client.email ,
+                    'adresse':this.client.adresse ,    
+                    'telephone':this.client.telephone 
+                }
                 // @ts-ignore
-                this.clients[this.findIndexById(this.client.id)] = this.client;
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Updated', life: 3000 });
+               // this.clients[this.findIndexById(this.client.id)] = this.client;
+                this.clientService.updateClient(this.client.id,client).subscribe( (data) =>{
+                    console.log(data);
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Updated', life: 3000 });
+                    this.ngOnInit();   
+                  }, error => {
+                    console.log(error);
+                    this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                    } );
+                
             } else {
-                this.client.id = this.createId();
-                this.client.username ;
-                this.client.email ;
-                this.client.adresse ;    
-                this.client.telephone ; 
+                const client: Client = {
+                'username':this.client.username ,
+                'email':this.client.email ,
+                'adresse':this.client.adresse ,    
+                'telephone':this.client.telephone 
+            }
+                this.clientService.createClient(client).subscribe( data =>{
+                    console.log(data);
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
+                    this.clientDialog = false;
+                    this.ngOnInit();   
+                    }, error => {
+                        console.log(error);
+                        this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                        this.clientDialog = false;
+                        } );
                 // @ts-ignore
-                this.clients.push(this.client);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
+              
             }
 
             this.clients = [...this.clients];

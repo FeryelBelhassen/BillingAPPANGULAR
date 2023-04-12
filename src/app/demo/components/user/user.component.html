@@ -21,7 +21,7 @@
                         <h5 class="m-0">Liste Of Users</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                            <input pInputText type="text" (input)="getUser(user.id!)" placeholder="Search..."  class="w-full sm:w-auto"/>
                         </span>
                     </div>
                 </ng-template>
@@ -61,7 +61,7 @@
                        
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user.id)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteUser(user.id)"></button>
                             </div>
                         </td>
@@ -83,15 +83,15 @@
                 <div class="field">
                     <label for="email">Email</label>
                     <input type="email" id="email" pInputText [(ngModel)]="user.email" required />
-                </div>
-                <div class="field">
+                 </div>
+               <div class="field">
                     <label for="password">Password</label>
                     <input type="password" id="password" pInputText [(ngModel)]="user.password" required />
                 </div>
             
                 <div class="field">
                     <label for="roles">Role</label>
-                    <p-multiSelect [(ngModel)]="user.roles"  [options]="roles" [selectionLimit]="1" optionLabel="name" placeholder="Select">
+                    <p-multiSelect [(ngModel)]="user.roles"  [options]="roles"  optionLabel="name" placeholder="Select">
                     </p-multiSelect>
                 </div>
             </ng-template>

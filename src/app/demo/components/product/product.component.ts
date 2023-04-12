@@ -99,76 +99,29 @@ export class ProductComponent implements OnInit {
         this.productDialog = false;
         this.submitted = false;
     }
+   
     saveProduct() {
         const product: Product = {
-            //id: this.user.id,
             'code':this.product.code,
             'designation':this.product.designation ,
             'quantity':this.product.quantity ,
             'supplier': this.product.supplier ,
-            'price': this.product.price 
-          };
-
-          this.productService.createProduct(product).subscribe( data =>{
-            console.log(data);
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-            this.ngOnInit();
-            
-          },
-          error => console.log(error));
-          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-
+            'price': this.product.price ,
+            'inventoryStatus': this.product.inventoryStatus
+            };
+        this.productService.createProduct(product).subscribe( data =>{
+        console.log(data);
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
         this.productDialog = false;
-      } 
-   /* saveProduct() {
-        this.submitted = true;
-
-        if (this.product.designation?.trim()) {
-            if (this.product.id) {
-                // @ts-ignore
-                //this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
-                this.products[this.findIndexById(this.product.id)] = this.product;
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-            } else {
-                this.product.id = this.createId();
-                this.product.code;
-                this.product.designation ;
-                this.product.quantity ;
-                this.product.supplier ;
-                this.product.price ;
-                 
-                // @ts-ignore
-                this.products.push(this.product);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-            }
-
-            this.products = [...this.products];
+        this.ngOnInit();   
+        }, error => {
+            console.log(error);
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
             this.productDialog = false;
-            this.product = {};
-        }
-    }*/
-
-    findIndexById(id: string): number {
-        let index = -1;
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
+            } );
     }
 
-    createId(): string {
-        let id = '';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
-    }
-
+    
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
