@@ -1,7 +1,9 @@
+import { Client } from "./client";
+
 export interface Facture {
     id?:string;
     numerofacture?: string;
-    clientid?: number;
+    client?: Set<Client>;
     datefacture?: Date;
     montanttc?: number;
     montantht?: number;

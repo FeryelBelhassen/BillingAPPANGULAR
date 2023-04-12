@@ -92,7 +92,7 @@ export class AuthService {
     this.userSubject.unsubscribe;
   }
 
-  refreshToken() {
+  refreshToken(token:any) {
     // the expired token must be included in the Authorization header and the refresh in the body ?
     return this.http.get<any>(AUTH_API +'refreshtoken' )
         .pipe(map((data) => {
@@ -103,7 +103,7 @@ export class AuthService {
       const jwtToken = JSON.parse(atob(this.userValue?.jwtToken!.split('.')[1]));
       const expires = new Date(jwtToken.exp * 1000);
       const timeout = expires.getTime() - Date.now() - (60 * 1000);
-      this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+      this.refreshTokenTimeout = setTimeout(() => this.refreshToken(this.userValue.refreshToken).subscribe(), timeout);
     
     }
     

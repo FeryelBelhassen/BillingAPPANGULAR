@@ -33,7 +33,7 @@
                         </th>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="numero">Numero Facture <p-sortIcon field="numero"></p-sortIcon></th>
-                        <th pSortableColumn="idclient">ClientID <p-sortIcon field="idclient"></p-sortIcon></th>
+                        <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th>
                         <th pSortableColumn="datefacture">Date Facture <p-sortIcon field="datefacture"></p-sortIcon></th>
                         <th pSortableColumn="montantttc">Montant TTC <p-sortIcon field="monatntttc"></p-sortIcon></th>
                         <th pSortableColumn="montantht">Montant HT <p-sortIcon field="monatntht"></p-sortIcon></th>
@@ -53,7 +53,7 @@
                             {{facture.numerofacture}}
                         </td>
                         <td style="width:14%; min-width:10rem;">                           
-                            {{facture.clientid}}
+                            {{facture.client}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                           
@@ -85,9 +85,17 @@
                     <label for="numerofacture">Numero Facture</label>
                     <input type="text" pInputText id="numerofacture" [(ngModel)]="facture.numerofacture" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !facture.numerofacture}"/>
                 </div>
+
                 <div class="field">
-                    <label for="clientid">ClientID</label>
-                    <p-inputNumber id="clientid" [(ngModel)]="facture.clientid"></p-inputNumber>
+                    <label for="client">Cliennt</label>
+                    <p-dropdown [(ngModel)]="facture.client" inputId="id" optionValue="name" [options]="clients" placeholder="Select">
+                        <ng-template pTemplate="selectedItem">
+                            <span *ngFor="let client of clients">{{facture.client}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span [class]="'product-badge status-' + option.id">{{option.username}}</span>
+                        </ng-template>
+                    </p-dropdown>
                 </div>
                 <div class="field">
                 <label for="datefacture">Date Facture</label>

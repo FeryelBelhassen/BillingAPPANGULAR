@@ -3,6 +3,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Facture } from '../../domain/facture';
 import { FactureService } from '../../services/facture.service';
+import { Client } from '../../domain/client';
 
 @Component({
     templateUrl: './facture.component.html',
@@ -22,6 +23,8 @@ export class FactureComponent implements OnInit {
 
     selectedFactures: Facture[] = [];
 
+    clients:Array<Client> = [];
+
     submitted: boolean = false;
 
     cols: any[] = [];
@@ -38,7 +41,7 @@ export class FactureComponent implements OnInit {
 
         this.cols = [
             { field: 'numerofacture', header: 'NumeroFacture' },
-            { field: 'clientid', header: 'ClientID' },
+            { field: 'client', header: 'Client' },
             { field: 'datefacture', header: 'DateFacture' },
             { field: 'montantht', header: 'MontantHT'  },
             { field: 'montantttc', header: 'MonatntTTC' },
@@ -97,7 +100,7 @@ export class FactureComponent implements OnInit {
 
     saveFacture() {
         this.submitted = true;
-       if (this.facture.clientid) {
+       if (this.facture.client) {
             if (this.facture.id) {
                 // @ts-ignore
                 this.factures[this.findIndexById(this.facture.id)] = this.facture;
@@ -105,7 +108,7 @@ export class FactureComponent implements OnInit {
             } else {
                 this.facture.id = this.createId();
                 this.facture.numerofacture;
-                this.facture.clientid ;
+                this.facture.client ;
                 this.facture.datefacture ;
                 this.facture.montanttc ;
                 this.facture.montantht ;

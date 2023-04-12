@@ -1,12 +1,12 @@
+
+import { ERole } from "./Erole";
 import { Role } from "./Role";
-import { Roles } from "./roles";
 
 export class User {
-    id?: string;
+    id?: number;
     username?: string;
     email?: string;
     password?: string;
-    appRoles?: Array<Role>
-
-      
+    roles: Role[] = []     
+    //roles?: Set <Role>; 
 }

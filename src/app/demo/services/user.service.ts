@@ -4,8 +4,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../domain/user';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
+import { UserComponent } from '../components/user/user.component';
+import { Useer } from '../domain/useer';
 
-const API_URL = 'http://localhost:8080/api/users';
+const API_URL = 'http://localhost:8080/api';
 
 
 @Injectable({
@@ -14,38 +16,42 @@ const API_URL = 'http://localhost:8080/api/users';
 
 export class UserService {
 
-  private currentUser!: BehaviorSubject<User>;
-  private user!: Observable<User>;
+  private currentUser!: BehaviorSubject<Useer>;
+  private user!: Observable<Useer>;
 
   
   constructor(private authService : AuthService, private router: Router,
     private http: HttpClient) {
-      this.currentUser = new BehaviorSubject<User>(this.authService.userValue);
+      this.currentUser = new BehaviorSubject<Useer>(this.authService.userValue);
       this.user = this.currentUser.asObservable();
     }
 
   
-  getAllUsers(): Observable<any>{
+  public getAllUsers(): Observable<any>{
     console.log('heloooo')
-    return this.http.get<User[]>(`${API_URL}`);
+    return this.http.get<User[]>(`${API_URL}/users`);
   }
 
-  createUser(user: User): Observable<any> {
-    return this.http.post(`${API_URL}`, user);
+  public createUser(user: User): Observable<any> {
+    return this.http.post(`${API_URL}/adduser`, user);
   }
 
-  public deleteUser(user: User) {
-    return this.http.delete<User>(`${API_URL}` + "/"+ user.username);
+  public deleteUser(id: number) {
+    return this.http.delete(`${API_URL}/deleteuser/${id}`);
   }
+
   
-  getUser(id: number): Observable<Object> {  
-    return this.http.get(`${API_URL}/user/${id}`);  
+  public getUser(id: number): Observable<any> {  
+    return this.http.get(`${API_URL}/users/${id}`);  
   }  
+
+  public updateUser(id: any, data: any): Observable<any> {
+    return this.http.put(`${API_URL}/updateuser/${id}`, data);
+  }
   
-  updateUser(id: number, value: any): Observable<Object> {  
-    return this.http.post(`${API_URL}/updateuser/${id}`, value);  
-  } 
+  findByUsername(){
     
+  }
 
   getPublicContent(): Observable<any> {
     return this.http.get(API_URL + 'all', { responseType: 'text' });
