@@ -17,22 +17,31 @@ export class ClientService {
       
     }
 
-  
   getAllClients(){
     return this.http.get<Client[]>(`${API_URL}/clients`);
             
   }
     
-  public updateClient(client: Client) {
-        return this.http.put<Client>("http://localhost:8081/api/client" + "/"+ client.username,client);
-        }  
-  
-  public deleteClient(client: { username: string; }) {
-          return this.http.delete<Client>("http://localhost:8081/api/client" + "/"+ client.username);
-        }
   public createClient(client: Client): Observable<any> {
-      return this.http.post(`${API_URL}/addclient`, client);
-    }
+    return this.http.post(`${API_URL}/addclient`, client);
+  }
+
+  public deleteClient(id: number) {
+    return this.http.delete(`${API_URL}/deleteclient/${id}`);
+  }
+
+  public deleteAllClients() {
+    return this.http.delete(`${API_URL}/deleteall`);
+  }
+  
+    
+  public getClient(id: number): Observable<any> {  
+    return this.http.get(`${API_URL}/clients/${id}`);  
+  }  
+  
+  public updateClient(id: number, client: Client): Observable<any> {
+    return this.http.put(`${API_URL}/updateclient/${id}`, client);
+  }
       
   
   

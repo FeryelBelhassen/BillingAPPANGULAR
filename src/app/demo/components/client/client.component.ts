@@ -32,6 +32,10 @@ export class ClientComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
+    idToDel:number=NaN;
+
+    idToUpdate:number=NaN;
+
     constructor(private clientService: ClientService, private messageService: MessageService) { }
 
     ngOnInit() {   
@@ -54,9 +58,6 @@ export class ClientComponent implements OnInit {
                 
     }
     
-       
-   
-   
     openNew() {
         this.client = {};
         this.submitted = false;
@@ -67,29 +68,64 @@ export class ClientComponent implements OnInit {
         this.deleteClientsDialog = true;
     }
 
-    editClient(client: Client) {
-        this.client = { ...client };
-        this.clientDialog = true;
-    }
+    editClient(id: number, data: Client) {
+        this.client = data;
+        this.clientDialog = true; 
+        this.idToUpdate = id;
+        
+        const client: Client=  {
+            'username' : data.username,
+            'email' :data.email ,
+            'password': data.password,
+            'adresse' : data.adresse,
+            'telephone': data.telephone
+          }
+           console.log(data)
+            this.clientService.updateClient(this.idToUpdate,client).subscribe( (data) =>{
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Updated', life: 3000 });
+                this.ngOnInit();   
+              }, error => {
+                console.log(error);
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                } );
+     }
 
-    deleteClient(client: Client) {
+    deleteClient(id: number) {
         this.deleteClientDialog = true;
-        this.client = { ...client };
-    }
-
-    confirmDeleteSelected() {
-        this.deleteClientsDialog = false;
-        this.clients = this.clients.filter(val => !this.selectedClients.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Clients Deleted', life: 3000 });
-        this.selectedClients = [];
+        this.client = { ...this.client }   
+        this.idToDel  = id
     }
 
     confirmDelete() {
         this.deleteClientDialog = false;
         this.clients = this.clients.filter(val => val.id !== this.client.id);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Deleted', life: 3000 });
-        this.client = {};
+         this.clientService.deleteClient(this.idToDel).subscribe((data) => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Deleted', life: 3000 });
+            this.ngOnInit();   
+        }, error => {
+          console.log(error);
+          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+          
+          });
     }
+
+    deleteSelectedClient() {
+        this.deleteClientsDialog = true;
+    }
+
+    confirmDeleteSelected() {
+        this.deleteClientsDialog = false;
+        this.clients = this.clients.filter(val => !this.selectedClients.includes(val));
+        this.clientService.deleteAllClients().subscribe((data) => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Clients Deleted', life: 3000 });
+            this.ngOnInit();   
+        }, error => {
+          console.log(error);
+          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+          
+          });
+       
+        }
 
     hideDialog() {
         this.clientDialog = false;
@@ -97,52 +133,25 @@ export class ClientComponent implements OnInit {
     }
 
     saveClient() {
-        this.submitted = true;
-
-        if (this.client.username?.trim()) {
-            if (this.client.id) {
-                const client: Client = {
-                    'username':this.client.username ,
-                    'email':this.client.email ,
-                    'adresse':this.client.adresse ,    
-                    'telephone':this.client.telephone 
-                }
-                // @ts-ignore
-               // this.clients[this.findIndexById(this.client.id)] = this.client;
-                this.clientService.updateClient(this.client.id,client).subscribe( (data) =>{
-                    console.log(data);
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Updated', life: 3000 });
-                    this.ngOnInit();   
-                  }, error => {
-                    console.log(error);
-                    this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-                    } );
-                
-            } else {
-                const client: Client = {
-                'username':this.client.username ,
-                'email':this.client.email ,
-                'adresse':this.client.adresse ,    
-                'telephone':this.client.telephone 
-            }
-                this.clientService.createClient(client).subscribe( data =>{
-                    console.log(data);
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
-                    this.clientDialog = false;
-                    this.ngOnInit();   
-                    }, error => {
-                        console.log(error);
-                        this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-                        this.clientDialog = false;
-                        } );
-                // @ts-ignore
-              
-            }
-
-            this.clients = [...this.clients];
+        const client: Client = {
+            'username': this.client.username,
+            'email' :this.client.email ,
+            'password': this.client.password,
+            'adresse' : this.client.adresse,
+            'telephone': this.client.telephone
+            };
+       
+        this.clientService.createClient(client).subscribe( data =>{
+        console.log(data);
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
+        this.clientDialog = false;
+        this.ngOnInit();   
+        }, error => {
+            console.log(error);
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
             this.clientDialog = false;
-            this.client = {};
-        }
+            } );
+        
     }
 
     findIndexById(id: string): number {

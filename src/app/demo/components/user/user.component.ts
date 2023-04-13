@@ -47,21 +47,11 @@ export class UserComponent implements OnInit {
     cols: any[] = [];
     idToDel:number=NaN;
     idToUpdate:number=NaN;
-
-    /*userUpdated: User={
-        username: this.user.username,
-        email:this.user.email,
-        password:this.user.password,
-        roles: this.user.roles
-    }*/
-    userUp: User = {
-        username: '',
-        email:'',
-        password: '',
-        roles: []
-      }
-      searchText: any;
+    id!: number;
+    useeer: User = new User();
+    
     rowsPerPageOptions = [5, 10, 20];
+    
 
 
     constructor(private userService: UserService, private messageService: MessageService,
@@ -94,23 +84,24 @@ export class UserComponent implements OnInit {
         
     getUser(id: number){
         this.userService.getUser(this.user.id!).subscribe(data=>{
-            this.users =data;
+            this.user =data;
             console.log(data)
         },error=>{
             console.log(error);
         });
 
     }
+
     openNew() {
         this.user = new User();
         this.submitted = false;
         this.userDialog = true;
     }
 
-    editUser(data: User) {
+    editUser(id: number, data: User) {
         this.user = data;
         this.userDialog = true; 
-        //this.idToUpdate = id;
+        this.idToUpdate = id;
         
         const user: User=  {
             'username' : data.username,
@@ -119,7 +110,7 @@ export class UserComponent implements OnInit {
             'roles' : data.roles// Set<Role> -- table mtaa role
           }
            console.log(data)
-            this.userService.updateUser(user).subscribe( (data) =>{
+            this.userService.updateUser(this.idToUpdate,user).subscribe( (data) =>{
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
                 this.ngOnInit();   
               }, error => {
@@ -148,16 +139,14 @@ export class UserComponent implements OnInit {
     }
     
 
-    deleteSelectedUsers(id: number) {
+    deleteSelectedUsers() {
         this.deleteUsersDialog = true;
-        this.idToDel  = id
-  
     }
 
     confirmDeleteSelected() {
         this.deleteUsersDialog = false;
         this.users = this.users.filter(val => !this.selectedUsers.includes(val));
-        this.userService.deleteUser(this.idToDel).subscribe((data) => {
+        this.userService.deleteAllUsers().subscribe((data) => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
             this.ngOnInit();   
         }, error => {
@@ -180,6 +169,7 @@ export class UserComponent implements OnInit {
             'password': this.user.password,
             'roles' : this.user.roles// Set<Role> -- table mtaa role
             };
+       
         this.userService.createUser(user).subscribe( data =>{
         console.log(data);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
@@ -190,9 +180,10 @@ export class UserComponent implements OnInit {
             this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
             this.userDialog = false;
             } );
-        }
         
-           
+    }
+        
+
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }

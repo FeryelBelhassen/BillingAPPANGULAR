@@ -17,27 +17,29 @@ export class ProductService {
     }
 
 
-    public getProducts(): Observable<any>{
-      console.log('heloooo')
-      return this.http.get<Product[]>(`${API_URL}/products`);
-    }
+  public getProducts(): Observable<any>{
+    console.log('heloooo')
+    return this.http.get<Product[]>(`${API_URL}/products`);
+  }
 
     
-    public createProduct(product: Product): Observable<any> {
-      return this.http.post(`${API_URL}/addproduct`, product);
-    }
+  public createProduct(product: Product): Observable<any> {
+    return this.http.post(`${API_URL}/addproduct`, product);
+  }
+
+  public updateProduct(id: number, product: Product): Observable<any> {
+    return this.http.put(`${API_URL}/updateproduct/${id}`, product);
+  }
   
-    public deleteProduct(id: number) {
-      return this.http.delete(`${API_URL}/deleteproduct/${id}`);
-    }
+  public deleteProduct(id: number) {
+    return this.http.delete(`${API_URL}/deleteproduct/${id}`);
+  }
   
     
     public getProduct(id: number): Observable<any> {  
       return this.http.get(`${API_URL}/products/${id}`);  
     }  
   
-    public updateProduct(id: any, product: Product): Observable<any> {
-      return this.http.put(`${API_URL}/updateproduct/${id}`, product);
-    }     
+     
     
 }

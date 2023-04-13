@@ -30,6 +30,10 @@ export class ProductComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
+    idToDel:number=NaN;
+
+    idToUpdate:number=NaN;
+
     constructor(private productService: ProductService, private messageService: MessageService) { }
 
     ngOnInit() {
@@ -71,15 +75,47 @@ export class ProductComponent implements OnInit {
         this.deleteProductsDialog = true;
     }
 
-    editProduct(product: Product) {
-        this.product = { ...product };
-        this.productDialog = true;
+    editProduct(id: number, data: Product) {
+        this.product = data;
+        this.productDialog = true; 
+        this.idToUpdate = id;
+        
+        const product: Product=  {
+            'code' : data.code,
+            'designation' :data.designation ,
+            'quantity': data.quantity,
+            'supplier' : data.supplier,
+            'inventoryStatus': data.inventoryStatus
+          }
+           console.log(data)
+            this.productService.updateProduct(this.idToUpdate,product).subscribe( (data) =>{
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+                this.ngOnInit();   
+              }, error => {
+                console.log(error);
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                } );
+     }
+
+     deleteProduct(id: number) {
+        this.deleteProductDialog = true;
+        this.product = { ...this.product }   
+        this.idToDel  = id
     }
 
-    deleteProduct(product: Product) {
-        this.deleteProductDialog = true;
-        this.product = { ...product };
-    }
+    confirmDelete() {
+        this.deleteProductDialog = false;
+        this.products = this.products.filter(val => val.id !== this.product.id);
+         this.productService.deleteProduct(this.idToDel).subscribe((data) => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+            this.ngOnInit();   
+        }, error => {
+          console.log(error);
+          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+          
+          });
+     }
+
 
     confirmDeleteSelected() {
         this.deleteProductsDialog = false;
@@ -88,12 +124,7 @@ export class ProductComponent implements OnInit {
         this.selectedProducts = [];
     }
 
-    confirmDelete() {
-        this.deleteProductDialog = false;
-        this.products = this.products.filter(val => val.id !== this.product.id);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-        this.product = {};
-    }
+   
 
     hideDialog() {
         this.productDialog = false;
