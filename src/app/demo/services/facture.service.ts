@@ -5,7 +5,7 @@ import { FactoryTarget } from '@angular/compiler';
 import { Facture } from '../domain/facture';
 
 
-const API_URL = 'http://localhost:8080/api/factures';
+const API_URL = 'http://localhost:8080/api';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,9 +16,13 @@ export class FactureService {
 
   constructor(private http: HttpClient) { }
 
-  getAllFactures() {
-    return this.http.get<Facture[]>(`${API_URL}`);
-          
+  public getAllFactures(): Observable<any>{
+    console.log('heloooo')
+    return this.http.get<Facture[]>(`${API_URL}/factures`);
+  }
+
+  public createFacture(facture: Facture): Observable<any> {
+    return this.http.post(`${API_URL}/addfacture`, facture);
   }
 
   public updateFacture(facture: Facture) {
@@ -28,8 +32,5 @@ export class FactureService {
   public deleteFacture(facture: { id: string; }) {
           return this.http.delete<Facture>("http://localhost:8081/api/deletefacture" + "/"+ facture.id);
         }
-  public createFacture(facture: {id: string}) {
-          return this.http.post<Facture>("http://localhost:8081/api/createfacture", facture);
-        }
-
+  
 }

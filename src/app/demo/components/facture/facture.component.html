@@ -33,7 +33,8 @@
                         </th>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="numero">Numero Facture <p-sortIcon field="numero"></p-sortIcon></th>
-                        <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th>
+                        <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th> 
+                        <th pSortableColumn="product">Product<p-sortIcon field="product"></p-sortIcon></th>
                         <th pSortableColumn="datefacture">Date Facture <p-sortIcon field="datefacture"></p-sortIcon></th>
                         <th pSortableColumn="montantttc">Montant TTC <p-sortIcon field="monatntttc"></p-sortIcon></th>
                         <th pSortableColumn="montantht">Montant HT <p-sortIcon field="monatntht"></p-sortIcon></th>
@@ -54,6 +55,9 @@
                         </td>
                         <td style="width:14%; min-width:10rem;">                           
                             {{facture.client}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">                           
+                            {{facture.product}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                           
@@ -85,22 +89,48 @@
                     <label for="numerofacture">Numero Facture</label>
                     <input type="text" pInputText id="numerofacture" [(ngModel)]="facture.numerofacture" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !facture.numerofacture}"/>
                 </div>
-
+                
                 <div class="field">
-                    <label for="client">Cliennt</label>
-                    <p-dropdown [(ngModel)]="facture.client" inputId="id" optionValue="name" [options]="clients" placeholder="Select">
-                        <ng-template pTemplate="selectedItem">
-                            <span *ngFor="let client of clients">{{facture.client}}</span>
-                        </ng-template>
-                        <ng-template let-option pTemplate="item">
-                            <span [class]="'product-badge status-' + option.id">{{option.username}}</span>
-                        </ng-template>
-                    </p-dropdown>
+                    <label for="clients">Client</label> 
+                    <button pButton pRipple icon="pi pi-plus" class="p-button-success mr-2" (click)="ajouterClient()"></button>
+                       
+                    <ng-select [(ngModel)]="facture.client">
+                        <option *ngFor="let client of factures">{{facture.client}}</option>
+                    </ng-select>
+                    
                 </div>
+                
+               
+                <div class="field">
+                <label for="product">Product</label>  <button pButton pRipple icon="pi pi-plus" class="p-button-success mr-2" (click)="ajouterClient()"></button>
+                       
+                <select *ngFor="let product of products">
+                   <option>{{ product.code }}: {{ product.designation }}</option> 
+                </select>
+                  </div>
+                <p-select matSelect name="country" formControlName="unitgeo">
+                    <option *ngFor="let product of products" [ngValue]="product">{{product.code}}</option>
+                </p-select>
+            
+                <ng-template let-product pTemplate="item">
+                       
+                            <div class="flex-1">
+                                <h5 >{{ product.code }}</h5>
+                               
+                                <span >{{ product.designation }}</span>
+                            </div>
+                        
+                    </ng-template>
+                
+                
+                
+                
+
                 <div class="field">
                 <label for="datefacture">Date Facture</label>
                 <input type="date" pInputText id="datefacture" [(ngModel)]="facture.datefacture" >
                 </div>
+               
                 <div class="field">
                      <label for="monatntttc">Montant TTC</label>
                     <p-inputNumber id="monatntttc" [(ngModel)]="facture.montanttc" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
@@ -114,6 +144,40 @@
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
                 <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveFacture()"></button>
+            </ng-template>
+        </p-dialog>
+        <p-dialog [(visible)]="clientDialog" [style]="{width: '450px'}" header="Client Details" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" pInputText id="name" 
+                    [(ngModel)]="client.username" required autofocus
+                     [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.username}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.username"> Username is required.</small>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" pInputText [(ngModel)]="client.email" required />
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" pInputText [(ngModel)]="client.password" required />
+                </div>
+                <div class="field">
+                    <label for="adresse">Adresse</label>
+                    <input type="text" id="adresse" pInputText [(ngModel)]="client.adresse" required />
+                </div>
+                <div class="field">
+                    <label for="telephone">Telephone</label>
+                    <input type="text" id="telephone" pInputText [(ngModel)]="client.telephone" required />
+                </div>
+                
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveClient()"></button>
             </ng-template>
         </p-dialog>
         <p-dialog [(visible)]="deleteFactureDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">

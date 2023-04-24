@@ -29,6 +29,7 @@ export class UserComponent implements OnInit {
     user!: User ;
 
     half_cast: any =  [];
+    MODE: string = 'CREATE';
   
 
     roles: Role[] = [
@@ -81,7 +82,6 @@ export class UserComponent implements OnInit {
             
         } 
     
-        
     getUser(id: number){
         this.userService.getUser(this.user.id!).subscribe(data=>{
             this.user =data;
@@ -95,30 +95,17 @@ export class UserComponent implements OnInit {
     openNew() {
         this.user = new User();
         this.submitted = false;
+        this.MODE = 'CREATE';
         this.userDialog = true;
     }
 
-    editUser(id: number, data: User) {
-        this.user = data;
+    editUser(id:number, data: User) {
+        this.user=data;
         this.userDialog = true; 
         this.idToUpdate = id;
-        
-        const user: User=  {
-            'username' : data.username,
-            'email' :data.email ,
-            'password': data.password,
-            'roles' : data.roles// Set<Role> -- table mtaa role
-          }
-           console.log(data)
-            this.userService.updateUser(this.idToUpdate,user).subscribe( (data) =>{
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
-                this.ngOnInit();   
-              }, error => {
-                console.log(error);
-                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-                } );
+        this.MODE = 'APPEND'      
      }
-        
+
     deleteUser(id: number) {
         this.deleteUserDialog = true;
         this.user = { ...this.user }   
@@ -128,6 +115,7 @@ export class UserComponent implements OnInit {
     confirmDelete() {
         this.deleteUserDialog = false;
         this.users = this.users.filter(val => val.id !== this.user.id);
+      
          this.userService.deleteUser(this.idToDel).subscribe((data) => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
             this.ngOnInit();   
@@ -135,27 +123,10 @@ export class UserComponent implements OnInit {
           console.log(error);
           this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
           
-          });
-    }
-    
-
-    deleteSelectedUsers() {
-        this.deleteUsersDialog = true;
+        });
     }
 
-    confirmDeleteSelected() {
-        this.deleteUsersDialog = false;
-        this.users = this.users.filter(val => !this.selectedUsers.includes(val));
-        this.userService.deleteAllUsers().subscribe((data) => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
-            this.ngOnInit();   
-        }, error => {
-          console.log(error);
-          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-          
-          });
        
-        }
 
     hideDialog() {
         this.userDialog = false;
@@ -163,23 +134,44 @@ export class UserComponent implements OnInit {
     }
 
     saveUser() {
-        const user: User = {
+        
+       if (this.MODE === 'CREATE'){
+        const toAdd: User = {
             'username': this.user.username,
             'email' :this.user.email ,
             'password': this.user.password,
             'roles' : this.user.roles// Set<Role> -- table mtaa role
             };
-       
-        this.userService.createUser(user).subscribe( data =>{
-        console.log(data);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
-        this.userDialog = false;
-        this.ngOnInit();   
-        }, error => {
+        this.userService.createUser(toAdd).subscribe( data =>{
+            console.log(data);
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
+            this.userDialog = false;
+            this.ngOnInit();   
+            }, error => {
+                console.log(error);
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                this.userDialog = false;
+                } );
+            
+
+
+    } else if( this.MODE === 'APPEND') {
+        this.idToUpdate=this.id ;
+        const toEdit: User=  {
+            'username' : this.user.username,
+            'email' :this.user.email ,
+            'password': this.user.password,
+            'roles' : this.user.roles// Set<Role> -- table mtaa role
+          }
+        
+        this.userService.updateUser(this.idToUpdate,toEdit).subscribe( (data) =>{
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+            this.ngOnInit();   
+          }, error => {
             console.log(error);
             this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-            this.userDialog = false;
             } );
+    }
         
     }
         

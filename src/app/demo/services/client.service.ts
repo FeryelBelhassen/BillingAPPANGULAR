@@ -35,7 +35,7 @@ export class ClientService {
   }
   
     
-  public getClient(id: number): Observable<any> {  
+  public getClient(id: number): Observable<Client> {  
     return this.http.get(`${API_URL}/clients/${id}`);  
   }  
   

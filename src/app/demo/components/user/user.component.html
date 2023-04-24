@@ -6,7 +6,7 @@
                 <ng-template pTemplate="left">
                     <div class="my-2">
                         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedUsers()" [disabled]="!selectedUsers || !selectedUsers.length"></button>
+                       
                     </div>
                 </ng-template>
 
@@ -67,7 +67,7 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="userDialog" [style]="{width: '450px', height: '600px'}" header="User Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="userDialog" [style]="{width: '600px', height: '600px'}" header="User Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 
                 <div class="field">
@@ -117,7 +117,7 @@
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUserDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+
             </ng-template>
         </p-dialog>
     </div>
