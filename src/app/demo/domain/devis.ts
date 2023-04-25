@@ -1,5 +1,5 @@
-export interface Devis {
-    id?:string;
+export class Devis {
+    id?:number;
     numerodevis?: string;
     datedevis?: Date;
     quantity?: number;

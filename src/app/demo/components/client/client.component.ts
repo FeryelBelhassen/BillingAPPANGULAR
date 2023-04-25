@@ -18,7 +18,7 @@ export class ClientComponent implements OnInit {
 
     deleteClientsDialog: boolean = false;
 
-    clients:Array<Client> = [];;
+    clients:Array<Client> = [];
 
     client: Client = {};
 

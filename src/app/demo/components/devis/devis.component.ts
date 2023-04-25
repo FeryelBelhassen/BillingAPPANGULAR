@@ -18,8 +18,9 @@ export class DevisComponent implements OnInit {
     deleteDevissDialog: boolean = false;
 
     deviss: Devis[] = [];
-
+   
     devis: Devis = {};
+
 
     selectedDevis: Devis[] = [];
 
@@ -27,16 +28,20 @@ export class DevisComponent implements OnInit {
 
     cols: any[] = [];
 
-    statuses: any[] = [];
-
     rowsPerPageOptions = [5, 10, 20];
+
+    MODE: string = 'CREATE';
+
+    idToDel:number=NaN;
+
+    idToUpdate:number=NaN;
+
+    id!: number;
 
     constructor(private devisService: DevisService, private messageService: MessageService) { }
 
     ngOnInit() {
-        ///this.productService.getProducts().then(data => this.products = data);
-        
-
+       
         this.cols = [
             { field: 'numerodevis', header: 'NumeroDevis' },
             { field: 'datedevis', header: 'DateDevis' },
@@ -45,16 +50,10 @@ export class DevisComponent implements OnInit {
           
         ];
 
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];
-
-    this.getDevis();
+    this.getallDevis();
     }
 
-    private getDevis(){
+    private getallDevis(){
         this.devisService.getAllDevis()
         .subscribe((data)=>{
             console.log("hello !"+data)
@@ -63,29 +62,53 @@ export class DevisComponent implements OnInit {
             
         }
 
+    getDevis(id: number){
+        this.devisService.getDevis(this.devis.id!).subscribe(data=>{
+        this.deviss =data;
+        console.log(data)
+        },error=>{
+            console.log(error);
+    });
+    
+        }
+    
     openNew() {
-        this.devis = {};
+        this.devis = new Devis ();
         this.submitted = false;
+        this.MODE = 'CREATE';
         this.devisDialog = true;
+     }
+    
+    editDevis(id:number, data: Devis) {
+        this.devis=data;
+        this.devisDialog = true; 
+        this.idToUpdate = id;
+        this.MODE = 'APPEND'      
     }
-
-    deleteSelectedDevis() {
+    
+    deleteDevis(id: number) {
         this.deleteDevisDialog = true;
-    }
-
-    editDevis(devis: Devis) {
-        this.devis = { ...devis };
-        this.devisDialog = true;
-    }
-
-    deleteDevis(devis: Devis) {
-        this.deleteDevisDialog = true;
-        this.devis = { ...devis };
+        this.devis = { ...this.devis }   
+        this.idToDel  = id
     }
 
     printDevis(){
         window.print()
-      }
+    }
+
+    confirmDelete() {
+        this.deleteDevisDialog = false;
+        this.deviss = this.deviss.filter(val => val.id !== this.devis.id);
+      
+         this.devisService.deleteDevis(this.idToDel).subscribe((data) => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Devis Deleted', life: 3000 });
+            this.ngOnInit();   
+        }, error => {
+          console.log(error);
+          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+          
+        });
+    }
 
     confirmDeleteSelected() {
         this.deleteDevisDialog = false;
@@ -94,12 +117,6 @@ export class DevisComponent implements OnInit {
         this.selectedDevis = [];
     }
 
-    confirmDelete() {
-        this.deleteDevisDialog = false;
-        this.deviss = this.deviss.filter(val => val.id !== this.devis.id);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Devis Deleted', life: 3000 });
-        this.devis = {};
-    }
 
     hideDialog() {
         this.devisDialog = false;
@@ -107,45 +124,29 @@ export class DevisComponent implements OnInit {
     }
 
     saveDevis() {
-        this.submitted = true;
-
-        if (this.devis.numerodevis?.trim()) {
-            if (this.devis.id) {
-                // @ts-ignore
-                //this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
-                this.deviss[this.findIndexById(this.devis.id)] = this.devis;
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-            } else {
-                //this.devis.id ;
-                this.devis.numerodevis ;
-                this.devis.datedevis ;
-                this.devis.quantity ;
-                this.devis.price ;
-                
-                 
-                // @ts-ignore
-                this.deviss.push(this.devis);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Devis Created', life: 3000 });
-            }
-
-            this.deviss = [...this.deviss];
-            this.devisDialog = false;
-            this.devis = {};
-        }
+        
+        if (this.MODE === 'CREATE'){
+         const toAdd: Devis = {
+             'numerodevis': this.devis.numerodevis,
+             'datedevis' :this.devis.datedevis ,
+             'quantity': this.devis.quantity,
+             'price' : this.devis.price// Set<Role> -- table mtaa role
+             };
+         this.devisService.createDevis(toAdd).subscribe( data =>{
+             console.log(data);
+             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Devis Created', life: 3000 });
+             this.devisDialog = false;
+             this.ngOnInit();   
+             }, error => {
+                 console.log(error);
+                 this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                 this.devisDialog = false;
+                 } );
+             
+ 
+ 
+     }
     }
-
-    findIndexById(id: string): number {
-        let index = -1;
-        for (let i = 0; i < this.deviss.length; i++) {
-            if (this.deviss[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    }
-
    
 
     onGlobalFilter(table: Table, event: Event) {

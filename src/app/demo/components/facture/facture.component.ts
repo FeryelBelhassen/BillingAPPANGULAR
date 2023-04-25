@@ -33,6 +33,7 @@ export class FactureComponent implements OnInit {
     client!: Client ;
 
     product!: Product;
+    
     facturess:Array<Facture> = [];
 
     selectedFactures: Facture[] = [];
