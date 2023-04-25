@@ -6,13 +6,12 @@
                 <ng-template pTemplate="left">
                     <div class="my-2">
                         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedFactures()" [disabled]="!selectedFactures || !selectedFactures.length"></button>
+                       
                     </div>
                 </ng-template>
 
                 <ng-template pTemplate="right">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                    <button pButton pRipple label="Imprimer" icon="pi pi-upload" class="p-button-help" (click)="printFactureAvoir()"></button>
                 </ng-template>
             </p-toolbar>
 
@@ -28,9 +27,6 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 3rem">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="numero">Numero FactureAvoir <p-sortIcon field="numero"></p-sortIcon></th>
                         <th pSortableColumn="idclient">ClientID <p-sortIcon field="idclient"></p-sortIcon></th>
@@ -45,9 +41,6 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-factureavoir>
                     <tr scope="row">
-                        <td>
-                            <p-tableCheckbox [value]="factureavoir"></p-tableCheckbox>
-                        </td>
                         <td style="width:14%; min-width:10rem;">
                             {{factureavoir.idfactavoir}}
                         </td>

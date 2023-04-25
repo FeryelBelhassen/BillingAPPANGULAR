@@ -84,8 +84,7 @@ export class ProductComponent implements OnInit {
             'code' : data.code,
             'designation' :data.designation ,
             'quantity': data.quantity,
-            'supplier' : data.supplier,
-            'inventoryStatus': data.inventoryStatus
+            'supplier' : data.supplier
           }
            console.log(data)
             this.productService.updateProduct(this.idToUpdate,product).subscribe( (data) =>{
@@ -137,8 +136,7 @@ export class ProductComponent implements OnInit {
             'designation':this.product.designation ,
             'quantity':this.product.quantity ,
             'supplier': this.product.supplier ,
-            'price': this.product.price ,
-            'inventoryStatus': this.product.inventoryStatus
+            'price': this.product.price 
             };
         this.productService.createProduct(product).subscribe( data =>{
         console.log(data);

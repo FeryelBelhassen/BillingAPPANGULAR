@@ -19,7 +19,7 @@ import { DialogModule } from 'primeng/dialog';
 import { OrderListModule } from 'primeng/orderlist';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 @NgModule({
@@ -42,7 +42,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
         DialogModule,
         OrderListModule,
         AutoCompleteModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MultiSelectModule
     ],
     declarations: [FactureComponent]
 })

@@ -9,8 +9,9 @@
 
  
   <div class="flex flex-column align-items-center justify-content-right">
-      <div style="border-radius:56px; position: right; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-          <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+    <div class="container">
+      <div class="login-card"style="border-radius:56px; position: right; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+          <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px" >
               <div class="text-center mb-5">
                 <img
                 id="profile-img"
@@ -22,7 +23,7 @@
               </div>
 <body>
     
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" >
    
     <form
         *ngIf="!isLoggedIn"
@@ -88,12 +89,11 @@
 
         <div class="form-group">
         <div class="ui-grid-row">
-            <div class="ui-grid-col-2"></div>
-            <div class="ui-grid-col-6">
+            <div class="ui-grid-col">
               <button  [disabled]="isLoggedIn" pButton type="submit" label="Sign In" ></button>
-              
-            </div>
-            <div class="ui-grid-col-4"></div>
+              <button   pButton type="submit" label="Sign Up" routerLink="/auth/register" ></button>          
+            </div>           
+        </div>
         </div>
         <div class="form-group">
           
@@ -101,15 +101,14 @@
             Login failed: {{ errorMessage }}
           </div>
         </div>
-        </div>
-    
+        
     </form>
   
       <div class="alert alert-success" *ngIf="isLoggedIn" routerLink='pages/home'>
         Logged in as {{ roles }}. 
       </div>
-    </div>
- 
+    
+ </div>
    </body> 
     </div>
   </div>

@@ -24,9 +24,6 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 4rem">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="username" >Username <p-sortIcon field="username"></p-sortIcon></th>
                         <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
@@ -36,9 +33,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-user>
                     <tr scope="row"  >
-                        <td>
-                            <p-tableCheckbox [value]="user"></p-tableCheckbox>
-                        </td>
+                     
                         <td style="width:20%; min-width:10rem;">
                            
                             {{ user.id}}
@@ -67,28 +62,29 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="userDialog" [style]="{width: '600px', height: '600px'}" header="User Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="userDialog" [style]="{width: '500px', height: '700px'}" header="User Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 
                 <div class="field">
                     <label for="username">Username</label>
                     <input type="text" pInputText id="name" 
                     [(ngModel)]="user.username" required autofocus
-                     [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.username}" />
+                     [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.username}"
+                     placeholder="Your Name" />
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.username"> Username is required.</small>
                 </div>
                 <div class="field">
                     <label for="email">Email</label>
-                    <input type="email" id="email" pInputText [(ngModel)]="user.email" required />
+                    <input type="email" id="email" pInputText [(ngModel)]="user.email" required placeholder="Your Email"/>
                  </div>
                <div class="field">
                     <label for="password">Password</label>
-                    <input type="password" id="password" pInputText [(ngModel)]="user.password" required />
+                    <input type="password" id="password" pInputText [(ngModel)]="user.password" required  placeholder="Your Password"/>
                 </div>
             
                 <div class="field">
                     <label for="roles">Role</label>
-                    <p-multiSelect [(ngModel)]="user.roles"  [options]="roles"  optionLabel="name" placeholder="Select">
+                    <p-multiSelect [(ngModel)]="user.roles"  [options]="roles"  optionLabel="name" placeholder="Select a Role">
                     </p-multiSelect>
                 </div>
             </ng-template>

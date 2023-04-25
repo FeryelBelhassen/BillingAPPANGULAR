@@ -20,7 +20,7 @@ h5{
   background-image: url('src/assets/layout/background.jpg');
   background-size: cover;
   background-position: right;
-  height: 800px;
+  height: 837px;
 }
   
   .card {
@@ -28,6 +28,7 @@ h5{
     padding: 20px 25px 30px;
     margin: 0 auto 25px;
     margin-top: 50px;
+    height: 00px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
@@ -36,7 +37,20 @@ h5{
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     
   }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .login-card {
+    width: 400px;
+    margin-left: -70%;;
+    margin-right:auto;
+  }
   
+
   .profile-img-card {
     width: 96px;
     height: 96px;
@@ -63,5 +77,17 @@ label,input {
   width: 75px;
   padding-right: 20px;
  }
-
+    
+    
+.grid{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -0.5rem;
+    margin-left: -0.5rem;
+    margin-top: -0.5rem;
+}
+ .col{
+  flex-grow: 1;
+  flex-basis: 0;
  
+ }

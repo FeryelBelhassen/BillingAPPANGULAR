@@ -20,6 +20,8 @@ export class FactureComponent implements OnInit {
 
     clientDialog: boolean = false;
 
+    productDialog: boolean =false;
+
     deleteFactureDialog: boolean = false;
 
     deleteFacturesDialog: boolean = false;
@@ -29,6 +31,8 @@ export class FactureComponent implements OnInit {
     facture!: Facture ;
 
     client!: Client ;
+
+    product!: Product;
     facturess:Array<Facture> = [];
 
     selectedFactures: Facture[] = [];
@@ -47,6 +51,9 @@ export class FactureComponent implements OnInit {
 
     MODE: string = 'CREATE';
     
+    idToUpdate:number=NaN;
+
+    idToDel:number=NaN;
 
     selectedProduct: any;
 
@@ -101,21 +108,47 @@ export class FactureComponent implements OnInit {
         this.MODE = 'CREATE';
         this.clientDialog = true;
      }
+    
 
-
-    deleteSelectedFactures() {
-        this.deleteFacturesDialog = true;
+    ajouterProduct(){
+        this.product={};
+        this.submitted = false;
+        this.MODE = 'CREATE';
+        this.productDialog = true;
     }
 
-    editFacture(facture: Facture) {
-        this.facture = { ...facture };
-        this.DialogFacture = true;
-    }
+    printFacture(){
+        window.print()
+      }
 
-    deleteFacture(facture: Facture) {
+
+      editFacture(id:number, data: Facture) {
+        this.facture=data;
+        this.DialogFacture = true; 
+        this.idToUpdate = id;
+        this.MODE = 'APPEND'      
+     }
+
+    deleteFacture(id: number) {
         this.deleteFactureDialog = true;
-        this.facture = { ...facture };
+        this.facture = { ...this.facture }   
+        this.idToDel  = id
     }
+
+    confirmDelete() {
+        this.deleteFactureDialog = false;
+        this.factures = this.factures.filter(val => val.id !== this.facture.id);
+      
+         this.factureService.deleteFacture(this.idToDel).subscribe((data) => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Deleted', life: 3000 });
+            this.ngOnInit();   
+        }, error => {
+          console.log(error);
+          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+          
+        });
+    }
+
 
     confirmDeleteSelected() {
         this.deleteFacturesDialog = false;
@@ -124,42 +157,47 @@ export class FactureComponent implements OnInit {
         this.selectedFactures = [];
     }
 
-    confirmDelete() {
-        this.deleteFactureDialog = false;
-       // this.factures = this.factures.filter(val => val.numerofacture !== this.facture.numerofacture);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Deleted', life: 3000 });
-       // this.facture = {};
-    }
+   
 
     hideDialog() {
         this.DialogFacture = false;
         this.submitted = false;
     }
 
+    hideDialogClient() {
+        this.clientDialog = false;
+        this.submitted = false;
+    }
+
+    hideDialogProduct() {
+        this.productDialog = false;
+        this.submitted = false;
+    }
+   
     saveFacture() {
-        if (this.MODE === 'CREATE'){
-            const toAdd: Facture = {
+        
+            if (this.MODE === 'CREATE'){
+             const toAdd: Facture = {
                 'numerofacture': this.facture.numerofacture,
                 'client' :this.facture.client ,
-                //'product': this.facture.product,
+                'product': this.facture.product,
                 'datefacture' : this.facture.datefacture,
                 'montanttc': this.facture.montanttc,
                 'montantht': this.facture.montantht
                 };
-            this.factureService.createFacture(toAdd).subscribe( data =>{
-                console.log(data);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Created', life: 3000 });
-                this.DialogFacture = false;
-                this.ngOnInit();   
-                }, error => {
-                    console.log(error);
-                    this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-                    this.DialogFacture = false;
-                    } );
-                
-        }
+             this.factureService.createFacture(toAdd).subscribe( data =>{
+                 console.log(data);
+                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Created', life: 3000 });
+                 this.DialogFacture = false;
+                 this.ngOnInit();   
+                 }, error => {
+                     console.log(error);
+                     this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                     this.DialogFacture = false;
+                     } );
 
     }
+}
 
     saveClient() {
         const client: Client = {
@@ -182,6 +220,28 @@ export class FactureComponent implements OnInit {
             } );
         
     }
+
+    saveProduct() {
+        const product: Product = {
+            'code':this.product.code,
+            'designation':this.product.designation ,
+            'quantity':this.product.quantity ,
+            'supplier': this.product.supplier ,
+            'price': this.product.price ,
+            'inventoryStatus': this.product.inventoryStatus
+            };
+        this.productService.createProduct(product).subscribe( data =>{
+        console.log(data);
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+        this.productDialog = false;
+        this.ngOnInit();   
+        }, error => {
+            console.log(error);
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+            this.productDialog = false;
+            } );
+    }
+
 
 
     onGlobalFilter(table: Table, event: Event) {

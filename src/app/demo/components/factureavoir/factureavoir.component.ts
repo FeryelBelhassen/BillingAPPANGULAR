@@ -65,10 +65,12 @@ export class FactureAvoirComponent implements OnInit {
         this.submitted = false;
         this.DialogFacture = true;
     }
+    
 
-    deleteSelectedFactures() {
-        this.deleteFacturesDialog = true;
-    }
+    printFactureAvoir(){
+        window.print()
+      }
+   
 
     editFactureAvoir(factureavoir: FactureAvoir) {
         this.factureAvoir = { ...factureavoir };

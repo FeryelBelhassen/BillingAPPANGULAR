@@ -9,3 +9,24 @@
   .add-bill-btn i {
     margin-right: 5px;
   }
+
+  .container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+  
+  .client {
+    grid-column: 1 / span 1;
+  }
+
+  .c {
+    grid-column: 1 /span 1;
+  }
+
+  .product {
+    grid-column: 1 / span 1;
+  }
+  
+  button {
+    grid-column: 3/ span 1;
+  }

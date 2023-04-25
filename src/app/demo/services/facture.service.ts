@@ -25,12 +25,17 @@ export class FactureService {
     return this.http.post(`${API_URL}/addfacture`, facture);
   }
 
-  public updateFacture(facture: Facture) {
-        return this.http.put<Facture>("http://localhost:8081/api/updatefacture" + "/"+ facture.id,facture);
-        }  
+  public deleteFacture(id: number) {
+    return this.http.delete(`${API_URL}/deletefacture/${id}`);
+  }
   
-  public deleteFacture(facture: { id: string; }) {
-          return this.http.delete<Facture>("http://localhost:8081/api/deletefacture" + "/"+ facture.id);
-        }
+  public getFacture(id: number): Observable<any> {  
+    return this.http.get(`${API_URL}/facture/${id}`);  
+  }  
+
+  public updateFacture(id: number, facture: Facture): Observable<any> {
+    return this.http.put(`${API_URL}/updatefacture/${id}`, facture);
+  }
+
   
 }

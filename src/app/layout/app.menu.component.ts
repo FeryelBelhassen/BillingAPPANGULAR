@@ -79,7 +79,7 @@ export class AppMenuComponent implements OnInit {
                     },
 
                     {
-                        label: 'Invoice ',
+                        label: 'Devis ',
                         icon: 'pi pi-fw pi-dollar',
                         routerLink: ['/devis']
                     },

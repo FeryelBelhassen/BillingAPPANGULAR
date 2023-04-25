@@ -6,7 +6,7 @@
                 <ng-template pTemplate="left">
                     <div class="my-2">
                         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+                       
                     </div>
                 </ng-template>
 
@@ -25,25 +25,18 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 3rem">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
                         <th pSortableColumn="designation">Designation <p-sortIcon field="designation"></p-sortIcon></th>
                         <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
                         <th pSortableColumn="supplier">Supplier <p-sortIcon field="supplier"></p-sortIcon></th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-                        <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-product>
                     <tr scope="row">
-                        <td>
-                            <p-tableCheckbox [value]="product"></p-tableCheckbox>
-                        </td>
                         <td style="width:14%; min-width:10rem;">
                             {{product.id }}
                         </td>
@@ -66,9 +59,7 @@
                          
                             {{product.price | currency:'USD'}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Status</span>
-                            <span [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span>
-                        </td>
+                    
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product.id, product)"></button>
@@ -102,17 +93,7 @@
                     <label for="price">Price</label>
                     <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
                 </div>
-                <div class="field">
-                    <label for="status">Inventory Status</label>
-                    <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" optionValue="label" [options]="statuses" placeholder="Select">
-                        <ng-template pTemplate="selectedItem">
-                            <span *ngIf="product && product.inventoryStatus" [class]="'product-badge status-' + product.inventoryStatus.toString().toLowerCase()">{{product.inventoryStatus}}</span>
-                        </ng-template>
-                        <ng-template let-option pTemplate="item">
-                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                        </ng-template>
-                    </p-dropdown>
-                </div>
+               
             </ng-template>
 
             <ng-template pTemplate="footer">

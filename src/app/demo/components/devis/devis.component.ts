@@ -83,6 +83,10 @@ export class DevisComponent implements OnInit {
         this.devis = { ...devis };
     }
 
+    printDevis(){
+        window.print()
+      }
+
     confirmDeleteSelected() {
         this.deleteDevisDialog = false;
         this.deviss = this.deviss.filter(val => !this.selectedDevis.includes(val));
