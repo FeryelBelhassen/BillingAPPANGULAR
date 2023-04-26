@@ -85,8 +85,6 @@ export class FactureComponent implements OnInit {
         });
     }
 
-    
-
     private getFactures(){
         this.factureService.getAllFactures()
         .subscribe((data)=>{
@@ -103,7 +101,7 @@ export class FactureComponent implements OnInit {
         this.DialogFacture = true;
      }
 
-     ajouterClient(){
+    ajouterClient(){
         this.client={};
         this.submitted = false;
         this.MODE = 'CREATE';
@@ -123,14 +121,14 @@ export class FactureComponent implements OnInit {
       }
 
 
-      editFacture(id:number, data: Facture) {
+    editFacture(id:number, data: Facture) {
         this.facture=data;
         this.DialogFacture = true; 
         this.idToUpdate = id;
         this.MODE = 'APPEND'      
      }
 
-    deleteFacture(id: number) {
+     deleteFacture(id: number) {
         this.deleteFactureDialog = true;
         this.facture = { ...this.facture }   
         this.idToDel  = id
@@ -150,15 +148,6 @@ export class FactureComponent implements OnInit {
         });
     }
 
-
-    confirmDeleteSelected() {
-        this.deleteFacturesDialog = false;
-        this.factures = this.factures.filter(val => !this.selectedFactures.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Factures Deleted', life: 3000 });
-        this.selectedFactures = [];
-    }
-
-   
 
     hideDialog() {
         this.DialogFacture = false;
@@ -229,7 +218,6 @@ export class FactureComponent implements OnInit {
             'quantity':this.product.quantity ,
             'supplier': this.product.supplier ,
             'price': this.product.price ,
-            'inventoryStatus': this.product.inventoryStatus
             };
         this.productService.createProduct(product).subscribe( data =>{
         console.log(data);

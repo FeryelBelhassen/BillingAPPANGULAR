@@ -7,6 +7,6 @@ export class Client {
     password?: string;
     adresse?: string;
     telephone?: string;
-    //factures?: Facture[];
+    factures?: Facture[];
     
 }

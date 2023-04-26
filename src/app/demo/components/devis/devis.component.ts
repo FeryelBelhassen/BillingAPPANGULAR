@@ -110,12 +110,6 @@ export class DevisComponent implements OnInit {
         });
     }
 
-    confirmDeleteSelected() {
-        this.deleteDevisDialog = false;
-        this.deviss = this.deviss.filter(val => !this.selectedDevis.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Devis Deleted', life: 3000 });
-        this.selectedDevis = [];
-    }
 
 
     hideDialog() {

@@ -108,7 +108,7 @@
         <p-dialog [(visible)]="deleteClientDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="client">Are you sure you want to delete <b> {{client.username}}</b>?</span>
+                <span *ngIf="client">Are you sure you want to delete this client <p> {{client.username}}</p>?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteClientDialog = false"></button>
@@ -116,16 +116,7 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteClientsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Are you sure you want to delete selected clients?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteClientDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
-            </ng-template>
-        </p-dialog>
+       
     </div>
 </div>
 

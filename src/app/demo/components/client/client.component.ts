@@ -5,6 +5,7 @@ import { Table } from 'primeng/table';
 import { ClientService } from '../../services/client.service';
 import { Client } from '../../domain/client';
 import { Observable } from 'rxjs';
+import { Facture } from '../../domain/facture';
 
 @Component({
     templateUrl: './client.component.html',
@@ -36,6 +37,27 @@ export class ClientComponent implements OnInit {
 
     idToUpdate:number=NaN;
 
+    id!: number;
+
+    DialogFacture: boolean = false;
+
+    productDialog: boolean =false;
+
+    deleteFactureDialog: boolean = false;
+
+    deleteFacturesDialog: boolean = false;
+
+    factures: Facture[] = [];
+
+    facture!: Facture ;
+
+    product!: Product;
+    
+    facturess:Array<Facture> = [];
+
+    MODE: string = 'CREATE';
+
+
     constructor(private clientService: ClientService, private messageService: MessageService) { }
 
     ngOnInit() {   
@@ -61,12 +83,25 @@ export class ClientComponent implements OnInit {
     openNew() {
         this.client = {};
         this.submitted = false;
+        this.MODE = 'CREATE';
         this.clientDialog = true;
     }
 
-    deleteSelectedClients() {
-        this.deleteClientsDialog = true;
-    }
+    ajouterFacture() {
+        this.facture={};
+        this.submitted = false;
+        this.MODE = 'CREATE';
+        this.DialogFacture = true;
+     }
+
+    editUser(id:number, data: Client) {
+        this.client=data;
+        this.clientDialog = true; 
+        this.idToUpdate = id;
+        this.MODE = 'APPEND'      
+     }
+
+    
 
     editClient(id: number, data: Client) {
         this.client = data;
@@ -90,7 +125,7 @@ export class ClientComponent implements OnInit {
                 } );
      }
 
-    deleteClient(id: number) {
+     deleteClient(id: number) {
         this.deleteClientDialog = true;
         this.client = { ...this.client }   
         this.idToDel  = id
@@ -99,6 +134,7 @@ export class ClientComponent implements OnInit {
     confirmDelete() {
         this.deleteClientDialog = false;
         this.clients = this.clients.filter(val => val.id !== this.client.id);
+      
          this.clientService.deleteClient(this.idToDel).subscribe((data) => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Deleted', life: 3000 });
             this.ngOnInit();   
@@ -106,26 +142,9 @@ export class ClientComponent implements OnInit {
           console.log(error);
           this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
           
-          });
+        });
     }
 
-    deleteSelectedClient() {
-        this.deleteClientsDialog = true;
-    }
-
-    confirmDeleteSelected() {
-        this.deleteClientsDialog = false;
-        this.clients = this.clients.filter(val => !this.selectedClients.includes(val));
-        this.clientService.deleteAllClients().subscribe((data) => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Clients Deleted', life: 3000 });
-            this.ngOnInit();   
-        }, error => {
-          console.log(error);
-          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-          
-          });
-       
-        }
 
     hideDialog() {
         this.clientDialog = false;
@@ -133,24 +152,45 @@ export class ClientComponent implements OnInit {
     }
 
     saveClient() {
-        const client: Client = {
-            'username': this.client.username,
-            'email' :this.client.email ,
-            'password': this.client.password,
-            'adresse' : this.client.adresse,
-            'telephone': this.client.telephone
-            };
-       
-        this.clientService.createClient(client).subscribe( data =>{
-        console.log(data);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
-        this.clientDialog = false;
-        this.ngOnInit();   
-        }, error => {
-            console.log(error);
-            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-            this.clientDialog = false;
-            } );
+        if (this.MODE === 'CREATE'){
+            const toAdd: Client = {
+                'username': this.client.username,
+                'email' :this.client.email ,
+                'password': this.client.password,
+                'adresse' : this.client.adresse,
+                'telephone': this.client.telephone
+                };
+            this.clientService.createClient(toAdd).subscribe( data =>{
+                console.log(data);
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
+                this.clientDialog = false;
+                this.ngOnInit();   
+                }, error => {
+                    console.log(error);
+                    this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                    this.clientDialog = false;
+                    } );
+                
+    
+    
+        } else if( this.MODE === 'APPEND') {
+            this.idToUpdate=this.id ;
+            const toEdit: Client=  {
+                'username': this.client.username,
+                'email' :this.client.email ,
+                'password': this.client.password,
+                'adresse' : this.client.adresse,
+                'telephone': this.client.telephone
+              }
+            
+            this.clientService.updateClient(this.idToUpdate,toEdit).subscribe( (data) =>{
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Updated', life: 3000 });
+                this.ngOnInit();   
+              }, error => {
+                console.log(error);
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                } );
+        }
         
     }
 
