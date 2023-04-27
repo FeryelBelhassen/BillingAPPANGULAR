@@ -53,7 +53,7 @@
                        
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user.id,user)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteUser(user.id)"></button>
                             </div>
                         </td>
@@ -62,7 +62,7 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="userDialog" [style]="{width: '500px', height: '700px'}" header="User Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="userDialog" [style]="{width: '700px', height: '700px'}" header="User Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 
                 <div class="field">

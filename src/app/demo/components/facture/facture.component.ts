@@ -46,10 +46,11 @@ export class FactureComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    products: Product[] | any;
+    products!: Product[];
    
     clients: Client[] | any;
 
+   
     MODE: string = 'CREATE';
     
     idToUpdate:number=NaN;
@@ -85,11 +86,19 @@ export class FactureComponent implements OnInit {
         });
     }
 
+    productList: Product[] = [
+        { designation: 'Product 1', price: 10, quantity: 2 },
+        { designation: 'Product 2', price: 20, quantity: 1 },
+        { designation: 'Product 3', price: 30, quantity: 3 }
+      ];
+    
+
     private getFactures(){
         this.factureService.getAllFactures()
         .subscribe((data)=>{
             console.log("hello !"+data)
                 this.factures=data;
+               
             })
             
         }
@@ -175,6 +184,8 @@ export class FactureComponent implements OnInit {
                 'montanttc': this.facture.montanttc,
                 'montantht': this.facture.montantht
                 };
+                console.log(this.facture)
+
              this.factureService.createFacture(toAdd).subscribe( data =>{
                  console.log(data);
                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Created', life: 3000 });
@@ -197,7 +208,6 @@ export class FactureComponent implements OnInit {
             'adresse' : this.client.adresse,
             'telephone': this.client.telephone
             };
-       
         this.clientService.createClient(client).subscribe( data =>{
         console.log(data);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });

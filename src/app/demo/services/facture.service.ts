@@ -16,7 +16,7 @@ export class FactureService {
 
   constructor(private http: HttpClient) { }
 
-  public getAllFactures(): Observable<any>{
+  public getAllFactures(): Observable<Facture[]>{
     console.log('heloooo')
     return this.http.get<Facture[]>(`${API_URL}/factures`);
   }

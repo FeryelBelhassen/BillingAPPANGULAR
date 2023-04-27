@@ -38,7 +38,7 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-facture let-product let-client>
+                <ng-template pTemplate="body" let-facture >
                     <tr scope="row">
                         <td style="width:14%; min-width:10rem;">
                             {{facture.id}}
@@ -47,10 +47,11 @@
                             {{facture.numerofacture}}
                         </td>
                         <td style="width:14%; min-width:10rem;">                           
-                            {{facture.client}}
+                            {{facture.client.username!}}
+                           
                         </td>
                         <td style="width:14%; min-width:10rem;">                           
-                            {{facture.produc}}
+                            {{facture.product[0].designation}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                           
@@ -79,7 +80,7 @@
        
         <p-dialog [(visible)]="DialogFacture" [style]="{width: '450px'}" header="Facture Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                <div class="field">
+                <div class="field" >
                     <label for="numerofacture">Numero Facture</label>
                     <input type="text" pInputText id="numerofacture" [(ngModel)]="facture.numerofacture" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !facture.numerofacture}"/>
                 </div>
@@ -92,7 +93,7 @@
                         </div>
                     </div>
                 
-                    <p-dropdown formControlName="client" [options]="clients" optionLabel="username"></p-dropdown>
+                    <p-dropdown [options]="clients" optionLabel="username" [(ngModel)]="facture.client" ></p-dropdown>
                 
             </div>
                
@@ -104,7 +105,7 @@
                     </div>
                 </div>
                 
-                    <p-dropdown formControlName="product" [options]="products" optionLabel="designation"></p-dropdown>
+                    <p-dropdown  [options]="products" optionLabel="designation"  [(ngModel)]="facture.product"></p-dropdown>
                 
                 
               </div>       

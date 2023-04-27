@@ -99,10 +99,10 @@ export class UserComponent implements OnInit {
         this.userDialog = true;
     }
 
-    editUser(id:number, data: User) {
+    editUser(data: User) {
         this.user=data;
         this.userDialog = true; 
-        this.idToUpdate = id;
+        //this.idToUpdate = id;
         this.MODE = 'APPEND'      
      }
 
@@ -164,12 +164,14 @@ export class UserComponent implements OnInit {
             'roles' : this.user.roles// Set<Role> -- table mtaa role
           }
         
-        this.userService.updateUser(this.idToUpdate,toEdit).subscribe( (data) =>{
+        this.userService.updateUser(toEdit).subscribe( (data) =>{
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+            
             this.ngOnInit();   
           }, error => {
             console.log(error);
             this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+            this.userDialog = false;
             } );
     }
         
