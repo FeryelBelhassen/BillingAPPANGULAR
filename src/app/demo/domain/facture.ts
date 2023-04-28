@@ -5,11 +5,9 @@ export class Facture {
     id?:string;
     numerofacture?: string;
     client?: Client []  ;
-    product?: Product[] =[];
+    product?:  Array <Product> ;
     datefacture?: Date;
     montanttc?: number;
-    montantht?: number;
- 
-    
-
+    montantht?: number;   
 }
+

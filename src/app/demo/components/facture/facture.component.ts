@@ -46,9 +46,11 @@ export class FactureComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    products!: Product[];
+    //products!: Product[];
    
     clients: Client[] | any;
+
+    products: Product[] = [];
 
    
     MODE: string = 'CREATE';
@@ -86,11 +88,11 @@ export class FactureComponent implements OnInit {
         });
     }
 
-    productList: Product[] = [
-        { designation: 'Product 1', price: 10, quantity: 2 },
-        { designation: 'Product 2', price: 20, quantity: 1 },
-        { designation: 'Product 3', price: 30, quantity: 3 }
-      ];
+    productList: Product[] = [{
+        'code' : 0 , 'designation': '', 'quantity': 0 ,
+        'supplier': '' , 'price': 0 
+    }];
+    
     
 
     private getFactures(){
@@ -174,18 +176,19 @@ export class FactureComponent implements OnInit {
     }
    
     saveFacture() {
-        
+        const productList = Array (this.facture.product);
+        console.log(productList)
             if (this.MODE === 'CREATE'){
              const toAdd: Facture = {
                 'numerofacture': this.facture.numerofacture,
                 'client' :this.facture.client ,
-                'product': this.facture.product,
+                'product':this.facture.product,
                 'datefacture' : this.facture.datefacture,
                 'montanttc': this.facture.montanttc,
                 'montantht': this.facture.montantht
                 };
                 console.log(this.facture)
-
+        
              this.factureService.createFacture(toAdd).subscribe( data =>{
                  console.log(data);
                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Created', life: 3000 });
@@ -228,9 +231,10 @@ export class FactureComponent implements OnInit {
             'quantity':this.product.quantity ,
             'supplier': this.product.supplier ,
             'price': this.product.price ,
-            };
+        };
+        this.products.push(product);
         this.productService.createProduct(product).subscribe( data =>{
-        console.log(data);
+        console.log(this.products.push(product));
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
         this.productDialog = false;
         this.ngOnInit();   
