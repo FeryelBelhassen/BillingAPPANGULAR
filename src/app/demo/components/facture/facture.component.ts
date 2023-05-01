@@ -63,6 +63,12 @@ export class FactureComponent implements OnInit {
 
     formGroup!: FormGroup;
 
+    productList: Product []=[{
+        'code' : 0 , 'designation': '', 'quantity': 0 ,
+        'supplier': '' , 'price': 0 
+      }];
+
+
     constructor(private factureService: FactureService, private messageService: MessageService, 
         private clientService: ClientService , private productService: ProductService , private fb:FormBuilder) { }
 
@@ -88,10 +94,9 @@ export class FactureComponent implements OnInit {
         });
     }
 
-    productList: Product[] = [{
-        'code' : 0 , 'designation': '', 'quantity': 0 ,
-        'supplier': '' , 'price': 0 
-    }];
+    
+
+    //const productList: Product[] | undefined = new Product();
     
     
 
@@ -176,13 +181,13 @@ export class FactureComponent implements OnInit {
     }
    
     saveFacture() {
-        const productList = Array (this.facture.product);
-        console.log(productList)
+        /*const productList = Array (this.facture.product);
+        console.log(productList)*/
             if (this.MODE === 'CREATE'){
              const toAdd: Facture = {
                 'numerofacture': this.facture.numerofacture,
                 'client' :this.facture.client ,
-                'product':this.facture.product,
+                'product': this.products,
                 'datefacture' : this.facture.datefacture,
                 'montanttc': this.facture.montanttc,
                 'montantht': this.facture.montantht

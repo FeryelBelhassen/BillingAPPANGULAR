@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 //import auth service
 import { AuthService } from '../demo/services/auth.service';
+import { LoginComponent } from '../demo/components/auth/login/login.component';
 
 @Injectable({
 	providedIn:'root'
@@ -24,6 +25,25 @@ export class AuthGuard implements CanActivate {
             return false;
         }
     }
-	
-}
+
+  /*  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+        if (this.authService.isLoggedIn) {
+          const authorities = route.data.authorities as string[];
+          if (!authorities || authorities.length === 0) {
+            return true;
+          }
+          return this.authService.hasAuthority(authorities).pipe(
+            tap((hasAuthority) => {
+              if (!hasAuthority) {
+                this.dialog.open(LoginComponent);
+              }
+            })
+          );
+        } else {
+          this.router.navigate(['/login']);
+          return false;
+        }
+      }*/
+ }
+    
 

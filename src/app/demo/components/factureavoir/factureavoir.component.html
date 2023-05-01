@@ -11,14 +11,14 @@
                 </ng-template>
 
                 <ng-template pTemplate="right">
-                    <button pButton pRipple label="Imprimer" icon="pi pi-upload" class="p-button-help" (click)="printFactureAvoir()"></button>
+                    <button pButton pRipple label="Imprimer" icon="pi pi-upload" class="p-button-help" (click)="printFacture()"></button>
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="facturesAvoir" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedFactures" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="facturesavoir" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedFactures" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">List of FactureAvoir</h5>
+                        <h5 class="m-0">List of FacturesAvoir</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
@@ -28,41 +28,35 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
-                        <th pSortableColumn="numero">Numero FactureAvoir <p-sortIcon field="numero"></p-sortIcon></th>
-                        <th pSortableColumn="idclient">ClientID <p-sortIcon field="idclient"></p-sortIcon></th>
-                        <th pSortableColumn="datefacture">Date Facture <p-sortIcon field="datefacture"></p-sortIcon></th>
-                        <th pSortableColumn="designation">Designation <p-sortIcon field="designation"></p-sortIcon></th>
-                        <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
+                        <th pSortableColumn="numfactureavoir">Numero FactureAvoir <p-sortIcon field="numfactureavoir"></p-sortIcon></th>
+                        <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th> 
+                        <th pSortableColumn="product">Product<p-sortIcon field="product"></p-sortIcon></th>
+                        <th pSortableColumn="datefactureavoir">Date Facture <p-sortIcon field="datefactureavoir"></p-sortIcon></th>
                         <th pSortableColumn="montantttc">Montant TTC <p-sortIcon field="monatntttc"></p-sortIcon></th>
                         <th pSortableColumn="montantht">Montant HT <p-sortIcon field="monatntht"></p-sortIcon></th>
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-factureavoir>
+                <ng-template pTemplate="body" let-factureavoir >
                     <tr scope="row">
                         <td style="width:14%; min-width:10rem;">
-                            {{factureavoir.idfactavoir}}
+                            {{factureavoir.id}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             {{factureavoir.numfactureavoir}}
                         </td>
                         <td style="width:14%; min-width:10rem;">                           
-                            {{factureavoir.clientid}}
+                            {{factureavoir.client.username!}}
+                           
+                        </td>
+                        <td style="width:14%; min-width:10rem;">                           
+                            {{factureavoir.product[0].designation}}
+                           
                         </td>
                         <td style="width:14%; min-width:10rem;">
                           
                             {{factureavoir.datefacture}}
-                        </td>
-
-                        <td style="width:14%; min-width:10rem;">
-                          
-                            {{factureavoir.designation}}
-                        </td>
-
-                        <td style="width:14%; min-width:10rem;">
-                          
-                            {{factureavoir.quantity}}
                         </td>
                         <td style="width:14%; min-width:8rem;">
                            
@@ -75,41 +69,61 @@
                         </td>
                        
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFactureAvoir(factureAvoir)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteFactureAvoir(factureAvoir)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFactureAvoir(factureavoir.id,factureavoir)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteFactureAvoir(factureavoir.id)"></button>
                             </div>
                         
                     </tr>
                 </ng-template>
             </p-table>
         </div>
-        
-        <p-dialog [(visible)]="DialogFacture" [style]="{width: '450px'}" header="FactureAvoir Details" [modal]="true" class="p-fluid">
+        <!--Ajouter Facture--> 
+       
+        <p-dialog [(visible)]="DialogFacture" [style]="{width: '450px'}" header="Facture Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="numerofacture">Numero FactureAvoir</label>
-                    <input type="text" pInputText id="numerofacture" [(ngModel)]="factureAvoir.numfactureavoir" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !factureAvoir.numfactureavoir}"/>
+                <div class="field" >
+                    <label for="numfactureavoir">Numero FactureAvoir</label>
+                    <input type="text" pInputText id="numerofactureavoir" [(ngModel)]="factureavoir.numfactureavoir" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !factureavoir.numfactureavoir}"/>
                 </div>
+                  
+               <div class="field">
+                    <div>
+                        <div class="container">
+                            <span class="client">Client</span>
+                            <button pButton pRipple icon="pi pi-plus" (click)="ajouterClient()"></button>
+                        </div>
+                    </div>
+                
+                    <p-dropdown [options]="clients" optionLabel="username" [(ngModel)]="factureavoir.client" ></p-dropdown>
+                
+            </div>
+               
                 <div class="field">
-                    <label for="client">Client</label>
-                    <p-inputNumber id="client" [(ngModel)]="factureAvoir.clientid"></p-inputNumber>
+                <div>
+                    <div class="container">
+                        <span class="product">Product</span>
+                        <button pButton pRipple icon="pi pi-plus" (click)="ajouterProduct()"></button>
+                    </div>
                 </div>
+                
+                    <p-dropdown  [options]="products" optionLabel="designation"  [(ngModel)]="factureavoir.product"></p-dropdown>
+                
+                
+              </div>       
+              
+              
                 <div class="field">
                 <label for="datefacture">Date Facture</label>
-                <input type="date" pInputText id="datefacture" [(ngModel)]="factureAvoir.datefacture" >
+                <input type="date" pInputText id="datefacture" [(ngModel)]="factureavoir.datefacture" >
                 </div>
-
-                <div class="field">
-                    <label for="quantity">Quantity</label>
-                    <p-inputNumber id="quantity" [(ngModel)]="factureAvoir.quantity"></p-inputNumber>
-                </div>    
+               
                 <div class="field">
                      <label for="monatntttc">Montant TTC</label>
-                    <p-inputNumber id="monatntttc" [(ngModel)]="factureAvoir.montanttc" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                    <p-inputNumber id="monatntttc" [(ngModel)]="factureavoir.montanttc" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
                     </div>
                 <div class="field">
                     <label for="montantht">Montant HT</label>
-                    <p-inputNumber id="montantht" [(ngModel)]="factureAvoir.montantht" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                    <p-inputNumber id="montantht" [(ngModel)]="factureavoir.montantht" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
                 </div>
                
             </ng-template>
@@ -118,10 +132,77 @@
                 <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveFacture()"></button>
             </ng-template>
         </p-dialog>
+
+        <!--Ajouter Client--> 
+        <p-dialog [(visible)]="clientDialog" [style]="{width: '450px'}" header="Client Details" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" pInputText id="name" 
+                    [(ngModel)]="client.username" required autofocus
+                     [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.username}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.username"> Username is required.</small>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" pInputText [(ngModel)]="client.email" required />
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" pInputText [(ngModel)]="client.password" required />
+                </div>
+                <div class="field">
+                    <label for="adresse">Adresse</label>
+                    <input type="text" id="adresse" pInputText [(ngModel)]="client.adresse" required />
+                </div>
+                <div class="field">
+                    <label for="telephone">Telephone</label>
+                    <input type="text" id="telephone" pInputText [(ngModel)]="client.telephone" required />
+                </div>
+                
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialogClient()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveClient()"></button>
+            </ng-template>
+        </p-dialog>
+ <!--Ajouter Product--> 
+        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="code">Code</label>
+                    <input type="text" pInputText id="code" [(ngModel)]="product.code" />
+                </div>
+                <div class="field">
+                    <label for="designation">Designation</label>
+                    <input type="text" pInputText id="designation" [(ngModel)]="product.designation" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.designation}"/>
+                </div>
+                <div class="field">
+                    <label for="quantity">Quantity</label>
+                    <p-inputNumber id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
+                </div>
+                <div class="field">
+                <label for="supplier">Supplier</label>
+                <input type="text" pInputText id="supplier" [(ngModel)]="product.supplier" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.supplier}"/>
+                </div>
+                <div class="field">
+                    <label for="price">Price</label>
+                    <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialogProduct()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+            </ng-template>
+        </p-dialog>
+    
         <p-dialog [(visible)]="deleteFactureDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="factureAvoir">Are you sure you want to delete <b>{{factureAvoir.numfactureavoir}}</b>?</span>
+                <span *ngIf="factureavoir">Are you sure you want to delete {{factureavoir.numfactureavoir}}?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteFactureDialog = false"></button>
@@ -129,15 +210,6 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteFacturesDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Are you sure you want to delete selected factures?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteFacturesDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
-            </ng-template>
-        </p-dialog>
+      
     </div>
 </div>

@@ -16,20 +16,28 @@ export class FactureAvoirService {
 
   constructor(private http: HttpClient) { }
 
-  getAllFactureAvoir() {
-    return this.http.get<FactureAvoir[]>(`${API_URL} /factureavoir`);
-          
+  public getAllFactureAvoir(): Observable<FactureAvoir[]>{
+    console.log('heloooo')
+    return this.http.get<FactureAvoir[]>(`${API_URL}/facturesavoir`);
   }
 
-  public updateFactureAvoir(factureavoir: FactureAvoir) {
-        return this.http.put<FactureAvoir>("http://localhost:8081/api/updatefactureavoir" + "/"+ factureavoir.numfactureavoir,factureavoir);
-        }  
+  public createFactureAvoir(factureavoir: FactureAvoir): Observable<any> {
+    return this.http.post(`${API_URL}/addfactureavoir`, factureavoir);
+  }
+
+  public deleteFactureAvoir(id: number) {
+    return this.http.delete(`${API_URL}/deletefactureavoir/${id}`);
+  }
   
-  public deleteFacture(facture: { numfactureavoir: string; }) {
-          return this.http.delete<FactureAvoir>("http://localhost:8081/api/deletefactureavoir" + "/"+ facture.numfactureavoir);
-        }
-  public createFacture(facture: {numfactureavoir: string}) {
-          return this.http.post<FactureAvoir>("http://localhost:8081/api/deletefactureavoir", facture);
-        }
+  public getFactureavoir(id: number): Observable<any> {  
+    return this.http.get(`${API_URL}/factureavoir/${id}`);  
+  }  
+
+  public updateFactureAvoir(id: number, factureavoir: FactureAvoir): Observable<any> {
+    return this.http.put(`${API_URL}/updatefactureavoir/${id}`, factureavoir);
+  }
+
+
+ 
 
 }

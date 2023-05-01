@@ -1,10 +1,12 @@
+import { Client } from "./client";
+import { Product } from "./product";
+
 export interface FactureAvoir {
-    idfactavoir?:string;
-    numfactureavoir?: string;
-    clientid?: number;
+    id?:string;
+    numfactureavoir?: number;
+    client?: Client[];
     datefacture?: Date;
-    designation?: String;
-    quantity?: String;
+    product?: Product[];
     montanttc?: number;
     montantht?: number;
  

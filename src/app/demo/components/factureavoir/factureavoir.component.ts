@@ -5,6 +5,11 @@ import { Facture } from '../../domain/facture';
 import { FactureService } from '../../services/facture.service';
 import { FactureAvoir } from '../../domain/factureavoir';
 import { FactureAvoirService } from '../../services/factureavoir.service';
+import { Client } from '../../domain/client';
+import { ClientService } from '../../services/client.service';
+import { Product } from '../../domain/product';
+import { ProductService } from '../../services/product.service';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
     templateUrl: './factureavoir.component.html',
@@ -14,13 +19,23 @@ export class FactureAvoirComponent implements OnInit {
 
     DialogFacture: boolean = false;
 
+    clientDialog: boolean = false;
+
+    productDialog: boolean =false;
+
     deleteFactureDialog: boolean = false;
 
     deleteFacturesDialog: boolean = false;
 
-    facturesAvoir: FactureAvoir[] = [];
+    facturesavoir: FactureAvoir[] = [];
 
-    factureAvoir: FactureAvoir = {};
+    factureavoir!: FactureAvoir ;
+
+    client!: Client ;
+
+    product!: Product;
+    
+    facturessavoir:Array<FactureAvoir> = [];
 
     selectedFactures: FactureAvoir[] = [];
 
@@ -32,125 +47,210 @@ export class FactureAvoirComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private factureavoirService: FactureAvoirService, private messageService: MessageService) { }
+    //products!: Product[];
+   
+    clients: Client[] | any;
+
+    products: Product[] = [];
+
+   
+    MODE: string = 'CREATE';
+    
+    idToUpdate:number=NaN;
+
+    idToDel:number=NaN;
+
+    selectedProduct: any;
+
+
+    productList: Product []=[{
+        'code' : 0 , 'designation': '', 'quantity': 0 ,
+        'supplier': '' , 'price': 0 
+      }];
+
+
+    constructor(private factureavoirService: FactureAvoirService, private messageService: MessageService, 
+        private clientService: ClientService , private productService: ProductService , private fb:FormBuilder) { }
 
     ngOnInit() {
    
         this.getFacturesAvoir();
 
         this.cols = [
-            { field: 'numerofactureavoir', header: 'NumeroFactureavoir' },
-            { field: 'clientid', header: 'ClientID' },
+            { field: 'numfactureavoir', header: 'NumeroFactureAvoir' },
+            { field: 'client', header: 'Client' },
+            { field: 'product', header: 'Product' },
             { field: 'datefacture', header: 'DateFacture' },
-            { field: 'designation', header: 'Designation' },
-            { field: 'quantity', header: 'Quantity' },
             { field: 'montantht', header: 'MontantHT'  },
             { field: 'montantttc', header: 'MonatntTTC' },
         ];
 
-        
+        this.productService.getProducts().subscribe(data => {
+            this.products = data;
+        });
+
+        this.clientService.getAllClients().subscribe(data => {
+            this.clients = data;
+        });
     }
+
+    
+
+    //const productList: Product[] | undefined = new Product();
+    
+    
 
     private getFacturesAvoir(){
         this.factureavoirService.getAllFactureAvoir()
         .subscribe((data)=>{
             console.log("hello !"+data)
-                this.facturesAvoir=data;
+                this.facturesavoir=data;
+               
             })
             
         }
 
     openNew() {
-        this.factureAvoir = {};
+        this.factureavoir={};
         this.submitted = false;
+        this.MODE = 'CREATE';
         this.DialogFacture = true;
-    }
+     }
+
+    ajouterClient(){
+        this.client={};
+        this.submitted = false;
+        this.MODE = 'CREATE';
+        this.clientDialog = true;
+     }
     
 
-    printFactureAvoir(){
+    ajouterProduct(){
+        this.product={};
+        this.submitted = false;
+        this.MODE = 'CREATE';
+        this.productDialog = true;
+    }
+
+    printFacture(){
         window.print()
       }
-   
 
-    editFactureAvoir(factureavoir: FactureAvoir) {
-        this.factureAvoir = { ...factureavoir };
-        this.DialogFacture = true;
-    }
 
-    deleteFactureAvoir(factureavoir: FactureAvoir) {
+    editFactureAvoir(idfactavoir:number, data: FactureAvoir) {
+        this.factureavoir=data;
+        this.DialogFacture = true; 
+        this.idToUpdate = idfactavoir;
+        this.MODE = 'APPEND'      
+     }
+
+     deleteFactureAvoir(id: number) {
         this.deleteFactureDialog = true;
-        this.factureAvoir = { ...factureavoir };
-    }
-
-    confirmDeleteSelected() {
-        this.deleteFacturesDialog = false;
-        this.facturesAvoir = this.facturesAvoir.filter(val => !this.selectedFactures.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'FactureAvoir Deleted', life: 3000 });
-        this.selectedFactures = [];
+        this.factureavoir = { ...this.factureavoir }   
+        this.idToDel  = id
     }
 
     confirmDelete() {
         this.deleteFactureDialog = false;
-        this.facturesAvoir = this.facturesAvoir.filter(val => val.numfactureavoir !== this.factureAvoir.numfactureavoir);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Deleted', life: 3000 });
-        this.factureAvoir = {};
+        this.facturesavoir = this.facturesavoir.filter(val => val.id !== this.factureavoir.id);
+      
+         this.factureavoirService.deleteFactureAvoir(this.idToDel).subscribe((data) => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'FactureAvoir Deleted', life: 3000 });
+            this.ngOnInit();   
+        }, error => {
+          console.log(error);
+          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+          
+        });
     }
+
 
     hideDialog() {
         this.DialogFacture = false;
         this.submitted = false;
     }
 
+    hideDialogClient() {
+        this.clientDialog = false;
+        this.submitted = false;
+    }
+
+    hideDialogProduct() {
+        this.productDialog = false;
+        this.submitted = false;
+    }
+   
     saveFacture() {
-        this.submitted = true;
-       if (this.factureAvoir.clientid) {
-            if (this.factureAvoir.idfactavoir) {
-                // @ts-ignore
-                this.factures[this.findIndexById(this.facture.id)] = this.facture;
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Updated', life: 3000 });
-            } else {
-                this.factureAvoir.idfactavoir = this.createId();
-                this.factureAvoir.numfactureavoir;
-                this.factureAvoir.clientid ;
-                this.factureAvoir.datefacture ;
-                this.factureAvoir.designation ;
-                this.factureAvoir.quantity ;
-                this.factureAvoir.montanttc ;
-                this.factureAvoir.montantht ;
-                 
-                // @ts-ignore
-                this.facturesAvoir.push(this.factureAvoir);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'FactureAvoir Created', life: 3000 });
-            }
-            
-            this.facturesAvoir = [...this.facturesAvoir];
-            this.DialogFacture = false;
-            this.factureAvoir = {};
-        } 
+        /*const productList = Array (this.facture.product);
+        console.log(productList)*/
+            if (this.MODE === 'CREATE'){
+             const toAdd: FactureAvoir = {
+                'numfactureavoir': this.factureavoir.numfactureavoir,
+                'client' :this.factureavoir.client ,
+                'product': this.products,
+                'datefacture' : this.factureavoir.datefacture,
+                'montanttc': this.factureavoir.montanttc,
+                'montantht': this.factureavoir.montantht
+                };
+                console.log(this.factureavoir)
         
+             this.factureavoirService.createFactureAvoir(toAdd).subscribe( data =>{
+                 console.log(data);
+                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'FactureAvoir Created', life: 3000 });
+                 this.DialogFacture = false;
+                 this.ngOnInit();   
+                 }, error => {
+                     console.log(error);
+                     this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                     this.DialogFacture = false;
+                     } );
 
     }
+}
 
-    findIndexById(idfactavoir: string): number {
-        let index = -1;
-        for (let i = 0; i < this.facturesAvoir.length; i++) {
-            if (this.facturesAvoir[i].idfactavoir === idfactavoir) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
+    saveClient() {
+        const client: Client = {
+            'username': this.client.username,
+            'email' :this.client.email ,
+            'password': this.client.password,
+            'adresse' : this.client.adresse,
+            'telephone': this.client.telephone
+            };
+        this.clientService.createClient(client).subscribe( data =>{
+        console.log(data);
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
+        this.clientDialog = false;
+        this.ngOnInit();   
+        }, error => {
+            console.log(error);
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+            this.clientDialog = false;
+            } );
+        
     }
 
-    createId(): string {
-        let id = '';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
+    saveProduct() {
+        const product: Product = {
+            'code':this.product.code,
+            'designation':this.product.designation ,
+            'quantity':this.product.quantity ,
+            'supplier': this.product.supplier ,
+            'price': this.product.price ,
+        };
+        this.products.push(product);
+        this.productService.createProduct(product).subscribe( data =>{
+        console.log(this.products.push(product));
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+        this.productDialog = false;
+        this.ngOnInit();   
+        }, error => {
+            console.log(error);
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+            this.productDialog = false;
+            } );
     }
+
+
 
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
