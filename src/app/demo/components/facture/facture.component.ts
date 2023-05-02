@@ -8,6 +8,11 @@ import { ClientService } from '../../services/client.service';
 import { Product } from '../../domain/product';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
+import { CurrencyPipe } from '@angular/common';
+import * as FileSaver from 'file-saver';
+import { HttpClient } from '@angular/common/http';
+//import * as jsPDF from 'jspdf';
+import { jsPDF } from "jspdf";
 
 @Component({
     templateUrl: './facture.component.html',
@@ -51,7 +56,8 @@ export class FactureComponent implements OnInit {
     clients: Client[] | any;
 
     products: Product[] = [];
-
+    
+    productList: Product []=[];
    
     MODE: string = 'CREATE';
     
@@ -63,14 +69,12 @@ export class FactureComponent implements OnInit {
 
     formGroup!: FormGroup;
 
-    productList: Product []=[{
-        'code' : 0 , 'designation': '', 'quantity': 0 ,
-        'supplier': '' , 'price': 0 
-      }];
+    
 
 
     constructor(private factureService: FactureService, private messageService: MessageService, 
-        private clientService: ClientService , private productService: ProductService , private fb:FormBuilder) { }
+        private clientService: ClientService , private productService: ProductService , private fb:FormBuilder,
+        private http: HttpClient) { }
 
     ngOnInit() {
    
@@ -87,6 +91,7 @@ export class FactureComponent implements OnInit {
 
         this.productService.getProducts().subscribe(data => {
             this.products = data;
+            this.productList = data;
         });
 
         this.clientService.getAllClients().subscribe(data => {
@@ -94,11 +99,7 @@ export class FactureComponent implements OnInit {
         });
     }
 
-    
-
-    //const productList: Product[] | undefined = new Product();
-    
-    
+        
 
     private getFactures(){
         this.factureService.getAllFactures()
@@ -132,12 +133,27 @@ export class FactureComponent implements OnInit {
         this.productDialog = true;
     }
 
-    printFacture(){
+   /*printFacture(){
         window.print()
-      }
+      }*/
+    printFacture(id: number) {
+        this.http.get<Facture>(`/factures/${id}`).subscribe(facture => {
+            const doc = new jsPDF();
+            doc.text(`Facture #${facture.id}`, 10, 10);
+            doc.text(`Client: ${facture.client}`, 10, 20);
+            doc.text(`Product: ${facture.product}`, 10, 30);
+            doc.text(`Date: ${facture.datefacture}`, 10, 40);
+            doc.text(`Montanttc: ${facture.montanttc}`, 10, 50);
+            doc.text(`Montantht: ${facture.montantht}`, 10, 60);
+            doc.save(`facture-${facture.id}.pdf`);
+          });
+        }
+        
+      
+      
 
 
-    editFacture(id:number, data: Facture) {
+    editFacture(id:number, data:Facture) {
         this.facture=data;
         this.DialogFacture = true; 
         this.idToUpdate = id;
@@ -181,13 +197,15 @@ export class FactureComponent implements OnInit {
     }
    
     saveFacture() {
+        
         /*const productList = Array (this.facture.product);
         console.log(productList)*/
+        
             if (this.MODE === 'CREATE'){
              const toAdd: Facture = {
                 'numerofacture': this.facture.numerofacture,
                 'client' :this.facture.client ,
-                'product': this.products,
+                'product':this.productList,
                 'datefacture' : this.facture.datefacture,
                 'montanttc': this.facture.montanttc,
                 'montantht': this.facture.montantht
@@ -205,6 +223,26 @@ export class FactureComponent implements OnInit {
                      this.DialogFacture = false;
                      } );
 
+    }
+    else if( this.MODE === 'APPEND') {
+        const toEdit: Facture=  {
+            'numerofacture': this.facture.numerofacture,
+            'client' :this.facture.client ,
+            'product':this.productList,
+            'datefacture' : this.facture.datefacture,
+            'montanttc': this.facture.montanttc,
+            'montantht': this.facture.montantht
+          }
+        
+        this.factureService.updateFacture(this.idToUpdate, toEdit).subscribe( (data) =>{
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Updated', life: 3000 });
+            this.DialogFacture = false;
+            this.ngOnInit();   
+          }, error => {
+            console.log(error);
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+            this.DialogFacture = false;
+            } );
     }
 }
 

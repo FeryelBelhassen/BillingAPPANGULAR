@@ -29,10 +29,8 @@ export class ClientService {
   public deleteClient(id: number) {
     return this.http.delete(`${API_URL}/deleteclient/${id}`);
   }
+  
 
-  public deleteAllClients() {
-    return this.http.delete(`${API_URL}/deleteall`);
-  }
   
     
   public getClient(id: number): Observable<Client> {  

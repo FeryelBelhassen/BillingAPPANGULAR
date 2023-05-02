@@ -34,8 +34,8 @@ export class DevisService {
       return this.http.get(`${API_URL}/devis/${id}`);  
     }  
   
-    public updateDevis(id: number, devis: Devis): Observable<any> {
-      return this.http.put(`${API_URL}/updatedevis/${id}`, devis);
+    public updateDevis(id:number,devis: Devis): Observable<Devis> {
+      return this.http.put<Devis>(`${API_URL}/updatedevis/${id}`, devis);
     }
   
   

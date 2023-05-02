@@ -44,8 +44,8 @@ export class UserService {
     return this.http.get(`${API_URL}/users/${id}`);  
   }  
 
-  public updateUser(user: User): Observable<User> {
-    return this.http.put<User>(`${API_URL}/updateuser/${user.id}`, user);
+  public updateUser(id:number,user: User): Observable<User> {
+    return this.http.put<User>(`${API_URL}/updateuser/${id}`, user);
   }
   
   getPublicContent(): Observable<any> {

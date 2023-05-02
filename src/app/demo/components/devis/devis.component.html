@@ -15,7 +15,7 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="deviss" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedDevis" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="deviss" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['numerodevis','datedevis']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedDevis" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">List of Devis</h5>
@@ -57,7 +57,7 @@
                        
                         <td style="width:14%; min-width:8rem;">
                          
-                            {{devis.price | currency:'USD'}}
+                            {{devis.price | currency:'DT'}}
                         </td>
                        
                         <td>
@@ -78,7 +78,7 @@
 
                 <div class="field">
                     <label for="numerodevis">NumeroDevis</label>
-                    <input type="text" pInputText id="numerodevis" [(ngModel)]="devis.numerodevis">
+                    <p-inputNumber id="numerodevis" [(ngModel)]="devis.numerodevis"></p-inputNumber>
                 </div>
 
 
@@ -94,7 +94,7 @@
     
                 <div class="field">
                     <label for="price">Price</label>
-                    <p-inputNumber id="price" [(ngModel)]="devis.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                    <p-inputNumber id="price" [(ngModel)]="devis.price" mode="currency" currency="TND" ></p-inputNumber>
                 </div>
                 
             </ng-template>

@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { DevisService } from '../../services/devis.service';
 import { Devis } from '../../domain/devis';
+import { Client } from '../../domain/client';
 
 @Component({
     templateUrl: './devis.component.html',
@@ -79,21 +80,17 @@ export class DevisComponent implements OnInit {
         this.devisDialog = true;
      }
     
-    editDevis(id:number, data: Devis) {
+     editDevis(id:number, data: Devis) {
         this.devis=data;
         this.devisDialog = true; 
         this.idToUpdate = id;
         this.MODE = 'APPEND'      
-    }
-    
+     }
+
     deleteDevis(id: number) {
         this.deleteDevisDialog = true;
         this.devis = { ...this.devis }   
         this.idToDel  = id
-    }
-
-    printDevis(){
-        window.print()
     }
 
     confirmDelete() {
@@ -110,7 +107,9 @@ export class DevisComponent implements OnInit {
         });
     }
 
-
+    printDevis(){
+        window.print()
+    }
 
     hideDialog() {
         this.devisDialog = false;
@@ -124,7 +123,7 @@ export class DevisComponent implements OnInit {
              'numerodevis': this.devis.numerodevis,
              'datedevis' :this.devis.datedevis ,
              'quantity': this.devis.quantity,
-             'price' : this.devis.price// Set<Role> -- table mtaa role
+             'price' : this.devis.price
              };
          this.devisService.createDevis(toAdd).subscribe( data =>{
              console.log(data);
@@ -136,10 +135,26 @@ export class DevisComponent implements OnInit {
                  this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
                  this.devisDialog = false;
                  } );
-             
- 
- 
      }
+
+     else if( this.MODE === 'APPEND') {
+        const toEdit: Devis=  {
+            'numerodevis': this.devis.numerodevis,
+            'datedevis' :this.devis.datedevis ,
+            'quantity': this.devis.quantity,
+            'price' : this.devis.price
+          }
+        
+        this.devisService.updateDevis(this.idToUpdate, toEdit).subscribe( (data) =>{
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Devis Updated', life: 3000 });
+            this.devisDialog = false;
+            this.ngOnInit();   
+          }, error => {
+            console.log(error);
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+            this.devisDialog = false;
+            } );
+    }
     }
    
 

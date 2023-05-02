@@ -94,36 +94,13 @@ export class ClientComponent implements OnInit {
         this.DialogFacture = true;
      }
 
-    editUser(id:number, data: Client) {
+    editClient(id:number, data: Client) {
         this.client=data;
         this.clientDialog = true; 
         this.idToUpdate = id;
         this.MODE = 'APPEND'      
      }
 
-    
-
-    editClient(id: number, data: Client) {
-        this.client = data;
-        this.clientDialog = true; 
-        this.idToUpdate = id;
-        
-        const client: Client=  {
-            'username' : data.username,
-            'email' :data.email ,
-            'password': data.password,
-            'adresse' : data.adresse,
-            'telephone': data.telephone
-          }
-           console.log(data)
-            this.clientService.updateClient(this.idToUpdate,client).subscribe( (data) =>{
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Updated', life: 3000 });
-                this.ngOnInit();   
-              }, error => {
-                console.log(error);
-                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-                } );
-     }
 
      deleteClient(id: number) {
         this.deleteClientDialog = true;
@@ -174,7 +151,7 @@ export class ClientComponent implements OnInit {
     
     
         } else if( this.MODE === 'APPEND') {
-            this.idToUpdate=this.id ;
+           
             const toEdit: Client=  {
                 'username': this.client.username,
                 'email' :this.client.email ,
@@ -185,9 +162,11 @@ export class ClientComponent implements OnInit {
             
             this.clientService.updateClient(this.idToUpdate,toEdit).subscribe( (data) =>{
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Updated', life: 3000 });
+                this.clientDialog = false;
                 this.ngOnInit();   
               }, error => {
                 console.log(error);
+                this.clientDialog = false;
                 this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
                 } );
         }

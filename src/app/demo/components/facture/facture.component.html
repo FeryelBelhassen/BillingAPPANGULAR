@@ -11,11 +11,13 @@
                 </ng-template>
 
                 <ng-template pTemplate="right">
-                    <button pButton pRipple label="Imprimer" icon="pi pi-upload" class="p-button-help" (click)="printFacture()"></button>
+                    <button pButton pRipple label="Imprimer" icon="pi pi-upload" class="p-button-help" (click)="printFacture(facture.id!)"></button>
+                   
                 </ng-template>
+               
             </p-toolbar>
 
-            <p-table #dt [value]="factures" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedFactures" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="factures" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['numerofacture','client','product']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedFactures" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">List of Factures</h5>
@@ -27,6 +29,9 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="numero">Numero Facture <p-sortIcon field="numero"></p-sortIcon></th>
                         <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th> 
@@ -40,6 +45,9 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-facture >
                     <tr scope="row">
+                        <td>
+                            <p-tableCheckbox [value]="facture"></p-tableCheckbox>
+                        </td>
                         <td style="width:14%; min-width:10rem;">
                             {{facture.id}}
                         </td>
@@ -60,12 +68,12 @@
                         </td>
                         <td style="width:14%; min-width:8rem;">
                            
-                            {{facture.montanttc | currency:'USD'}}
+                            {{facture.montanttc | currency:'DT'}}
                         </td>
         
                         <td style="width:14%; min-width:8rem;">
                            
-                            {{facture.montantht | currency:'USD'}}
+                            {{facture.montantht | currency:'DT'}}
                         </td>
                        
                             <div class="flex">
@@ -119,11 +127,11 @@
                
                 <div class="field">
                      <label for="monatntttc">Montant TTC</label>
-                    <p-inputNumber id="monatntttc" [(ngModel)]="facture.montanttc" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                    <p-inputNumber id="monatntttc" [(ngModel)]="facture.montanttc" mode="currency" currency="TND"></p-inputNumber>
                     </div>
                 <div class="field">
                     <label for="montantht">Montant HT</label>
-                    <p-inputNumber id="montantht" [(ngModel)]="facture.montantht" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                    <p-inputNumber id="montantht" [(ngModel)]="facture.montantht" mode="currency" currency="TND"></p-inputNumber>
                 </div>
                
             </ng-template>

@@ -13,11 +13,13 @@ import { FormBuilder } from '@angular/forms';
 
 @Component({
     templateUrl: './factureavoir.component.html',
+    styleUrls: ['./factureavoir.component.css'],
+
     providers: [MessageService]
 })
 export class FactureAvoirComponent implements OnInit {
 
-    DialogFacture: boolean = false;
+    DialogFactureAvoir: boolean = false;
 
     clientDialog: boolean = false;
 
@@ -92,13 +94,7 @@ export class FactureAvoirComponent implements OnInit {
         this.clientService.getAllClients().subscribe(data => {
             this.clients = data;
         });
-    }
-
-    
-
-    //const productList: Product[] | undefined = new Product();
-    
-    
+    }    
 
     private getFacturesAvoir(){
         this.factureavoirService.getAllFactureAvoir()
@@ -114,7 +110,7 @@ export class FactureAvoirComponent implements OnInit {
         this.factureavoir={};
         this.submitted = false;
         this.MODE = 'CREATE';
-        this.DialogFacture = true;
+        this.DialogFactureAvoir = true;
      }
 
     ajouterClient(){
@@ -137,10 +133,10 @@ export class FactureAvoirComponent implements OnInit {
       }
 
 
-    editFactureAvoir(idfactavoir:number, data: FactureAvoir) {
+      editFactureAvoir(id:number, data: FactureAvoir) {
         this.factureavoir=data;
-        this.DialogFacture = true; 
-        this.idToUpdate = idfactavoir;
+        this.DialogFactureAvoir = true; 
+        this.idToUpdate = id;
         this.MODE = 'APPEND'      
      }
 
@@ -152,7 +148,7 @@ export class FactureAvoirComponent implements OnInit {
 
     confirmDelete() {
         this.deleteFactureDialog = false;
-        this.facturesavoir = this.facturesavoir.filter(val => val.id !== this.factureavoir.id);
+        this.facturessavoir = this.facturesavoir.filter(val => val.id !== this.factureavoir.id);
       
          this.factureavoirService.deleteFactureAvoir(this.idToDel).subscribe((data) => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'FactureAvoir Deleted', life: 3000 });
@@ -166,7 +162,7 @@ export class FactureAvoirComponent implements OnInit {
 
 
     hideDialog() {
-        this.DialogFacture = false;
+        this.DialogFactureAvoir = false;
         this.submitted = false;
     }
 
@@ -180,14 +176,16 @@ export class FactureAvoirComponent implements OnInit {
         this.submitted = false;
     }
    
-    saveFacture() {
+    saveFactureAvoir() {
+        
         /*const productList = Array (this.facture.product);
         console.log(productList)*/
+        
             if (this.MODE === 'CREATE'){
              const toAdd: FactureAvoir = {
                 'numfactureavoir': this.factureavoir.numfactureavoir,
                 'client' :this.factureavoir.client ,
-                'product': this.products,
+                'product':this.products,
                 'datefacture' : this.factureavoir.datefacture,
                 'montanttc': this.factureavoir.montanttc,
                 'montantht': this.factureavoir.montantht
@@ -197,14 +195,34 @@ export class FactureAvoirComponent implements OnInit {
              this.factureavoirService.createFactureAvoir(toAdd).subscribe( data =>{
                  console.log(data);
                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'FactureAvoir Created', life: 3000 });
-                 this.DialogFacture = false;
+                 this.DialogFactureAvoir = false;
                  this.ngOnInit();   
                  }, error => {
                      console.log(error);
                      this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-                     this.DialogFacture = false;
+                     this.DialogFactureAvoir = false;
                      } );
 
+    }
+    else if( this.MODE === 'APPEND') {
+        const toEdit: FactureAvoir=  {
+            'numfactureavoir': this.factureavoir.numfactureavoir,
+            'client' :this.factureavoir.client ,
+            'product':this.products,
+            'datefacture' : this.factureavoir.datefacture,
+            'montanttc': this.factureavoir.montanttc,
+            'montantht': this.factureavoir.montantht
+          }
+        
+        this.factureavoirService.updateFactureAvoir(this.idToUpdate, toEdit).subscribe( (data) =>{
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'FactureAvoir Updated', life: 3000 });
+            this.DialogFactureAvoir = false;
+            this.ngOnInit();   
+          }, error => {
+            console.log(error);
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+            this.DialogFactureAvoir = false;
+            } );
     }
 }
 

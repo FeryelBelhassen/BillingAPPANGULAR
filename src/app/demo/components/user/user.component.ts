@@ -29,6 +29,7 @@ export class UserComponent implements OnInit {
     user!: User ;
 
     half_cast: any =  [];
+    
     MODE: string = 'CREATE';
   
 
@@ -46,9 +47,13 @@ export class UserComponent implements OnInit {
     submitted: boolean = false;
 
     cols: any[] = [];
+
     idToDel:number=NaN;
+
     idToUpdate:number=NaN;
+
     id!: number;
+    
     useeer: User = new User();
     
     rowsPerPageOptions = [5, 10, 20];
@@ -99,10 +104,10 @@ export class UserComponent implements OnInit {
         this.userDialog = true;
     }
 
-    editUser(data: User) {
+    editUser(id:number, data: User) {
         this.user=data;
         this.userDialog = true; 
-        //this.idToUpdate = id;
+        this.idToUpdate = id;
         this.MODE = 'APPEND'      
      }
 
@@ -156,7 +161,6 @@ export class UserComponent implements OnInit {
 
 
     } else if( this.MODE === 'APPEND') {
-        this.idToUpdate=this.id ;
         const toEdit: User=  {
             'username' : this.user.username,
             'email' :this.user.email ,
@@ -164,9 +168,9 @@ export class UserComponent implements OnInit {
             'roles' : this.user.roles// Set<Role> -- table mtaa role
           }
         
-        this.userService.updateUser(toEdit).subscribe( (data) =>{
+        this.userService.updateUser(this.idToUpdate, toEdit).subscribe( (data) =>{
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
-            
+            this.userDialog = false;
             this.ngOnInit();   
           }, error => {
             console.log(error);

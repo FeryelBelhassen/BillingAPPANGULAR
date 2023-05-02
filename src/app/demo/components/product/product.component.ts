@@ -33,6 +33,10 @@ export class ProductComponent implements OnInit {
     idToDel:number=NaN;
 
     idToUpdate:number=NaN;
+    
+    id!: number;
+        
+    MODE: string = 'CREATE';
 
     constructor(private productService: ProductService, private messageService: MessageService) { }
 
@@ -45,15 +49,10 @@ export class ProductComponent implements OnInit {
             { field: 'designation', header: 'Designation' },
             { field: 'quantity', header: 'Quantity' },
             { field: 'supplier', header: 'Supplier' },
-            { field: 'price', header: 'Price' },
-            { field: 'inventoryStatus', header: 'Status' }
+            { field: 'price', header: 'Price' }
+           
         ];
 
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];
     }
 
     private getProducts(){
@@ -71,32 +70,15 @@ export class ProductComponent implements OnInit {
         this.productDialog = true;
     }
 
-    deleteSelectedProducts() {
-        this.deleteProductsDialog = true;
-    }
 
-    editProduct(id: number, data: Product) {
-        this.product = data;
+    editProduct(id:number, data: Product) {
+        this.product=data;
         this.productDialog = true; 
         this.idToUpdate = id;
-        
-        const product: Product=  {
-            'code' : data.code,
-            'designation' :data.designation ,
-            'quantity': data.quantity,
-            'supplier' : data.supplier
-          }
-           console.log(data)
-            this.productService.updateProduct(this.idToUpdate,product).subscribe( (data) =>{
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-                this.ngOnInit();   
-              }, error => {
-                console.log(error);
-                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-                } );
+        this.MODE = 'APPEND'      
      }
 
-     deleteProduct(id: number) {
+    deleteProduct(id: number) {
         this.deleteProductDialog = true;
         this.product = { ...this.product }   
         this.idToDel  = id
@@ -105,6 +87,7 @@ export class ProductComponent implements OnInit {
     confirmDelete() {
         this.deleteProductDialog = false;
         this.products = this.products.filter(val => val.id !== this.product.id);
+      
          this.productService.deleteProduct(this.idToDel).subscribe((data) => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
             this.ngOnInit();   
@@ -112,15 +95,8 @@ export class ProductComponent implements OnInit {
           console.log(error);
           this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
           
-          });
-     }
+        });
 
-
-    confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-        this.selectedProducts = [];
     }
 
    
@@ -131,23 +107,47 @@ export class ProductComponent implements OnInit {
     }
    
     saveProduct() {
-        const product: Product = {
-            'code':this.product.code,
-            'designation':this.product.designation ,
-            'quantity':this.product.quantity ,
-            'supplier': this.product.supplier ,
-            'price': this.product.price 
-            };
-        this.productService.createProduct(product).subscribe( data =>{
-        console.log(data);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-        this.productDialog = false;
-        this.ngOnInit();   
-        }, error => {
-            console.log(error);
-            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-            this.productDialog = false;
-            } );
+        if (this.MODE === 'CREATE'){
+            const toAdd: Product = {
+                'code':this.product.code,
+                'designation':this.product.designation ,
+                'quantity':this.product.quantity ,
+                'supplier': this.product.supplier ,
+                'price': this.product.price 
+                };
+            this.productService.createProduct(toAdd).subscribe( data =>{
+                console.log(data);
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                this.productDialog = false;
+                this.ngOnInit();   
+                }, error => {
+                    console.log(error);
+                    this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                    this.productDialog = false;
+                    } );
+                
+    
+    
+        } else if( this.MODE === 'APPEND') {
+            const toEdit: Product=  {
+                'code':this.product.code,
+                'designation':this.product.designation ,
+                'quantity':this.product.quantity ,
+                'supplier': this.product.supplier ,
+                'price': this.product.price 
+              }
+            
+            this.productService.updateProduct(this.idToUpdate, toEdit).subscribe( (data) =>{
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+                this.productDialog = false;
+                this.ngOnInit();   
+              }, error => {
+                console.log(error);
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                this.productDialog = false;
+                } );
+        }
+    
     }
 
     
