@@ -57,7 +57,7 @@ export class FactureComponent implements OnInit {
 
     products: Product[] = [];
     
-    productList: Product []=[];
+  
    
     MODE: string = 'CREATE';
     
@@ -91,7 +91,7 @@ export class FactureComponent implements OnInit {
 
         this.productService.getProducts().subscribe(data => {
             this.products = data;
-            this.productList = data;
+           
         });
 
         this.clientService.getAllClients().subscribe(data => {
@@ -205,7 +205,7 @@ export class FactureComponent implements OnInit {
              const toAdd: Facture = {
                 'numerofacture': this.facture.numerofacture,
                 'client' :this.facture.client ,
-                'product':this.productList,
+                'product':this.products,
                 'datefacture' : this.facture.datefacture,
                 'montanttc': this.facture.montanttc,
                 'montantht': this.facture.montantht
@@ -228,7 +228,7 @@ export class FactureComponent implements OnInit {
         const toEdit: Facture=  {
             'numerofacture': this.facture.numerofacture,
             'client' :this.facture.client ,
-            'product':this.productList,
+            'product':this.products,
             'datefacture' : this.facture.datefacture,
             'montanttc': this.facture.montanttc,
             'montantht': this.facture.montantht
@@ -293,4 +293,5 @@ export class FactureComponent implements OnInit {
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
+    
 }

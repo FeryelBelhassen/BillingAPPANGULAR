@@ -91,3 +91,16 @@ label,input {
   flex-basis: 0;
  
  }
+
+ .button{
+  width: 230px;
+ }
+
+.password{
+  color: red;
+}
+
+
+.username{
+  color: red;
+}

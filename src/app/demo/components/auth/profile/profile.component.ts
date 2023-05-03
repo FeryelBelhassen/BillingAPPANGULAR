@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/demo/domain/user';
 import { StorageService } from 'src/app/demo/services/storage.service';
+import { UserService } from 'src/app/demo/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,12 +9,21 @@ import { StorageService } from 'src/app/demo/services/storage.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  currentUser: any;
+  user!:User;
 
-  constructor(private storageService: StorageService) { }
+  constructor(private storageService: StorageService, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.currentUser = this.storageService.getUser();
+     this.getUsers();
   }
+
+  private getUsers(){
+    this.userService.getAllUsers()
+    .subscribe((users)=>{
+            this.user=users;  
+            console.log("Array -> "+this.user)
+        })
+        
+    } 
 }
  

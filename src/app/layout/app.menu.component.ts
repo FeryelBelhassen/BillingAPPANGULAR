@@ -1,19 +1,39 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { User } from '../demo/domain/user';
+import { UserService } from '../demo/services/user.service';
 
+
+        
+   
 @Component({
     selector: 'app-menu',
     templateUrl: './app.menu.component.html'
 })
+
 export class AppMenuComponent implements OnInit {
-
+    items = [  { label: 'Item 1' },  { label: 'Item 2' },  { label: 'Item 3' }];
+    users:Array<User> = [];
     model: any[] = [];
-
-    constructor(public layoutService: LayoutService) { }
+    user! :User;
+   
+    constructor(public layoutService: LayoutService, public userService: UserService) { }
+  
+   
+    
 
     ngOnInit() {
+       
+        this.getUsers();
         this.model = [
+            {
+               // label: 'profile',
+               /* items: [
+                   
+                    {   routerLink: ['/profile'] }
+                ]*/
+            },
             {
                 label: 'home',
                 items: [
@@ -136,17 +156,19 @@ export class AppMenuComponent implements OnInit {
                     }
                 ]
             },*/
-            {
-                label: 'Get Started',
-                items: [
-                    {
-                        label: 'Documentation', icon: 'pi pi-fw pi-question', routerLink: ['/documentation']
-                    },
-                    {
-                        label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/feryelbelhassen'], target: '_blank'
-                    }
-                ]
-            }
+          
         ];
+        
     }
+
+    private getUsers(){
+        this.userService.getAllUsers()
+        .subscribe((users)=>{
+                this.user=users;  
+                console.log("Array -> "+this.user)
+            })
+            
+        } 
+
+
 }

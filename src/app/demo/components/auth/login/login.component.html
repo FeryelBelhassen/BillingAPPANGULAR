@@ -6,7 +6,7 @@
   </style>
 </head>
 <div class="login-main">
-
+     
  
   <div class="flex flex-column align-items-center justify-content-right">
     <div class="container">
@@ -80,8 +80,8 @@
   <div class="col-12 md:col-12">
    <div class="p-inputgroup">
           <div *ngIf="password.errors && f.submitted" class="invalid-feedback">
-            <div *ngIf="password.errors['required']">Password is required!</div>
-            <div *ngIf="password.errors['minlength']">Password must be at least 6 characters </div>  
+            <div class="password" *ngIf="password.errors['required']">Password is required!</div>
+            <div class="password" *ngIf="password.errors['minlength']">Password must be at least 6 characters </div>  
           </div>
   </div>
  </div>
@@ -90,8 +90,8 @@
         <div class="form-group">
         <div class="ui-grid-row">
             <div class="ui-grid-col">
-              <button  [disabled]="isLoggedIn" pButton type="submit" label="Sign In" ></button>
-              <button   pButton type="submit" label="Sign Up" routerLink="/auth/register" ></button>          
+              <button  class="button"[disabled]="isLoggedIn" pButton type="submit" label="Sign In" ></button>
+                 
             </div>           
         </div>
         </div>
@@ -107,7 +107,7 @@
       <div class="alert alert-success" *ngIf="isLoggedIn" routerLink='pages/home'>
         Logged in as {{ roles }}. 
       </div>
-    
+
  </div>
    </body> 
     </div>

@@ -30,17 +30,14 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { UserComponent } from './demo/components/user/user.component';
 import { UserModule } from './demo/components/user/user.module';
-
+import { DropdownModule } from 'primeng/dropdown';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { MenubarModule } from 'primeng/menubar';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotfoundComponent,
-
-    
-   
-    
-    
     
   ],
   imports: [
@@ -52,8 +49,10 @@ import { UserModule } from './demo/components/user/user.module';
     ButtonModule,
     TreeSelectModule,
     PagesModule,
-    UserModule
-    
+    UserModule,
+    DropdownModule,
+    ContextMenuModule,
+    MenubarModule
     
     
   ],

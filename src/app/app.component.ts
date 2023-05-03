@@ -9,6 +9,7 @@ import { FactureService } from './demo/services/facture.service';
 import { Subscription } from 'rxjs';
 import { TokenService } from './demo/services/token.service';
 import { Router } from '@angular/router';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 
 
 

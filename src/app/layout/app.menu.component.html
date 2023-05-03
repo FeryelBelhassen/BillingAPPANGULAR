@@ -1,7 +1,68 @@
+<style>
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.avatar {
+  vertical-align: middle;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+.cog-icon {
+  position: absolute;
+  bottom: -30px;
+  left: 80px;
+}
+/*.cog-icon i {
+  font-size: 20px;
+  color: #fff;
+  background-color:blue;
+  padding: 5px;
+  border-radius: 50%;
+}*/
+.ui-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 5px;
+}
+
+.ui-dropdown-panel {
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+.show {
+  display: block;
+}
+
+.menu li {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+
+
+</style>
 <ul class="layout-menu">
+    <div class="container">
+    
+    <img src="assets/layout/images/img_avatar2.png" alt="Avatar" class="avatar">
+    <div class="cog-icon" >
+            <span class="username"> Feryel Belhassen </span>
+        </div>
+  </div>
+    
     <ng-container *ngFor="let item of model; let i = index;">
         <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
         <li *ngIf="item.separator" class="menu-separator"></li>
     </ng-container>
+
     
 </ul>

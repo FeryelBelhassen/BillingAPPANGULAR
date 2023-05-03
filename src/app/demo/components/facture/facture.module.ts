@@ -20,6 +20,7 @@ import { OrderListModule } from 'primeng/orderlist';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
         OrderListModule,
         AutoCompleteModule,
         ReactiveFormsModule,
-        MultiSelectModule
+        MultiSelectModule,
+        OverlayPanelModule
     ],
     declarations: [FactureComponent]
 })
