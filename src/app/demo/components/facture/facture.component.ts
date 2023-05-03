@@ -35,6 +35,9 @@ export class FactureComponent implements OnInit {
 
     facture!: Facture ;
 
+   // facture: Facture = { product: [] };
+    //facture: any = { product: [] };
+
     client!: Client ;
 
     product!: Product;
@@ -50,8 +53,6 @@ export class FactureComponent implements OnInit {
     statuses: any[] = [];
 
     rowsPerPageOptions = [5, 10, 20];
-
-    //products!: Product[];
    
     clients: Client[] | any;
 
@@ -69,17 +70,18 @@ export class FactureComponent implements OnInit {
 
     formGroup!: FormGroup;
 
-    
+    facturee: any = { product: [] };
 
+    
 
     constructor(private factureService: FactureService, private messageService: MessageService, 
         private clientService: ClientService , private productService: ProductService , private fb:FormBuilder,
         private http: HttpClient) { }
 
     ngOnInit() {
-   
+    
         this.getFactures();
-
+       
         this.cols = [
             { field: 'numerofacture', header: 'NumeroFacture' },
             { field: 'client', header: 'Client' },
@@ -203,14 +205,17 @@ export class FactureComponent implements OnInit {
         
             if (this.MODE === 'CREATE'){
              const toAdd: Facture = {
+              
                 'numerofacture': this.facture.numerofacture,
                 'client' :this.facture.client ,
-                'product':this.products,
+                'product': Array(this.facture.product).filter(p => !!p) as Product[],
                 'datefacture' : this.facture.datefacture,
                 'montanttc': this.facture.montanttc,
                 'montantht': this.facture.montantht
                 };
                 console.log(this.facture)
+                console.log(this.facturee.product)
+                
         
              this.factureService.createFacture(toAdd).subscribe( data =>{
                  console.log(data);

@@ -61,7 +61,8 @@
                             {{facture.client.username!}}
                            
                         </td>
-                        <td style="width:14%; min-width:10rem;">                           
+                        <td style="width:14%; min-width:10rem;">
+                                              
                             <p-button (click)="op.toggle($event)" icon="pi pi-check" styleClass="p-button-rounded p-button-text"></p-button>
                            
                         </td>
@@ -89,8 +90,8 @@
             </p-table>
         </div>
         <p-overlayPanel #op [style]="{'width': '450px'}" [showCloseIcon]="true">
-            <ng-template pTemplate="content">
-                <p-table [value]!="facture.product" selectionMode="single" [(selection)]="selectedProduct"  [paginator]="true" [rows]="5" responsiveLayout="scroll">
+            <ng-template pTemplate="content" >
+                <p-table  [value]!="facture.product" selectionMode="single" [(selection)]="selectedProduct"  [paginator]="true" [rows]="5" responsiveLayout="scroll">
                     <ng-template pTemplate="header">
                         <tr>
                             <th pSortableColumn="name">Designation<p-sortIcon field="name"></p-sortIcon></th>
@@ -139,7 +140,7 @@
                     </div>
                 </div>
                 
-                    <p-dropdown  [options]="products" optionLabel="designation"  [(ngModel)]="facture.product"></p-dropdown>
+                    <p-multiSelect  [options]="products" optionLabel="designation"  [(ngModel)]="facture.product"></p-multiSelect>
                 
                 
               </div>       

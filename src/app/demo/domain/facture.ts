@@ -5,7 +5,7 @@ export class Facture {
     id?:number;
     numerofacture?: string;
     client?: Client []  ;
-    product?: Product[] = [];
+    product?: Product[];
     datefacture?: Date;
     montanttc?: number;
     montantht?: number;   
