@@ -13,9 +13,6 @@ const AUTH_API = 'http://localhost:8080/api/auth/';
 })
 export class AuthService {
 
-
-  
-  
   private userSubject: BehaviorSubject<Useer>;
   public user: Observable<Useer>;
   private refreshTokenTimeout: any;

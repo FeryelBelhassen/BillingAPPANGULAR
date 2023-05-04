@@ -33,10 +33,7 @@ export class FactureComponent implements OnInit {
 
     factures: Facture[] = [];
 
-    facture!: Facture ;
-
-   // facture: Facture = { product: [] };
-    //facture: any = { product: [] };
+    facture!: Facture | any ;
 
     client!: Client ;
 
@@ -58,8 +55,6 @@ export class FactureComponent implements OnInit {
 
     products: Product[] = [];
     
-  
-   
     MODE: string = 'CREATE';
     
     idToUpdate:number=NaN;
@@ -68,16 +63,19 @@ export class FactureComponent implements OnInit {
 
     selectedProduct: any;
 
+    selectedProducts = []
+
     formGroup!: FormGroup;
 
-    facturee: any = { product: [] };
+   // selectedProducts: Product[] = [];
 
     
-
     constructor(private factureService: FactureService, private messageService: MessageService, 
         private clientService: ClientService , private productService: ProductService , private fb:FormBuilder,
         private http: HttpClient) { }
-
+    
+         
+    
     ngOnInit() {
     
         this.getFactures();
@@ -200,23 +198,18 @@ export class FactureComponent implements OnInit {
    
     saveFacture() {
         
-        /*const productList = Array (this.facture.product);
-        console.log(productList)*/
-        
             if (this.MODE === 'CREATE'){
              const toAdd: Facture = {
               
                 'numerofacture': this.facture.numerofacture,
                 'client' :this.facture.client ,
-                'product': Array(this.facture.product).filter(p => !!p) as Product[],
+                'product': this.facture.product as Product[],
                 'datefacture' : this.facture.datefacture,
                 'montanttc': this.facture.montanttc,
                 'montantht': this.facture.montantht
                 };
                 console.log(this.facture)
-                console.log(this.facturee.product)
-                
-        
+                        
              this.factureService.createFacture(toAdd).subscribe( data =>{
                  console.log(data);
                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Created', life: 3000 });
@@ -226,7 +219,7 @@ export class FactureComponent implements OnInit {
                      console.log(error);
                      this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
                      this.DialogFacture = false;
-                     } );
+                } );
 
     }
     else if( this.MODE === 'APPEND') {

@@ -27,6 +27,9 @@ import { User } from './demo/domain/user';
         
       ]   
     },
+
+    
+    
     
     { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
     { path: 'notfound', component: NotfoundComponent },

@@ -9,5 +9,6 @@ export class Facture {
     datefacture?: Date;
     montanttc?: number;
     montantht?: number;   
+    
 }
 
