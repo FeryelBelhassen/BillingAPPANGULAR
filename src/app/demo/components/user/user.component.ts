@@ -54,7 +54,6 @@ export class UserComponent implements OnInit {
 
     id!: number;
     
-    useeer: User = new User();
     
     rowsPerPageOptions = [5, 10, 20];
     
@@ -98,7 +97,7 @@ export class UserComponent implements OnInit {
     }
 
     openNew() {
-        this.user = new User();
+        this.user = new User(NaN, '', '', '', []);
         this.submitted = false;
         this.MODE = 'CREATE';
         this.userDialog = true;

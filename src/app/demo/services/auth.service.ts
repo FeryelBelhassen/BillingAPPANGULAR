@@ -4,6 +4,7 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { Useer } from '../domain/useer';
+import { User } from '../domain/user';
 
 const AUTH_API = 'http://localhost:8080/api/auth/';
 
@@ -16,12 +17,20 @@ export class AuthService {
   private userSubject: BehaviorSubject<Useer>;
   public user: Observable<Useer>;
   private refreshTokenTimeout: any;
+  currentUser: any;
+  private userRole: BehaviorSubject<User>;
+  private _userRole: Observable<User>;
 
   constructor(private router: Router, private http: HttpClient, public jwtHelper: JwtHelperService) {
     this.userSubject = new BehaviorSubject<Useer>(null!);
     this.user = this.userSubject?.asObservable();
+    this.userRole = new BehaviorSubject<User>(null!);
+    this._userRole = this.userRole?.asObservable();
    }
   
+   public get UserRole(): User{
+    return this.userRole.value;
+   }
    public set userValue(user: Useer){
     if (user.username){
       this.userValue.username = user.username;
@@ -61,7 +70,8 @@ export class AuthService {
     .pipe( map( data => {
       this.userSubject.next(new Useer(username, data['accessToken'] ))
       this.userValue.refreshToken = data['refreshToken'];
-      this.startRefreshTokenTimer()      
+      this.startRefreshTokenTimer()
+      this.userRole.next(new User(data['id'],data['email'], data['username'],password,data['roles']) )      
     }))
   
 
@@ -110,7 +120,7 @@ export class AuthService {
     
 }
 
-// helper methods
+
 
 
 

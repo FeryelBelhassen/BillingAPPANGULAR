@@ -133,9 +133,10 @@ export class FactureComponent implements OnInit {
         this.productDialog = true;
     }
 
-   /*printFacture(){
+    print(){
         window.print()
-      }*/
+      }
+
     printFacture(id: number) {
         this.http.get<Facture>(`/factures/${id}`).subscribe(facture => {
             const doc = new jsPDF();
