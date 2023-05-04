@@ -99,7 +99,7 @@
   <div class="col-12 md:col-12">
    <div class="p-inputgroup">
     <span class="p-inputgroup-addon"><i class="pi pi-users"></i></span>   
-    <select formControlName="role" style="width: 300px;">
+    <select formControlName="role" label="Select a Role" style="width: 410px;">
       <option [ngValue]="null" disabled>Select Role</option>
       <option *ngFor="let role of roles" [ngValue]="role.id">{{role.name}}</option>
     </select>     
@@ -110,7 +110,7 @@
       
 <div class="form-group">
   <div class="ui-grid-row">
-        <button  pButton type="submit" label="Sign Up"></button> 
+        <button  pButton type="submit" class="button" label="Sign Up"></button> 
       </div>
   </div>
 
