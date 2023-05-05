@@ -32,28 +32,22 @@
        
         <button class="p-link layout-topbar-button" [routerLink]="'/users'" >
             <i class="pi pi-user"></i>
-            <span>Profile</span>
-        </button>
-        <button class="p-link layout-topbar-button"  id="button" (click)="toggleMenu()">
-            <i class="pi pi-cog"></i>
-            <span>Settings</span>
-        
-           
             
         </button>
        
-        <div [hidden]="!showMenu" >
-            <ul>
-                <li ><a href="#" ><i class="pi pi-fw pi-sliders-h ng-tns-c86-0"></i>
-                    <span class="ng-tns-c86-0">Account</span></a>
-                </li>
-               <li class="ng-tns-c86-0"><a href="#" class="ng-tns-c86-0"> <i class="pi pi-fw pi-sign-out ng-tns-c86-0"></i>
-                <span class="ng-tns-c86-0">Logout</span></a>
-            </li> 
-            </ul>    
-        </div>  
-        
-        
+
+
+        <p-overlayPanel #op>
+            <ng-template pTemplate="content">
+                <h5><a href="profile.component.html"></a> <i class="pi pi-fw pi-sliders-h ng-tns-c86-0" ></i>Account </h5>
+                <h5> <i class="pi pi-fw pi-sign-out ng-tns-c86-0"></i> Logout </h5>
+           
+            </ng-template>
+        </p-overlayPanel>
+        <button class="p-link layout-topbar-button"(click)="op.toggle($event)"  id="button" (click)="toggleMenu()">
+            <i class="pi pi-cog"></i>
+            <span>Settings</span>     
+        </button>    
     </div>
   
 </div>

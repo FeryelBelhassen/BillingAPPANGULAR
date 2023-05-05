@@ -20,6 +20,8 @@ import { Menu } from 'primeng/menu';
 
 
 export class AppMenuComponent implements OnInit {
+
+
     items = [{ label: 'Item 1' }, { label: 'Item 2' }, { label: 'Item 3' }];
     user!: User;
     private currentUser!: BehaviorSubject<User>;
@@ -31,10 +33,115 @@ export class AppMenuComponent implements OnInit {
         { id: 4, name: 'client' },
 
     ];
+    
+   
 
     users: Array<User> = [];
+    model: any[]=[];
 
-    modelAdmin :any []= [
+
+    constructor(public layoutService: LayoutService, public userService: UserService,
+       private authService: AuthService) {}
+   
+
+
+    ngOnInit() {
+        this.model = [
+           
+            {
+                label: 'home',
+                items: [
+
+                    {
+                      label: 'Dashboard',
+                      icon: 'pi pi-fw pi-home',
+                      routerLink: ['/pages/home'],
+                      visible: [this.authService.isAdmin() || this.authService.isAgent()]
+                    }
+                ]
+            },
+            
+                  
+            {
+                label: 'Pages',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [
+                   
+                  
+                    {
+                        label: 'Product',
+                        icon: 'pi pi-fw pi-box',
+                        routerLink: ['/product'],
+                        visible: [this.authService.isAdmin() || this.authService.isMagasinier() || this.authService.isClient()]
+                    },
+                    
+                    
+                    {
+                        label: 'Facture',
+                        icon: 'pi pi-fw pi-book',
+                        routerLink: ['/facture'],
+                        visible: [this.authService.isAdmin() || this.authService.isMagasinier()]
+                    }
+                    ,
+
+                    {
+                        label: 'FactureAvoir',
+                        icon: 'pi pi-fw pi-book',
+                        routerLink: ['/factureavoir'],
+                        visible: [this.authService.isAdmin() || this.authService.isMagasinier()]
+                    },
+
+                    {
+                        label: 'Devis ',
+                        icon: 'pi pi-fw pi-dollar',
+                        routerLink: ['/devis'],
+                        visible: [this.authService.isAdmin() || this.authService.isMagasinier()]
+                    },
+
+                    {
+                        label: 'Client',
+                        icon: 'pi pi-fw pi-user',
+                        routerLink: ['/client'],
+                        visible: [this.authService.isAdmin() || this.authService.isAgent()]
+                    },
+                   
+
+                    
+                ]
+            },
+        ]
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    modelAdmin = [
 
         {
             label: 'home',
@@ -42,6 +149,8 @@ export class AppMenuComponent implements OnInit {
                 { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/pages/home'] }
             ]
         },
+
+        
 
 
         {
@@ -87,7 +196,7 @@ export class AppMenuComponent implements OnInit {
   
     ]
 
-    modelMagasinier : any[]= [
+    modelMagasinier = [
 
         {
             label: 'home',
@@ -140,7 +249,7 @@ export class AppMenuComponent implements OnInit {
 
     ]
 
-    modelAgent : any[] = [
+    modelAgent = [
 
         {
             label: 'home',
@@ -159,7 +268,8 @@ export class AppMenuComponent implements OnInit {
                 {
                     label: 'Client',
                     icon: 'pi pi-fw pi-user',
-                    routerLink: ['/client']
+                    routerLink: ['/client'],
+                    visible: (this.authService.isAdmin() || this.authService.isAgent() || this.authService.isClient())
                 },
 
 
@@ -169,13 +279,15 @@ export class AppMenuComponent implements OnInit {
       
     ]
 
-    modelClient : any[] = [
+    modelClient = [
 
         {
             label: 'home',
             items: [
                 { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/pages/home'] }
+                
             ]
+           
         },
 
 
@@ -222,33 +334,38 @@ export class AppMenuComponent implements OnInit {
     ]
    
     models: any[] =[this.modelAdmin, this.modelClient, this.modelAgent, this.modelMagasinier];
-   
-   
+
 
     constructor(public layoutService: LayoutService, public userService: UserService,
         private authService: AuthService) {}
+       
 
-
+    
     ngOnInit() {
 
         console.log('models',this.models)
-        console.log('modelAdmin:', this.modelAdmin);
+       console.log('modelAdmin:', this.modelAdmin);
         
         var role_name =this.authService.UserRole.roles 
         console.log('Current user:', this.authService.UserRole.roles);
+        console.log(typeof this.authService.UserRole.roles[0]);
         console.log(role_name)
 
-        switch (role_name[0].name) {
-            case 'ADMIN':
+        switch (this.authService.UserRole.roles[0].name) {
+            //@ts-ignore
+            case 'admin':
               this.models = this.modelAdmin;
               break;
-            case 'AGENT':
+              //@ts-ignore
+            case 'agent':
               this.models = this.modelAgent;
               break;
-            case 'MAGASINIER':
+              //@ts-ignore
+            case 'magasinier':
               this.models = this.modelMagasinier;
               break;
-            case 'CLIENT':
+              //@ts-ignore
+            case 'client':
               this.models = this.modelClient;
               break;
             default:
@@ -256,4 +373,4 @@ export class AppMenuComponent implements OnInit {
               break;
           }
     }
-}
+}*/

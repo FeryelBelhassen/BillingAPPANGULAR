@@ -27,5 +27,8 @@ export class AppTopBarComponent {
     toggleMenu(){
         this.showMenu = !this.showMenu;
     }
-  
+
+    
 }
+  
+

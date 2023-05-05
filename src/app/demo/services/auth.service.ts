@@ -5,7 +5,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { Useer } from '../domain/useer';
 import { User } from '../domain/user';
-
+import jwtDecode from 'jwt-decode';
+import * as  jwt from 'jsonwebtoken';
 const AUTH_API = 'http://localhost:8080/api/auth/';
 
 
@@ -15,18 +16,35 @@ const AUTH_API = 'http://localhost:8080/api/auth/';
 export class AuthService {
 
   private userSubject: BehaviorSubject<Useer>;
-  public user: Observable<Useer>;
+  public useer: Observable<Useer>;
   private refreshTokenTimeout: any;
   currentUser: any;
   private userRole: BehaviorSubject<User>;
   private _userRole: Observable<User>;
+  user!: User;
+ 
 
   constructor(private router: Router, private http: HttpClient, public jwtHelper: JwtHelperService) {
     this.userSubject = new BehaviorSubject<Useer>(null!);
-    this.user = this.userSubject?.asObservable();
+    this.useer = this.userSubject?.asObservable();
     this.userRole = new BehaviorSubject<User>(null!);
     this._userRole = this.userRole?.asObservable();
    }
+
+   getCurrentUser(): User | null {
+    const token = this.userValue.jwtToken;
+    if (token) {
+      const decodedToken = jwt_decode(token) as unknown as { sub: string, name: string, roles: string };
+      const user = {
+        id: decodedToken.sub,
+        name: decodedToken.name,
+        roles: decodedToken.roles
+      };
+      return this.user;
+    } else {
+      return null;
+    }
+  }
   
    public get UserRole(): User{
     return this.userRole.value;
@@ -55,6 +73,29 @@ export class AuthService {
   }
   get isLoggedIn() {
     return true;
+  }
+
+
+  
+  isAdmin(): boolean {
+    const user = this.getCurrentUser();
+    console.log(user)
+    return !!user && user.roles[0].name === 'ADMIN';
+  }
+
+  isAgent(): boolean {
+    const user = this.getCurrentUser();
+    return !!user && user.roles[0].name === 'AGENT';
+  }
+
+  isMagasinier(): boolean {
+    const user = this.getCurrentUser();
+    return !!user && user.roles[0].name === 'MAGASINIER';
+  }
+
+  isClient(): boolean {
+    const user = this.getCurrentUser();
+    return !!user && user.roles[0].name === 'CLIENT';
   }
 
 
@@ -119,8 +160,8 @@ export class AuthService {
     }
     
 }
-
-
-
-
+function jwt_decode(token: string): { sub: string; name: string; role: string } {
+  const decodedToken = jwtDecode(token) as { sub: string; name: string; role: string };
+  return decodedToken;
+}
 
