@@ -7,6 +7,8 @@ import { Useer } from '../domain/useer';
 import { User } from '../domain/user';
 import jwtDecode from 'jwt-decode';
 import * as  jwt from 'jsonwebtoken';
+import { Role } from '../domain/Role';
+import { Password } from 'primeng/password';
 const AUTH_API = 'http://localhost:8080/api/auth/';
 
 
@@ -21,7 +23,7 @@ export class AuthService {
   currentUser: any;
   private userRole: BehaviorSubject<User>;
   private _userRole: Observable<User>;
-  user!: User;
+  //user!: User;
  
 
   constructor(private router: Router, private http: HttpClient, public jwtHelper: JwtHelperService) {
@@ -31,20 +33,34 @@ export class AuthService {
     this._userRole = this.userRole?.asObservable();
    }
 
-   getCurrentUser(): User | null {
+  
+
+   /*getCurrentUser(): User | null {
     const token = this.userValue.jwtToken;
     if (token) {
-      const decodedToken = jwt_decode(token) as unknown as { sub: string, name: string, roles: string };
-      const user = {
+      const decodedToken = jwt_decode(token) as unknown as { sub: string, name: string,email: string, password: string roles: string };
+      const roleNames = decodedToken.roles.split(',');
+      const roleMap: { [key: string]: Role } = {
+        'ADMIN': { id: 1, name: "Admin" },
+        'AGENT':  { id: 2, name: "Agent" },
+        'MAGASINIER': { id: 4, name: "Magasinier" },
+        'CLIENT': { id: 5, name: "Client" }   
+      };
+      const roles: Role[] = roleNames.map(name => roleMap[name]);
+      const user: User = {
         id: decodedToken.sub,
         name: decodedToken.name,
-        roles: decodedToken.roles
+        email : decodedToken.email,
+        password: decodedToken.password,
+        roles: roles
       };
-      return this.user;
+      return user;
     } else {
       return null;
     }
-  }
+  }*/
+  
+  
   
    public get UserRole(): User{
     return this.userRole.value;
@@ -77,7 +93,7 @@ export class AuthService {
 
 
   
-  isAdmin(): boolean {
+ /* isAdmin(): boolean {
     const user = this.getCurrentUser();
     console.log(user)
     return !!user && user.roles[0].name === 'ADMIN';
@@ -97,7 +113,7 @@ export class AuthService {
     const user = this.getCurrentUser();
     return !!user && user.roles[0].name === 'CLIENT';
   }
-
+*/
 
  login(username: string, password: string){
   let headers = new HttpHeaders();
@@ -135,10 +151,15 @@ export class AuthService {
     return localStorage.getItem('token');
   }
   
- 
-  logout(){
-    this.userSubject.unsubscribe;
-  }
+  
+    logout() {
+      console.log("eeeeeeeeehhh")
+      return this.http.post(AUTH_API +'logout', {}, { observe: 'response' });
+    }
+  
+    /*this.userSubject.unsubscribe();
+   
+    this.router.navigate(['/auth/login']);*/
 
   refreshToken(token:any) {
     // the expired token must be included in the Authorization header and the refresh in the body ?

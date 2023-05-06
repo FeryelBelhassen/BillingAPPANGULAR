@@ -40,7 +40,10 @@
         <p-overlayPanel #op>
             <ng-template pTemplate="content">
                 <h5><a href="profile.component.html"></a> <i class="pi pi-fw pi-sliders-h ng-tns-c86-0" ></i>Account </h5>
+                
                 <h5> <i class="pi pi-fw pi-sign-out ng-tns-c86-0"></i> Logout </h5>
+                <p-button >Account</p-button>
+                <p-button (click)="logout()">Logout</p-button>
            
             </ng-template>
         </p-overlayPanel>

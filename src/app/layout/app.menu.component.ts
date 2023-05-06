@@ -20,10 +20,11 @@ import { Menu } from 'primeng/menu';
 
 
 export class AppMenuComponent implements OnInit {
+    
 
-
+    
     items = [{ label: 'Item 1' }, { label: 'Item 2' }, { label: 'Item 3' }];
-    user!: User;
+   /* user!: User;
     private currentUser!: BehaviorSubject<User>;
     roles: Role[] = [
         { id: 0, name: 'admin' },
@@ -115,33 +116,12 @@ export class AppMenuComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    modelAdmin = [
+    */
+    
+   
+   
+   
+    modelAdmin =[
 
         {
             label: 'home',
@@ -269,7 +249,7 @@ export class AppMenuComponent implements OnInit {
                     label: 'Client',
                     icon: 'pi pi-fw pi-user',
                     routerLink: ['/client'],
-                    visible: (this.authService.isAdmin() || this.authService.isAgent() || this.authService.isClient())
+                    
                 },
 
 
@@ -332,19 +312,18 @@ export class AppMenuComponent implements OnInit {
         },
   
     ]
-   
-    models: any[] =[this.modelAdmin, this.modelClient, this.modelAgent, this.modelMagasinier];
 
+    public models: any[] = [this.modelAdmin, this.modelClient, this.modelAgent, this.modelMagasinier];
 
-    constructor(public layoutService: LayoutService, public userService: UserService,
-        private authService: AuthService) {}
+    constructor(public layoutService: LayoutService, private authService: AuthService) {}
        
 
     
     ngOnInit() {
-
+        
+        this.models
         console.log('models',this.models)
-       console.log('modelAdmin:', this.modelAdmin);
+        console.log('modelAdmin:', this.modelAdmin);
         
         var role_name =this.authService.UserRole.roles 
         console.log('Current user:', this.authService.UserRole.roles);
@@ -373,4 +352,4 @@ export class AppMenuComponent implements OnInit {
               break;
           }
     }
-}*/
+}
