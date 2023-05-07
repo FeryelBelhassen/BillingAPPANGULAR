@@ -27,9 +27,18 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
+  //roles: string[] = [];
   returnUrl: string = '/' ;
   error = '';
+
+  roles = [
+    { id: 3, name: "User" },
+    { id: 1, name: "Admin" },
+    { id: 2, name: "Agent" },
+    { id: 4, name: "Magasinier" },
+    { id: 5, name: "Client" }
+  ];
+  
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private storageService: StorageService,
     public layoutService: LayoutService, private route:Router,private tokenService: TokenService,

@@ -52,7 +52,7 @@
     <div class="grid p-fluid">
       <div class="col-12 md:col-12">
        <div class="p-inputgroup">
-            <div *ngIf="username.errors && f.submitted" class="invalid-feedback">
+            <div *ngIf="username.errors && f.submitted" class="invalid-feedback" class="password">
                 Username is required!
               </div>
         </div>
@@ -98,14 +98,16 @@
         <div class="form-group">
           
           <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger" role="alert">
-            Login failed: {{ errorMessage }}
+           <p class="password"> Login failed!! {{ errorMessage }}</p>
           </div>
         </div>
-        
+        <p>Don't have an account ?</p> <a routerLink="/auth/register" > Sign Up here</a>    
     </form>
+
+    
   
       <div class="alert alert-success" *ngIf="isLoggedIn" routerLink='pages/home'>
-        Logged in as {{ roles }}. 
+        Logged in as {{ roles[0] }}. 
       </div>
 
  </div>
@@ -113,3 +115,4 @@
     </div>
   </div>
   </div>
+ 

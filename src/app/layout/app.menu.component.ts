@@ -121,7 +121,7 @@ export class AppMenuComponent implements OnInit {
    
    
    
-    modelAdmin =[
+    modelAdmin: any =[
 
         {
             label: 'home',
