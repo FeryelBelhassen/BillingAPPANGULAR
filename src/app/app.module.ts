@@ -33,11 +33,15 @@ import { UserModule } from './demo/components/user/user.module';
 import { DropdownModule } from 'primeng/dropdown';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { MenubarModule } from 'primeng/menubar';
+import { AccordionModule } from 'primeng/accordion';
+import { DialogModule } from 'primeng/dialog';
+import { AppTopBarComponent } from './layout/app.topbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotfoundComponent,
+
     
   ],
   imports: [
@@ -52,7 +56,9 @@ import { MenubarModule } from 'primeng/menubar';
     UserModule,
     DropdownModule,
     ContextMenuModule,
-    MenubarModule
+    MenubarModule,
+    AccordionModule,
+    DialogModule
     
     
   ],

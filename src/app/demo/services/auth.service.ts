@@ -24,6 +24,11 @@ export class AuthService {
   private userRole: BehaviorSubject<User>;
   private _userRole: Observable<User>;
   //user!: User;
+  SESSION_KEY = 'auth_user'
+
+	username!: string;
+	password!: String;
+  //username: string;
  
 
   constructor(private router: Router, private http: HttpClient, public jwtHelper: JwtHelperService) {
@@ -38,21 +43,16 @@ export class AuthService {
    /*getCurrentUser(): User | null {
     const token = this.userValue.jwtToken;
     if (token) {
-      const decodedToken = jwt_decode(token) as unknown as { sub: string, name: string,email: string, password: string roles: string };
-      const roleNames = decodedToken.roles.split(',');
-      const roleMap: { [key: string]: Role } = {
-        'ADMIN': { id: 1, name: "Admin" },
-        'AGENT':  { id: 2, name: "Agent" },
-        'MAGASINIER': { id: 4, name: "Magasinier" },
-        'CLIENT': { id: 5, name: "Client" }   
-      };
-      const roles: Role[] = roleNames.map(name => roleMap[name]);
-      const user: User = {
-        id: decodedToken.sub,
-        name: decodedToken.name,
-        email : decodedToken.email,
+      const decodedToken = jwt_decode(token) as unknown as { sub: string, name: string, password: string, jwtToken:string, refreshToken:string };
+      
+      const user: Useer = {
+        //id: decodedToken.sub,
+        username: decodedToken.name,
+       // email : decodedToken.email,
         password: decodedToken.password,
-        roles: roles
+        jwtToken: decodedToken.jwtToken,
+        refreshToken : decodedToken.refreshToken
+     
       };
       return user;
     } else {
@@ -123,6 +123,7 @@ export class AuthService {
           'username': username,
           'password': password
         }
+    this.username = username;
     return this.http.post<any>(AUTH_API+"signin", toSend, {headers}) 
     .pipe( map( data => {
       this.userSubject.next(new Useer(username, data['accessToken'] ))
@@ -130,6 +131,7 @@ export class AuthService {
       this.startRefreshTokenTimer()
       this.userRole.next(new User(data['id'],data['email'], data['username'],password,data['roles']) )      
     }))
+   
   
 
   }
@@ -152,14 +154,17 @@ export class AuthService {
   }
   
   
-    logout() {
-      console.log("eeeeeeeeehhh")
-      return this.http.post(AUTH_API +'logout', {}, { observe: 'response' });
-    }
+  logout(){
+    this.userSubject.unsubscribe;
+    this.router.navigateByUrl('/auth/login');
+  }
+
+
+  public getUsername(): string {
+    return this.username;
+  }
   
-    /*this.userSubject.unsubscribe();
    
-    this.router.navigate(['/auth/login']);*/
 
   refreshToken(token:any) {
     // the expired token must be included in the Authorization header and the refresh in the body ?
@@ -185,4 +190,3 @@ function jwt_decode(token: string): { sub: string; name: string; role: string } 
   const decodedToken = jwtDecode(token) as { sub: string; name: string; role: string };
   return decodedToken;
 }
-

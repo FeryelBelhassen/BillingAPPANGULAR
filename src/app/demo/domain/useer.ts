@@ -6,10 +6,12 @@ export class Useer {
     jwtToken: string = '';
     refreshToken: string = '';
    
+   
     constructor(username: string, jwtToken: string){
         this.jwtToken = jwtToken;
         this.username = username;
         this.password = "~$ecret~";
+     
        
     }
 }

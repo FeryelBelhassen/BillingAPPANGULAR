@@ -20,7 +20,8 @@ import { Menu } from 'primeng/menu';
 
 
 export class AppMenuComponent implements OnInit {
-    
+    public username: string;
+
 
     
     items = [{ label: 'Item 1' }, { label: 'Item 2' }, { label: 'Item 3' }];
@@ -120,7 +121,7 @@ export class AppMenuComponent implements OnInit {
     
    
    
-   
+
     modelAdmin: any =[
 
         {
@@ -315,11 +316,15 @@ export class AppMenuComponent implements OnInit {
 
     public models: any[] = [this.modelAdmin, this.modelClient, this.modelAgent, this.modelMagasinier];
 
-    constructor(public layoutService: LayoutService, private authService: AuthService) {}
+    constructor(public layoutService: LayoutService, private authService: AuthService) {
+        this.username = authService.getUsername();
+        console.log(this.username)
+    }
        
 
     
     ngOnInit() {
+        
         
         this.models
         console.log('models',this.models)

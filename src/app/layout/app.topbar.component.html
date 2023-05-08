@@ -35,27 +35,32 @@
             
         </button>
        
+      
 
-
-        <p-overlayPanel #op>
-            <ng-template pTemplate="content">
-                <h5><a href="profile.component.html"></a> <i class="pi pi-fw pi-sliders-h ng-tns-c86-0" ></i>Account </h5>
-                
-                <h5> <i class="pi pi-fw pi-sign-out ng-tns-c86-0"></i> Logout </h5>
-                <p-button class="pi pi-fw pi-sliders-h">Account</p-button> <br>
-                <p-button class="pi pi-fw pi-sign-out" (click)="logout()">Logout</p-button>
+        <p-overlayPanel #op [dismissable]="false">
+            <ng-template pTemplate="content"  >
+               
+                 <p-button icon="pi pi-user" label="Account" onclick="getUser()" ></p-button> <br> 
+    
+                <p-button icon="pi pi-power-off" label="Logout" (onClick)="logout()"></p-button>
            
             </ng-template>
         </p-overlayPanel>
-        <button class="p-link layout-topbar-button"(click)="op.toggle($event)"  id="button" (click)="toggleMenu()">
+
+        <button class="p-link layout-topbar-button" (click)="op.toggle($event)"  id="button" (click)="toggleMenu()">
             <i class="pi pi-cog"></i>
             <span>Settings</span>     
-        </button>    
+        </button>   
+
+       
+     
+       
+       
+       
     </div>
   
+   
 </div>
-
-    
     
 
  </body>
