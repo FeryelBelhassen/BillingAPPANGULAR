@@ -39,43 +39,20 @@ export class AuthService {
    }
 
   
-
-   /*getCurrentUser(): User | null {
-    const token = this.userValue.jwtToken;
-    if (token) {
-      const decodedToken = jwt_decode(token) as unknown as { sub: string, name: string, password: string, jwtToken:string, refreshToken:string };
-      
-      const user: Useer = {
-        //id: decodedToken.sub,
-        username: decodedToken.name,
-       // email : decodedToken.email,
-        password: decodedToken.password,
-        jwtToken: decodedToken.jwtToken,
-        refreshToken : decodedToken.refreshToken
-     
-      };
-      return user;
-    } else {
-      return null;
-    }
-  }*/
-  
-  
   
    public get UserRole(): User{
     return this.userRole.value;
    }
-   public set userValue(user: Useer){
+   public set userValue(user: Useer ){
     if (user.username){
       this.userValue.username = user.username;
-    } if (user.password) {
+    }else if (user.password) {
       this.userValue.password = user.password;
-    } if (user.jwtToken) {
+    }else if (user.jwtToken) {
       this.userValue.jwtToken = user.jwtToken;
-    } if (user.refreshToken) {
+    }else if (user.refreshToken) {
       this.userValue.refreshToken = user.refreshToken;
-    }
-
+    } 
   }
   public get userValue(): Useer {
     return this.userSubject.value;
@@ -93,7 +70,7 @@ export class AuthService {
 
 
   
- /* isAdmin(): boolean {
+  /*isAdmin(): boolean {
     const user = this.getCurrentUser();
     console.log(user)
     return !!user && user.roles[0].name === 'ADMIN';
@@ -155,8 +132,9 @@ export class AuthService {
   
   
   logout(){
-    this.userSubject.unsubscribe;
-    this.router.navigateByUrl('/auth/login');
+    localStorage.clear();
+    this.userSubject.next(null!)                         
+    this.router.navigate(['/auth/login']);
   }
 
 
