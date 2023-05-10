@@ -24,6 +24,8 @@ export class AppTopBarComponent {
     username: string;
     
     id!:number;
+
+    user!:User;
     @ViewChild('menubutton') menuButton!: ElementRef;
 
     @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
@@ -31,6 +33,8 @@ export class AppTopBarComponent {
     @ViewChild('topbarmenu') menu!: ElementRef;
    
     loggedInUser!: User;
+
+    editFormOpen = false;
     
     constructor(public layoutService: LayoutService, private authService: AuthService,
         private route: Router, private userService: UserService, private http: HttpClient) { 
@@ -51,12 +55,14 @@ export class AppTopBarComponent {
         this.authService.userValue.username;
     }
 
-  
-   
-    getUser(){
-      this.username = this.authService.getUsername();
-      console.log(this.username)
+    get(){
+      //this.showAccountForm = true;
+      this.userService.getUser(this.id);
+      console.log( "feryel",this.userService.getUser(this.id));
+    }
 
+    openEditForm() {
+      this.editFormOpen = true;
     }
 
 
@@ -64,19 +70,8 @@ export class AppTopBarComponent {
       this.authService.logout();
       this.route.navigateByUrl('/auth/login');
     }
-       /* this.authService.logout().subscribe(
-          response => {
-            if (response.status === 200) {
-              this.route.navigate(['/auth/login']);
-            }
-          },
-          error => {
-            console.log(error);
-          }
-        );
-        
-      }*/
-     
+       
+       
      
       
 

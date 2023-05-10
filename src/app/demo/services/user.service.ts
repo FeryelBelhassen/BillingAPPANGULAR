@@ -40,9 +40,12 @@ export class UserService {
     return this.http.delete(`${API_URL}/deleteuser/${id}`);
   }
   
-  public getUser(id: number): Observable<any> {  
-    return this.http.get(`${API_URL}/users/${id}`);  
-  }  
+
+
+  public getUser(id: number): Observable<User> {
+    const url = `${API_URL}/users/${id}`;
+    return this.http.get<User>(url);
+  }
 
   public updateUser(id:number,user: User): Observable<User> {
     return this.http.put<User>(`${API_URL}/updateuser/${id}`, user);
