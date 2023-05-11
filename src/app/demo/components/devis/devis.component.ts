@@ -13,6 +13,7 @@ import { Client } from '../../domain/client';
 export class DevisComponent implements OnInit {
 
     devisDialog: boolean = false;
+    devisPrint :boolean =false;
 
     deleteDevisDialog: boolean = false;
 
@@ -108,6 +109,13 @@ export class DevisComponent implements OnInit {
     }
 
     printDevis(){
+        
+        this.devisPrint= true;
+        console.log("DEVISSS");
+        
+    }
+
+    print(){
         window.print()
     }
 

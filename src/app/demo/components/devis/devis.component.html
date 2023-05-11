@@ -11,7 +11,7 @@
                 </ng-template>
 
                 <ng-template pTemplate="right">
-                    <button pbutton="" label="Print" type="button" icon="pi pi-Print" class="p-element p-button p-component" 
+                    <button pbutton="" (click)="printDevis()" label="Print" type="button" icon="pi pi-Print" class="p-element p-button p-component" 
                     style="display: block; margin-bottom: 20px; margin-left: 6px;" fdprocessedid="pr7e6o">
                     <span class="p-button-icon p-button-icon-left pi pi-print" aria-hidden="true"></span>
                         <span class="p-button-label">Print</span></button>
@@ -119,7 +119,72 @@
             </ng-template>
         
         </p-dialog>
-
-       
+        <p-dialog [(visible)]="devisPrint" [style]="{width: '750px'}" header="INVOICE" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
+                        <th pSortableColumn="numerodevis">NumeroDevis <p-sortIcon field="numerodevis"></p-sortIcon></th>
+                        <th pSortableColumn="datedevis">DateDevis <p-sortIcon field="datedevis"></p-sortIcon></th>
+                        <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
+                        <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                        <th><i style="width: 5rem" class="pi pi-cog"></i></th>
+                       
+                        <th></th>
+                    </tr>
+                </ng-template>
+     
+               
+        <div class="invoice">
+            <div class="invoice-header">
+                <div class="invoice-company">
+            <img id="invoice-logo" alt="paradise-layout" class="logo-image">
+            <div class="company-name">YOUR COMPANY</div>
+            <div>NEURO SMART TECHNOLOGIES</div>
+            <div>Technopole ElGhazela</div></div>
+            <div>
+                <div class="invoice-title">INVOICE</div>
+                <div class="invoice-details">
+                    <div class="invoice-label">DATE</div>
+                    <div class="invoice-value">{{devis.datedevis}}</div>
+                    <div class="invoice-label">INVOICE #</div>
+                    <div class="invoice-value">{{devis.numerodevis}}</div>
+                    <div class="invoice-label">CUSTOMER ID</div>
+                    <div class="invoice-value">{{devis}}</div></div>
+                </div></div><div class="invoice-to">
+                    <div class="bill-to">BILL TO</div>
+                    <div class="invoice-to-info">
+                   <div>Claire Williams, 148 Hope Lane</div>
+                   <div>Palo Alto, CA 94304. </div></div></div>
+                   <div class="invoice-items">
+                    <table><thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Line Total</th>
+                        </tr>
+                    </thead><tbody>
+                        
+                        <tr>
+                            <td>{{devis}}</td>
+                            <td>{{devis.quantity}}</td>
+                            <td>{{devis.price}}</td>
+                            <td>$198.00</td>
+                        </tr>
+                       
+                    </tbody></table></div>
+                    <div class="invoice-summary"><div class="invoice-notes"><b>NOTES</b><div></div></div>
+                    <div><div class="invoice-details"><div class="invoice-label">SUBTOTAL</div>
+                    <div class="invoice-value">$332.00</div>
+                    <div class="invoice-label">VAT</div>
+                    <div class="invoice-value">0</div>
+        <div class="invoice-label">TOTAL</div><div class="invoice-value">$332.00</div></div></div></div></div> 
+        <button pbutton="" (click)="print()" label="Print" type="button" icon="pi pi-Print" class="p-element p-button p-component" 
+        style="display: block; margin-bottom: 20px; margin-left: 6px;" fdprocessedid="pr7e6o">
+        <span class="p-button-icon p-button-icon-left pi pi-print" aria-hidden="true"></span>
+            <span class="p-button-label">Print</span></button>
+        </ng-template>
+        </p-dialog>
     </div>
 </div>

@@ -36,7 +36,8 @@ import { MenubarModule } from 'primeng/menubar';
 import { AccordionModule } from 'primeng/accordion';
 import { DialogModule } from 'primeng/dialog';
 import { AppTopBarComponent } from './layout/app.topbar.component';
-
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TableModule } from 'primeng/table';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +59,9 @@ import { AppTopBarComponent } from './layout/app.topbar.component';
     ContextMenuModule,
     MenubarModule,
     AccordionModule,
-    DialogModule
+    DialogModule,
+    MultiSelectModule,
+    TableModule
     
     
   ],

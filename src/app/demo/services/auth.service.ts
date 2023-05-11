@@ -23,11 +23,13 @@ export class AuthService {
   currentUser: any;
   private userRole: BehaviorSubject<User>;
   private _userRole: Observable<User>;
-  //user!: User;
+  private userId: BehaviorSubject<User>;
+  private _userId: Observable<User>;
   SESSION_KEY = 'auth_user'
 
 	username!: string;
 	password!: String;
+  id!: number;
   //username: string;
  
 
@@ -36,6 +38,8 @@ export class AuthService {
     this.useer = this.userSubject?.asObservable();
     this.userRole = new BehaviorSubject<User>(null!);
     this._userRole = this.userRole?.asObservable();
+    this.userId = new BehaviorSubject<User>(null!);
+    this._userId = this.userId?.asObservable();
    }
 
   
@@ -43,6 +47,14 @@ export class AuthService {
    public get UserRole(): User{
     return this.userRole.value;
    }
+
+   public get Userid(): User {
+    return this.userId.value;
+  }
+
+  public set Userid(user: User) {
+    this.userId.next(user);
+  }
    public set userValue(user: Useer ){
     if (user.username){
       this.userValue.username = user.username;
@@ -135,6 +147,11 @@ export class AuthService {
     localStorage.clear();
     this.userSubject.next(null!)                         
     this.router.navigate(['/auth/login']);
+  }
+
+  public getUserId():  number | undefined {
+     // Remplacez par votre propre logique pour obtenir l'utilisateur connecté
+    return this.id;
   }
 
 
