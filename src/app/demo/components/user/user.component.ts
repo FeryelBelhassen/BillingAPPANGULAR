@@ -86,7 +86,7 @@ export class UserComponent implements OnInit {
             
         } 
     
-    getUser(id: number){
+    /*getUser(id: number){
         this.userService.getUser(this.user.id!).subscribe(data=>{
             this.user =data;
             console.log(data)
@@ -94,7 +94,7 @@ export class UserComponent implements OnInit {
             console.log(error);
         });
 
-    }
+    }*/
 
     openNew() {
         this.user = new User(NaN, '', '', '', []);

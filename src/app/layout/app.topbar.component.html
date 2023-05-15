@@ -16,8 +16,8 @@
     <script src="my-script.js"></script>
    <div class="layout-topbar">
     <a class="layout-topbar-logo" >
-        <img src="assets/layout/images/billinglogo.png">
-        <span>AGF</span>
+        <img class="image" src="assets/layout/logo.png">
+        
     </a>
 
     <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
@@ -38,28 +38,42 @@
       
 
         <p-overlayPanel #op [dismissable]="false">
-            <ng-template pTemplate="content" let-user of users >
-               
-                 <p-button icon="pi pi-user" label="Account" (onClick)="getUserDetails()" ></p-button> <br> 
-                
-                 <div *ngIf="editFormOpen" >
-                 
-                   <form formGroup:edit>
-             
-                        <label>Nom:</label>
-                        <input [(ngModel)]="user.name" name="name" type="text">
-                      
-                        <label>Email:</label>
-                        <input [(ngModel)]="user.email" name="email" type="email">
-                      
-                        <!-- Autres champs de formulaire -->
-                      
-                        <button type="submit">Enregistrer</button>
-                    </form>
+  
+                <button pButton pRipple label="Show Form" (click)="showDialog()"></button>
+                <div *ngIf="showDialog" >
+                <div *ngFor="let user of users">
+                   
+                        <ng-form>
+                        
+                        <div class="field">
+                            Username: 
+                            {{user.username}}
+                         </div>
+                         <div class="field">
+                            Email: 
+                            {{user.email}}
+                         </div>
+                         <div class="field">
+                            Password: 
+                            {{user.password}}
+                            
+                         </div>
+                         <div class="field">
+                            Roles: 
+                            {{user.roles[0].name}}
+                         </div>
+                        
+                        
+                    </ng-form>
+                    
+</div>
                 </div>
+                  
+                
+                
                 <p-button icon="pi pi-power-off" label="Logout" (onClick)="logout()"></p-button>
            
-            </ng-template>
+            
         </p-overlayPanel>
 
         <button class="p-link layout-topbar-button" (click)="op.toggle($event)"  id="button" (click)="toggleMenu()">

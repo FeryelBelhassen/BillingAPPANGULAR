@@ -28,8 +28,10 @@ export class AuthService {
   SESSION_KEY = 'auth_user'
 
 	username!: string;
-	password!: String;
+	password!: string;
   id!: number;
+
+  email!: string
   //username: string;
  
 
@@ -41,7 +43,14 @@ export class AuthService {
     this.userId = new BehaviorSubject<User>(null!);
     this._userId = this.userId?.asObservable();
    }
+  
 
+   getCurrentUser(): User | null {
+    // Retrieve the user data from the authentication source
+    // and return it as a User object
+    const userData = localStorage.getItem('user'); 
+    return userData ? JSON.parse(userData) : null;
+  }
   
   
    public get UserRole(): User{
@@ -157,6 +166,14 @@ export class AuthService {
 
   public getUsername(): string {
     return this.username;
+  }
+  
+  public getEmail(): string {
+    return this.email;
+  }
+
+  public getPassword(): string {
+    return this.password;
   }
   
    

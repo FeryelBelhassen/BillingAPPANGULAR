@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Useer } from '../demo/domain/useer';
 import { HttpClient } from '@angular/common/http';
 import { Role } from '../demo/domain/Role';
+import { DialogModule } from 'primeng/dialog';
 declare var myScript: any;
 @Component({
     selector: 'app-topbar',
@@ -27,49 +28,45 @@ export class AppTopBarComponent {
    
     loggedInUser!: User;
 
-    editFormOpen = false;
+    username! : string;
 
-    showMenu = false;
-    items!: MenuItem[];
-    userValue!: Useer;
-    visible!: boolean;
-    sidebarVisible!: boolean;
-    username: string;
-    
-    id!:number;
+    password!: string;
 
-    user!:User;
-
-    MODE: string = 'CREATE';
-
-    idToUpdate:number=NaN;
-
-    //formGroup: 
+    email!: string;
 
     roles: Role[] = [
-      { id: 1, name: "ADMIN" },
-      { id: 2, name: "AGENT" },
-      { id: 3, name: "USER" },
-      { id: 4, name: "MAGASINIER" },
-      { id: 5, name: "CLIENT" }
-    ];
- 
-    
+      { id: 0, name: 'admin' },
+      { id: 1, name: 'user' },
+      { id: 2, name: 'agent' },
+      { id: 3, name: 'magasinier' },
+      { id: 4, name: 'client' },
+
+  ];
+
+    editFormOpen = false;
+    users:Array<User> = [];
+    showMenu = false;
+  
+    user!:User;
+
+    currentUser!: User | null;
+
+   
+      
     constructor(public layoutService: LayoutService, private authService: AuthService,
         private route: Router, private userService: UserService, private http: HttpClient,) { 
-          this.username = authService.getUsername();
-        console.log(this.username)
+          this.username = this.authService.getUsername();
+           console.log(this.username)
+          var role_name =this.authService.UserRole.roles[0].name;
+          console.log(role_name) 
+          
         }
     
     
     
     ngOnInit() {
-       /* this.loggedInUser = this.authService.getLoggedInUser();*/
-/*this.formGroup = this.formBuilder.group({
-        name: [''],
-        email: [''],
-        // Autres champs du formulaire
-      });*/
+      //this.user = this.userService.getUser();
+      console.log(this.user)
        
        
     }
@@ -78,93 +75,37 @@ export class AppTopBarComponent {
         this.authService.userValue.username;
     }
 
-    getUserDetails() {
-      const userId = this.authService.getUserId();
-        console.log(userId)
-    }
-
-    
-    
     
       
-    
-    
 
     get(){
      
-      this.userService.getUser(this.id);
-      //console.log( "feryel",this.userService.getUser(this.id));
+      this.userService.getUser();
+
+      console.log( "feryel",this.userService.getUser());
     }
 
-    hideDialog(){
-      this.editFormOpen = false;
-        
-    }
 
-    editUser(id:number, data: User) {
-      const toEdit: User=  {
-        'username' : this.user.username,
-        'email' :this.user.email ,
-        'password': this.user.password,
-        'roles' : this.user.roles// Set<Role> -- table mtaa role
-      }
-      this.editFormOpen = true;
-     // this.userDialog = true; 
-      this.idToUpdate = id;
-      this.userService.getUser(id);
-      //this.MODE = 'APPEND' 
-      toEdit!= data;
     
-    this.userService.updateUser(this.idToUpdate, toEdit).subscribe( (data) =>{
-//this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
-        this.editFormOpen = false;
-        this.ngOnInit();   
-      }, error => {
-        console.log(error);
-//this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-        this.editFormOpen = false;
-        } );
-}     
-   
-
-   openEditForm() {
-    this.editFormOpen=true;
-  
-     
-    }
-
-    saveUser(){
-       if( this.MODE === 'APPEND') {
-        const toEdit: User=  {
-            'username' : this.user.username,
-            'email' :this.user.email ,
-            'password': this.user.password,
-            'roles' : this.user.roles// Set<Role> -- table mtaa role
-          }
-        
-        this.userService.updateUser(this.idToUpdate, toEdit).subscribe( (data) =>{
-//this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
-            this.editFormOpen = false;
-            this.ngOnInit();   
-          }, error => {
-            console.log(error);
-//this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-            this.editFormOpen = false;
-            } );
-    }
-    }
-
 
     logout() {
       this.authService.logout();
       this.route.navigateByUrl('/auth/login');
     }
-       
-       
-     
-      
 
+    showDialog(){
+      this.userService.getUser().subscribe((users)=>{
+        this.username;
+        
+        console.log("Array -> "+this.username)
+      
+    })
     
-}
+} 
+
+ }
+       
+           
+
   
 

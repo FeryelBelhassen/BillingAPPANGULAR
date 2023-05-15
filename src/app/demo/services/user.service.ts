@@ -42,8 +42,8 @@ export class UserService {
   
 
 
-  public getUser(id: number): Observable<User> {
-    const url = `${API_URL}/users/${id}`;
+  public getUser(): Observable<User> {
+    const url = `${API_URL}/info`;
     return this.http.get<User>(url);
   }
 

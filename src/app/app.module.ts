@@ -16,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-
+import { FormsModule } from '@angular/forms';
 import {TreeSelectModule} from 'primeng/treeselect';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AuthService } from './demo/services/auth.service';
@@ -35,7 +35,6 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { MenubarModule } from 'primeng/menubar';
 import { AccordionModule } from 'primeng/accordion';
 import { DialogModule } from 'primeng/dialog';
-import { AppTopBarComponent } from './layout/app.topbar.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 @NgModule({
@@ -61,7 +60,8 @@ import { TableModule } from 'primeng/table';
     AccordionModule,
     DialogModule,
     MultiSelectModule,
-    TableModule
+    TableModule,
+    FormsModule
     
     
   ],
@@ -74,6 +74,7 @@ import { TableModule } from 'primeng/table';
 
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+   
   
   bootstrap: [AppComponent]
 })
