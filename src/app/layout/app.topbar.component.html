@@ -16,7 +16,8 @@
     <script src="my-script.js"></script>
    <div class="layout-topbar">
     <a class="layout-topbar-logo" >
-        <img class="image" src="assets/layout/logo.png">
+        <img  src="assets/layout/images/logo2-removebg-preview.png" class="image">
+        <span> AGF </span>
         
     </a>
 
@@ -35,61 +36,32 @@
             
         </button>
        
-      
 
-        <p-overlayPanel #op [dismissable]="false">
-  
-                <button pButton pRipple label="Show Form" (click)="showDialog()"></button>
-                <div *ngIf="showDialog" >
-                <div *ngFor="let user of users">
-                   
-                        <ng-form>
-                        
-                        <div class="field">
-                            Username: 
-                            {{user.username}}
-                         </div>
-                         <div class="field">
-                            Email: 
-                            {{user.email}}
-                         </div>
-                         <div class="field">
-                            Password: 
-                            {{user.password}}
-                            
-                         </div>
-                         <div class="field">
-                            Roles: 
-                            {{user.roles[0].name}}
-                         </div>
-                        
-                        
-                    </ng-form>
-                    
-</div>
-                </div>
-                  
-                
-                
-                <p-button icon="pi pi-power-off" label="Logout" (onClick)="logout()"></p-button>
-           
+        <p-overlayPanel #op [dismissable]="false" >
+            <div class="button-container">
+           <button pButton pRipple class="button1" class="pi pi-user" label="Account" (click)="showDialog(id)"></button> <br>
+            </div>
+            <div class="button-container">
+           <button pButton pRipple class="button2" class="pi pi-power-off" label="Logout" (click)="logout()"></button>
+          </div>
             
         </p-overlayPanel>
+      
 
         <button class="p-link layout-topbar-button" (click)="op.toggle($event)"  id="button" (click)="toggleMenu()">
             <i class="pi pi-cog"></i>
             <span>Settings</span>     
         </button>   
-
-       
-       
-       
-       
-       
-    </div>
+    
+   
+   
   
-     
+
+        
+   </div>
 </div>
+  
+
     
 
  </body>

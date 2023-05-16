@@ -42,10 +42,10 @@ export class UserService {
   
 
 
-  public getUser(): Observable<User> {
-    const url = `${API_URL}/info`;
-    return this.http.get<User>(url);
+  getUserById(id: number) {
+    return this.http.get<User>(`${API_URL}/user/${id}`);
   }
+
 
   public updateUser(id:number,user: User): Observable<User> {
     return this.http.put<User>(`${API_URL}/updateuser/${id}`, user);

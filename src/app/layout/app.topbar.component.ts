@@ -33,6 +33,17 @@ export class AppTopBarComponent {
     password!: string;
 
     email!: string;
+ 
+
+    idToget:number=NaN;
+    idUpdate:number=NaN;
+
+    id!: number;
+
+   
+    showedit= false;
+
+    show =false;
 
     roles: Role[] = [
       { id: 0, name: 'admin' },
@@ -46,64 +57,59 @@ export class AppTopBarComponent {
     editFormOpen = false;
     users:Array<User> = [];
     showMenu = false;
-  
-    user!:User;
+    //showDialog = false;
+     user: any;
+   
+    
 
     currentUser!: User | null;
 
    
       
     constructor(public layoutService: LayoutService, private authService: AuthService,
-        private route: Router, private userService: UserService, private http: HttpClient,) { 
+        private route: Router, private userService: UserService, private http: HttpClient,
+        ) { 
           this.username = this.authService.getUsername();
-           console.log(this.username)
+          console.log(this.username)
           var role_name =this.authService.UserRole.roles[0].name;
           console.log(role_name) 
+          this.id = this.authService.getAuthedUserID()
+          console.log(this.id)
           
         }
     
     
     
     ngOnInit() {
-      //this.user = this.userService.getUser();
-      console.log(this.user)
+      
        
        
     }
+
     toggleMenu(){
         this.showMenu = !this.showMenu;
         this.authService.userValue.username;
     }
 
-    
       
 
-    get(){
-     
-      this.userService.getUser();
-
-      console.log( "feryel",this.userService.getUser());
-    }
-
+    showDialog(id: number){
+       this.route.navigate(['/account'])
 
     
-
-    logout() {
-      this.authService.logout();
-      this.route.navigateByUrl('/auth/login');
-    }
-
-    showDialog(){
-      this.userService.getUser().subscribe((users)=>{
-        this.username;
-        
-        console.log("Array -> "+this.username)
-      
-    })
     
-} 
+  } 
 
- }
+
+
+
+  logout() {
+    this.authService.logout();
+    this.route.navigateByUrl('/auth/login');
+  }
+
+
+}
        
            
 

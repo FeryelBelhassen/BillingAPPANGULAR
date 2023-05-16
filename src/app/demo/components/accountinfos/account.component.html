@@ -1,0 +1,57 @@
+
+  
+  
+
+
+<div class="grid" class="account" >
+    <div class="col-12">
+      <div class="card px-12 py-12"  >
+        <p-toast></p-toast>
+        <h2>User Profile</h2>
+        <div class="user-profile">
+            <img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="avatar">
+            <div class="user-details" *ngFor="let user of users">
+              <h4>{{ user.username }}</h4>
+              <p>Email: {{ user.email }}</p>
+              <p>Roles: {{ user.roles[0].name }}</p>
+              <!-- Add other user details as needed -->
+        
+            <button pButton pRipple icon="pi pi-pencil" label="Edit"
+                    class="p-button-rounded p-button-success mr-2" (click)="editUser(user.id!, user)" ></button>
+
+        <p-dialog [(visible)]="userDialog" [style]="{width: '700px', height: '700px'}" header="Edit Account" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" pInputText id="name" 
+                    [(ngModel)]="user.username" required autofocus
+                     [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.username}"
+                     placeholder="Your Name" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.username"> Username is required.</small>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" pInputText [(ngModel)]="user.email" required placeholder="Your Email"/>
+                 </div>
+               <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" pInputText [(ngModel)]="user.password" required  placeholder="Your Password"/>
+                </div>
+            
+                <div class="field">
+                    <label for="roles">Role</label>
+                    <p-multiSelect [(ngModel)]="user.roles"  [options]="roles"  optionLabel="name" placeholder="Select a Role">
+                    </p-multiSelect>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+    </div>
+</div>

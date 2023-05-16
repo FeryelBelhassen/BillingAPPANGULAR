@@ -11,12 +11,14 @@ import { Router } from '@angular/router';
 import { ERole } from '../../domain/Erole';
 import { Role } from '../../domain/Role';
 import { error } from 'console';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-    templateUrl: './user.component.html',
+    templateUrl: './account.component.html',
+    styleUrls: ['./account.component.css'],
     providers: [MessageService]
 })
-export class UserComponent implements OnInit {
+export class AccountComponent implements OnInit {
 
     userDialog: boolean = false;
 
@@ -53,14 +55,18 @@ export class UserComponent implements OnInit {
     idToUpdate:number=NaN;
 
     id!: number;
-    
+    idToget:number=NaN;
     
     rowsPerPageOptions = [5, 10, 20];
     
 
 
-    constructor(private userService: UserService, private messageService: MessageService,
+    constructor(private userService: UserService, private authService:AuthService, private messageService: MessageService,
         public formBuilder: FormBuilder, public router:Router) { 
+            this.id = this.authService.getAuthedUserID()
+            console.log(this.id)
+            var role_name =this.authService.UserRole.roles[0].name;
+  
         }
 
     ngOnInit() {   
@@ -74,18 +80,38 @@ export class UserComponent implements OnInit {
 
            
 
-        this.getUsers();
+        this.showDialog(this.id);
     }
 
-    private getUsers(){
-        this.userService.getAllUsers()
-        .subscribe((users)=>{
-                this.users=users;  
-                console.log("Array -> "+this.users)
-            })
-            
-        } 
-    
+    showDialog(id: number){
+        this.idToget= id;
+        this.userService.getUserById(this.idToget).subscribe((data)=>{
+        this.users = [data];
+        console.log(this.users)
+  
+        
+      })
+    }
+
+   
+
+    getAvatarByRole(role_name: string): string {
+       
+          switch (role_name) {
+            case 'admin':
+              return 'billing.jpg';
+            case 'agent':
+              return 'billinglogo.png';
+            case 'magasinier':
+              return 'img_avatar2.png';
+            case 'client':
+              return 'magasinier-avatar.jpg';
+            default:
+              return 'default-avatar.jpg';
+          }  
+      
+}
+
 
     openNew() {
         this.user = new User(NaN, '', '', '', []);
@@ -100,27 +126,6 @@ export class UserComponent implements OnInit {
         this.idToUpdate = id;
         this.MODE = 'APPEND'      
      }
-
-    deleteUser(id: number) {
-        this.deleteUserDialog = true;
-        this.user = { ...this.user }   
-        this.idToDel  = id
-    }
-
-    confirmDelete() {
-        this.deleteUserDialog = false;
-        this.users = this.users.filter(val => val.id !== this.user.id);
-      
-         this.userService.deleteUser(this.idToDel).subscribe((data) => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
-            this.ngOnInit();   
-        }, error => {
-          console.log(error);
-          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-          
-        });
-    }
-
        
 
     hideDialog() {
@@ -159,7 +164,7 @@ export class UserComponent implements OnInit {
           }
         
         this.userService.updateUser(this.idToUpdate, toEdit).subscribe( (data) =>{
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Profile Updated', life: 3000 });
             this.userDialog = false;
             this.ngOnInit();   
           }, error => {

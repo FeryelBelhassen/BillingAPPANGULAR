@@ -42,6 +42,7 @@ export class AuthService {
     this._userRole = this.userRole?.asObservable();
     this.userId = new BehaviorSubject<User>(null!);
     this._userId = this.userId?.asObservable();
+    this.id 
    }
   
 
@@ -57,6 +58,10 @@ export class AuthService {
     return this.userRole.value;
    }
 
+
+   getAuthedUserID():number{
+    return this.userRole.getValue().id!;
+   }
    public get Userid(): User {
     return this.userId.value;
   }
@@ -176,8 +181,7 @@ export class AuthService {
     return this.password;
   }
   
-   
-
+  
   refreshToken(token:any) {
     // the expired token must be included in the Authorization header and the refresh in the body ?
     return this.http.get<any>(AUTH_API +'refreshtoken' )
@@ -185,6 +189,7 @@ export class AuthService {
           console.log(data);
     }));
   }
+
     private startRefreshTokenTimer() {
       const jwtToken = JSON.parse(atob(this.userValue?.jwtToken!.split('.')[1]));
       const expires = new Date(jwtToken.exp * 1000);

@@ -4,8 +4,24 @@
    
   }
 .image{
-  height: 500px;
-  width: 150px;
-  zoom: 1;
+  height: 1000px;
+  width: 100px;
+}
 
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.button1 {
+  flex: 1;
+  width: 130px;
+  height: 150px; /* Adjust the value to set the desired space between buttons */
+}
+
+.button2 {
+  flex: 1;
+  width: 150px;
+  height: 150px; /* Adjust the value to set the desired space between buttons */
 }

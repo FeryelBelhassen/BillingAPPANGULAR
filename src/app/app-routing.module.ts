@@ -24,7 +24,7 @@ import { User } from './demo/domain/user';
         { path: 'client', loadChildren: () => import('./demo/components/client/client.module').then(m => m.ClientModule)},
         { path: 'devis', loadChildren: () => import('./demo/components/devis/devis.module').then(m => m.DevisModule)},
         { path: 'factureavoir', loadChildren: () => import('./demo/components/factureavoir/factureavoir.module').then(m => m.FactureAvoirModule)},
-        
+        { path: 'account', loadChildren: () => import('./demo/components/accountinfos/user.module').then(m => m.AccountModule)},
       ]   
     },
 
