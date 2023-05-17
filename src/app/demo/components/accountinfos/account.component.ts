@@ -15,8 +15,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
     templateUrl: './account.component.html',
-    styleUrls: ['./account.component.css'],
-    providers: [MessageService]
+    styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
 
@@ -82,14 +81,24 @@ export class AccountComponent implements OnInit {
 
         this.showDialog(this.id);
     }
-
+    
     showDialog(id: number){
         this.idToget= id;
-        this.userService.getUserById(this.idToget).subscribe((data)=>{
-        this.users = [data];
-        console.log(this.users)
-  
-        
+        this.userService.getUserById(this.idToget)
+          .subscribe((data)=>{
+           
+            if (data.roles[0].name ==='ADMIN'){
+              console.log(data.roles[0].name)
+                // cas oui 
+              this.users = [data];
+              console.log(this.users)
+          
+            } else{
+              //cas non
+              this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+              this.router.navigate(['/home'])
+            }
+       
       })
     }
 

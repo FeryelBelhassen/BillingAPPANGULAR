@@ -22,106 +22,10 @@ import { Menu } from 'primeng/menu';
 export class AppMenuComponent implements OnInit {
     public username: string;
 
-
+    roles: string;
     
+    id: number;
     items = [{ label: 'Item 1' }, { label: 'Item 2' }, { label: 'Item 3' }];
-   /* user!: User;
-    private currentUser!: BehaviorSubject<User>;
-    roles: Role[] = [
-        { id: 0, name: 'admin' },
-        { id: 1, name: 'user' },
-        { id: 2, name: 'agent' },
-        { id: 3, name: 'magasinier' },
-        { id: 4, name: 'client' },
-
-    ];
-    
-   
-
-    users: Array<User> = [];
-    model: any[]=[];
-
-
-    constructor(public layoutService: LayoutService, public userService: UserService,
-       private authService: AuthService) {}
-   
-
-
-    ngOnInit() {
-        this.model = [
-           
-            {
-                label: 'home',
-                items: [
-
-                    {
-                      label: 'Dashboard',
-                      icon: 'pi pi-fw pi-home',
-                      routerLink: ['/pages/home'],
-                      visible: [this.authService.isAdmin() || this.authService.isAgent()]
-                    }
-                ]
-            },
-            
-                  
-            {
-                label: 'Pages',
-                icon: 'pi pi-fw pi-briefcase',
-                items: [
-                   
-                  
-                    {
-                        label: 'Product',
-                        icon: 'pi pi-fw pi-box',
-                        routerLink: ['/product'],
-                        visible: [this.authService.isAdmin() || this.authService.isMagasinier() || this.authService.isClient()]
-                    },
-                    
-                    
-                    {
-                        label: 'Facture',
-                        icon: 'pi pi-fw pi-book',
-                        routerLink: ['/facture'],
-                        visible: [this.authService.isAdmin() || this.authService.isMagasinier()]
-                    }
-                    ,
-
-                    {
-                        label: 'FactureAvoir',
-                        icon: 'pi pi-fw pi-book',
-                        routerLink: ['/factureavoir'],
-                        visible: [this.authService.isAdmin() || this.authService.isMagasinier()]
-                    },
-
-                    {
-                        label: 'Devis ',
-                        icon: 'pi pi-fw pi-dollar',
-                        routerLink: ['/devis'],
-                        visible: [this.authService.isAdmin() || this.authService.isMagasinier()]
-                    },
-
-                    {
-                        label: 'Client',
-                        icon: 'pi pi-fw pi-user',
-                        routerLink: ['/client'],
-                        visible: [this.authService.isAdmin() || this.authService.isAgent()]
-                    },
-                   
-
-                    
-                ]
-            },
-        ]
-    }
-}
-
-
-
-    */
-    
-   
-   
-
     modelAdmin: any =[
 
         {
@@ -216,12 +120,7 @@ export class AppMenuComponent implements OnInit {
                     routerLink: ['/devis']
                 },
 
-                {
-                    label: 'Client',
-                    icon: 'pi pi-fw pi-user',
-                    routerLink: ['/client']
-                },
-
+            
 
 
             ]
@@ -301,11 +200,7 @@ export class AppMenuComponent implements OnInit {
                     routerLink: ['/devis']
                 },
 
-                {
-                    label: 'Client',
-                    icon: 'pi pi-fw pi-user',
-                    routerLink: ['/client']
-                },
+             
 
 
 
@@ -316,45 +211,44 @@ export class AppMenuComponent implements OnInit {
 
     public models: any[] = [this.modelAdmin, this.modelClient, this.modelAgent, this.modelMagasinier];
 
-    constructor(public layoutService: LayoutService, private authService: AuthService) {
+    constructor(public layoutService: LayoutService, private authService: AuthService,
+        private userService: UserService) {
         this.username = authService.getUsername();
         console.log(this.username)
+        this.id =this.authService.getAuthedUserID();
+        this.roles= this.authService.UserRole.roles[0].name;
     }
        
 
     
     ngOnInit() {
-        
-        
-        this.models
-        console.log('models',this.models)
-        console.log('modelAdmin:', this.modelAdmin);
-        
-        var role_name =this.authService.UserRole.roles 
-        console.log('Current user:', this.authService.UserRole.roles);
-        console.log(typeof this.authService.UserRole.roles[0]);
-        console.log(role_name)
+        this.userService.getUserById(this.id)
+        .subscribe((data) => {
+          if (data.roles[0].name === 'ADMIN') {
+            // Admin user can access all models
+            this.models = this.modelAdmin;
+          } 
 
-        switch (this.authService.UserRole.roles[0].name) {
-            //@ts-ignore
-            case 'admin':
-              this.models = this.modelAdmin;
-              break;
-              //@ts-ignore
-            case 'agent':
-              this.models = this.modelAgent;
-              break;
-              //@ts-ignore
-            case 'magasinier':
-              this.models = this.modelMagasinier;
-              break;
-              //@ts-ignore
-            case 'client':
-              this.models = this.modelClient;
-              break;
-            default:
-              this.models = [];
-              break;
-          }
-    }
+          else if (data.roles[0].name === 'AGENT') {
+            // Admin user can access all models
+            this.models = this.modelAgent;
+          } 
+          else if (data.roles[0].name === 'MAGASINIER') {
+            // Admin user can access all models
+            this.models = this.modelMagasinier;
+          } 
+          else if (data.roles[0].name === 'CLIENT') {
+            // Admin user can access all models
+            this.models = this.modelClient;
+          } 
+        });
+      
+        
 }
+}
+    
+   
+   
+
+   
+

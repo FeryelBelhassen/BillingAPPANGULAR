@@ -55,11 +55,11 @@
     
       <img src="assets/layout/images/img_avatar2.png" alt="Avatar" class="avatar">
       <div class="cog-icon">
-              <p class="username" > {{username}}  </p>
+              <p class="username" > {{username}} </p>
       </div>
     </div>
     
-    <ng-container *ngFor="let item of modelAdmin; let i = index;">
+    <ng-container *ngFor="let item of models; let i = index;">
       <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
       <li *ngIf="item.separator" class="menu-separator"></li>
     </ng-container>

@@ -3,6 +3,9 @@ import { Product } from 'src/app/demo/domain/product';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from '../../services/product.service';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { Route, Router } from '@angular/router';
 
 @Component({
     templateUrl: './product.component.html',
@@ -33,16 +36,21 @@ export class ProductComponent implements OnInit {
     idToDel:number=NaN;
 
     idToUpdate:number=NaN;
+
+    idToget:number=NaN;
     
     id!: number;
         
     MODE: string = 'CREATE';
 
-    constructor(private productService: ProductService, private messageService: MessageService) { }
+    constructor(private productService: ProductService, private messageService: MessageService,
+        public authService: AuthService, private userService: UserService, private router: Router) { 
+            this.id = this.authService.getAuthedUserID()
+        }
 
     ngOnInit() {
         ///this.productService.getProducts().then(data => this.products = data);
-        this.getProducts();
+        this.getProducts(this.id);
 
         this.cols = [
             { field: 'product', header: 'Product' },
@@ -55,14 +63,28 @@ export class ProductComponent implements OnInit {
 
     }
 
-    private getProducts(){
-        this.productService.getProducts()
-        .subscribe((data)=>{
-            console.log("hello !"+data)
-                this.products=data;
-            })
-            
-        } 
+    getProducts(id: number){
+        this.idToget= id;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
+               
+               if (data.roles[0].name ==='ADMIN'){
+                    if (data.roles[0].name === 'ADMIN'){
+                        this.productService.getProducts()
+                            .subscribe((data)=>{
+                            this.products=data;  
+                            console.log("Array -> "+this.products)
+                })
+            }        
+              
+                } else{
+                  //cas non
+                  this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                  this.router.navigate(['/home'])
+                }
+           
+          })
+        }
 
     openNew() {
         this.product = {};

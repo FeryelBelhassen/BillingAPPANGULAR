@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ERole } from '../../domain/Erole';
 import { Role } from '../../domain/Role';
 import { error } from 'console';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     templateUrl: './user.component.html',
@@ -53,6 +54,8 @@ export class UserComponent implements OnInit {
     idToUpdate:number=NaN;
 
     id!: number;
+
+    idToget: number=NaN;
     
     
     rowsPerPageOptions = [5, 10, 20];
@@ -60,8 +63,10 @@ export class UserComponent implements OnInit {
 
 
     constructor(private userService: UserService, private messageService: MessageService,
-        public formBuilder: FormBuilder, public router:Router) { 
+        public formBuilder: FormBuilder, public router:Router, public authService: AuthService) { 
+            this.id = this.authService.getAuthedUserID()
         }
+      
 
     ngOnInit() {   
        
@@ -74,18 +79,29 @@ export class UserComponent implements OnInit {
 
            
 
-        this.getUsers();
-    }
+        this.getUsers(this.id);
+        }
+     
+        getUsers(id: number){
+            this.idToget= id;
+            this.userService.getUserById(this.idToget)
+                .subscribe((data)=>{
+                   
+                   if (data.roles[0].name ==='ADMIN'){
 
-    private getUsers(){
-        this.userService.getAllUsers()
-        .subscribe((users)=>{
-                this.users=users;  
-                console.log("Array -> "+this.users)
-            })
-            
-        } 
-    
+                    this.userService.getAllUsers()
+                        .subscribe((users)=>{
+                            this.users=users;  
+                            console.log("Array -> "+this.users)
+                    })
+                    } else{
+                      //cas non
+                      this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                      this.router.navigate(['/home'])
+                    }
+               
+              })
+            }
 
     openNew() {
         this.user = new User(NaN, '', '', '', []);
@@ -112,6 +128,7 @@ export class UserComponent implements OnInit {
         this.users = this.users.filter(val => val.id !== this.user.id);
       
          this.userService.deleteUser(this.idToDel).subscribe((data) => {
+            
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
             this.ngOnInit();   
         }, error => {

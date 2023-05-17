@@ -6,6 +6,9 @@ import { ClientService } from '../../services/client.service';
 import { Client } from '../../domain/client';
 import { Observable } from 'rxjs';
 import { Facture } from '../../domain/facture';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
     templateUrl: './client.component.html',
@@ -37,6 +40,8 @@ export class ClientComponent implements OnInit {
 
     idToUpdate:number=NaN;
 
+    idToget:number=NaN;
+
     id!: number;
 
     DialogFacture: boolean = false;
@@ -58,7 +63,9 @@ export class ClientComponent implements OnInit {
     MODE: string = 'CREATE';
 
 
-    constructor(private clientService: ClientService, private messageService: MessageService) { }
+    constructor(private clientService: ClientService, private messageService: MessageService,
+         private router:Router, private authService: AuthService, private userService: UserService) { 
+             this.id = this.authService.getAuthedUserID()  }
 
     ngOnInit() {   
         
@@ -69,16 +76,30 @@ export class ClientComponent implements OnInit {
                 { field: 'telephone', header: 'Telephone' }
             ];
     
-    this.getClients();
+    this.getClients(this.id);
     }
 
-    private getClients(){
-        this.clientService.getAllClients()
-        .subscribe((data)=>{
-        this.clients=data;
-         })
-                
-    }
+    getClients(id: number){
+        this.idToget= id;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
+               
+               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='AGENT'){
+
+                this.clientService.getAllClients()
+                    .subscribe((clients)=>{
+                        this.clients=clients;  
+                        console.log("Array -> "+this.clients)
+                })
+                } else{
+                  //cas non
+                  this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                  this.router.navigate(['/home'])
+                }
+           
+          })
+        }
+
     
     openNew() {
         this.client = {};

@@ -21,6 +21,10 @@ export class FactureService {
     return this.http.get<Facture[]>(`${API_URL}/factures`);
   }
 
+  getFactures(): Observable<Facture[]> {
+    return this.http.get<Facture[]>(`${API_URL}/factureclient`);
+  }
+  
   public createFacture(facture: Facture): Observable<any> {
     return this.http.post(`${API_URL}/addfacture`, facture);
   }

@@ -10,6 +10,8 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { DashboardsRoutingModule } from './dashboard-routing.module';
 import { PowerBIEmbedModule } from 'powerbi-client-angular';
+import { MessagesModule } from 'primeng/messages';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { PowerBIEmbedModule } from 'powerbi-client-angular';
         PanelMenuModule,
         ButtonModule,
         DashboardsRoutingModule,
-        PowerBIEmbedModule
+        PowerBIEmbedModule,
+        MessagesModule,
+        ToastModule
     ],
     declarations: [DashboardComponent]
 })

@@ -10,6 +10,9 @@ import { ClientService } from '../../services/client.service';
 import { Product } from '../../domain/product';
 import { ProductService } from '../../services/product.service';
 import { FormBuilder } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './factureavoir.component.html',
@@ -62,8 +65,11 @@ export class FactureAvoirComponent implements OnInit {
 
     idToDel:number=NaN;
 
+    idToget:number=NaN;
+
     selectedProduct: any;
 
+    id :number;
 
     productList: Product []=[{
         'code' : 0 , 'designation': '', 'quantity': 0 ,
@@ -72,11 +78,15 @@ export class FactureAvoirComponent implements OnInit {
 
 
     constructor(private factureavoirService: FactureAvoirService, private messageService: MessageService, 
-        private clientService: ClientService , private productService: ProductService , private fb:FormBuilder) { }
+        private clientService: ClientService , private productService: ProductService , private fb:FormBuilder,
+        private authService: AuthService, private userService: UserService,
+        private router: Router) { 
+            this.id= this.authService.getAuthedUserID()
+        }
 
     ngOnInit() {
    
-        this.getFacturesAvoir();
+        this.getFacturesAvoir(this.id);
 
         this.cols = [
             { field: 'numfactureavoir', header: 'NumeroFactureAvoir' },
@@ -96,14 +106,26 @@ export class FactureAvoirComponent implements OnInit {
         });
     }    
 
-    private getFacturesAvoir(){
-        this.factureavoirService.getAllFactureAvoir()
-        .subscribe((data)=>{
-            console.log("hello !"+data)
-                this.facturesavoir=data;
+    getFacturesAvoir(id: number){
+        this.idToget= id;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
                
-            })
+               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT'){
+    
+                        this.factureavoirService.getAllFactureAvoir()
+                            .subscribe((data)=>{
+                            this.facturesavoir=data;  
+                            console.log("Array -> "+this.facturessavoir)
+                })
             
+                } else{
+                  //cas non
+                  this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                  this.router.navigate(['/home'])
+                }
+           
+          })
         }
 
     openNew() {

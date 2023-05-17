@@ -5,6 +5,9 @@ import { Table } from 'primeng/table';
 import { DevisService } from '../../services/devis.service';
 import { Devis } from '../../domain/devis';
 import { Client } from '../../domain/client';
+import { Route, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
     templateUrl: './devis.component.html',
@@ -38,9 +41,14 @@ export class DevisComponent implements OnInit {
 
     idToUpdate:number=NaN;
 
+    idToget:number=NaN;
+
     id!: number;
 
-    constructor(private devisService: DevisService, private messageService: MessageService) { }
+    constructor(private devisService: DevisService, private messageService: MessageService,
+        private router: Router, private authService: AuthService, private userService: UserService) { 
+            this.id= this.authService.getAuthedUserID();
+        }
 
     ngOnInit() {
        
@@ -52,15 +60,29 @@ export class DevisComponent implements OnInit {
           
         ];
 
-    this.getallDevis();
+    this.getallDevis(this.id);
     }
 
-    private getallDevis(){
-        this.devisService.getAllDevis()
-        .subscribe((data)=>{
-            console.log("hello !"+data)
-                this.deviss=data;
-            })
+    private getallDevis(id: number){
+        this.idToget= id;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
+               
+               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT'){
+    
+                        this.devisService.getAllDevis()
+                            .subscribe((data)=>{
+                            this.deviss=data;  
+                            console.log("Array -> "+this.deviss)
+                })
+            
+                } else{
+                  //cas non
+                  this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                  this.router.navigate(['/home'])
+                }
+           
+          })
             
         }
 

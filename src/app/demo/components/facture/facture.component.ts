@@ -13,6 +13,9 @@ import * as FileSaver from 'file-saver';
 import { HttpClient } from '@angular/common/http';
 //import * as jsPDF from 'jspdf';
 import { jsPDF } from "jspdf";
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './facture.component.html',
@@ -61,24 +64,31 @@ export class FactureComponent implements OnInit {
 
     idToDel:number=NaN;
 
+    idToget:number=NaN;
+
     selectedProduct: any;
 
     selectedProducts = []
 
     formGroup!: FormGroup;
 
+    id: number;
+
    // selectedProducts: Product[] = [];
 
     
     constructor(private factureService: FactureService, private messageService: MessageService, 
         private clientService: ClientService , private productService: ProductService , private fb:FormBuilder,
-        private http: HttpClient) { }
+        private http: HttpClient, private authService: AuthService, private userService: UserService,
+        private router: Router) { 
+            this.id = this.authService.getAuthedUserID()
+        }
     
          
     
     ngOnInit() {
     
-        this.getFactures();
+        this.getFactures(this.id);
        
         this.cols = [
             { field: 'numerofacture', header: 'NumeroFacture' },
@@ -101,14 +111,25 @@ export class FactureComponent implements OnInit {
 
         
 
-    private getFactures(){
-        this.factureService.getAllFactures()
-        .subscribe((data)=>{
-            console.log("hello !"+data)
-                this.factures=data;
+    getFactures(id: number){
+        this.idToget= id;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
                
-            })
-            
+               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT'){
+                  this.factureService.getAllFactures()
+                     .subscribe((data)=>{
+                        this.factures=data;  
+                        console.log("Array -> "+this.factures)
+                })      
+              
+                } else{
+                  //cas non
+                  this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                  this.router.navigate(['/home'])
+                }
+           
+          })
         }
 
     openNew() {

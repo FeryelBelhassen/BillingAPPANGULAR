@@ -20,6 +20,7 @@ import { AppLayoutComponent } from "./app.layout.component";
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import { MessagesModule } from 'primeng/messages';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { MenuModule } from 'primeng/menu';
         AppConfigModule,
         OverlayPanelModule,
         ButtonModule,
-        MenuModule
+        MenuModule,
+        MessagesModule
     ],
     exports: [AppLayoutComponent]
 })

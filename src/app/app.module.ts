@@ -37,6 +37,8 @@ import { AccordionModule } from 'primeng/accordion';
 import { DialogModule } from 'primeng/dialog';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
+import { MessagesModule } from 'primeng/messages';
+import { MessageService } from 'primeng/api';
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,14 +63,15 @@ import { TableModule } from 'primeng/table';
     DialogModule,
     MultiSelectModule,
     TableModule,
-    FormsModule
+    FormsModule,
+    MessagesModule
     
     
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy},
         UserService, FactureService, EventService, IconService, NodeService,
-        PhotoService, ProductService,JwtHelperService, AuthService, AuthGuard, 
+        PhotoService, ProductService,JwtHelperService, AuthService, AuthGuard, MessageService,
       
         { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
 

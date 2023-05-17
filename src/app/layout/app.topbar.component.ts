@@ -100,9 +100,6 @@ export class AppTopBarComponent {
     
   } 
 
-
-
-
   logout() {
     this.authService.logout();
     this.route.navigateByUrl('/auth/login');
