@@ -5,6 +5,7 @@ export class Product {
     quantity?: number;
     supplier?: string;
     price?: number; 
+    total?: number;
 
   
 }

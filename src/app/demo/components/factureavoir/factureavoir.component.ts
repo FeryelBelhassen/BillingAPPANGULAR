@@ -111,7 +111,7 @@ export class FactureAvoirComponent implements OnInit {
         this.userService.getUserById(this.idToget)
             .subscribe((data)=>{
                
-               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT'){
+               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT' || data.roles[0].name ==='MAGASINIER'){
     
                         this.factureavoirService.getAllFactureAvoir()
                             .subscribe((data)=>{

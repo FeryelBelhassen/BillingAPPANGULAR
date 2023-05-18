@@ -8,7 +8,8 @@ export class Facture {
     product?: Product[];
     datefacture?: Date;
     montanttc?: number;
-    montantht?: number;   
+    montantht?: number; 
+    total?: number;  
     
 }
 

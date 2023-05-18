@@ -8,6 +8,7 @@ import { Client } from '../../domain/client';
 import { Route, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
     templateUrl: './devis.component.html',
@@ -45,8 +46,11 @@ export class DevisComponent implements OnInit {
 
     id!: number;
 
+    products: Product[] = [];
+
     constructor(private devisService: DevisService, private messageService: MessageService,
-        private router: Router, private authService: AuthService, private userService: UserService) { 
+        private router: Router, private authService: AuthService, private userService: UserService,
+        private productService: ProductService) { 
             this.id= this.authService.getAuthedUserID();
         }
 
@@ -60,6 +64,11 @@ export class DevisComponent implements OnInit {
           
         ];
 
+        this.productService.getProducts().subscribe(data => {
+            this.products = data;
+           
+        });
+
     this.getallDevis(this.id);
     }
 
@@ -68,7 +77,7 @@ export class DevisComponent implements OnInit {
         this.userService.getUserById(this.idToget)
             .subscribe((data)=>{
                
-               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT'){
+               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT' || data.roles[0].name ==='MAGASINIER'){
     
                         this.devisService.getAllDevis()
                             .subscribe((data)=>{
@@ -152,6 +161,7 @@ export class DevisComponent implements OnInit {
          const toAdd: Devis = {
              'numerodevis': this.devis.numerodevis,
              'datedevis' :this.devis.datedevis ,
+             //'product': this.devis.product as Product[],
              'quantity': this.devis.quantity,
              'price' : this.devis.price
              };
@@ -187,7 +197,7 @@ export class DevisComponent implements OnInit {
     }
     }
    
-
+    
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }

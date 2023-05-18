@@ -96,8 +96,8 @@ export class UserComponent implements OnInit {
                     })
                     } else{
                       //cas non
-                      this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
-                      this.router.navigate(['/home'])
+                      //this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                      this.router.navigate(['/auth/error'])
                     }
                
               })

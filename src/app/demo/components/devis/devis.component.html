@@ -34,6 +34,7 @@
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="numerodevis">NumeroDevis <p-sortIcon field="numerodevis"></p-sortIcon></th>
                         <th pSortableColumn="datedevis">DateDevis <p-sortIcon field="datedevis"></p-sortIcon></th>
+                        <th pSortableColumn="product">Product <p-sortIcon field="product"></p-sortIcon></th>
                         <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
@@ -54,6 +55,13 @@
                        
                             {{devis.datedevis}}
                         </td>
+                        
+                        <td style="width:14%; min-width:10rem;">
+                            <p-table  [value]="devis.product" selectionMode="single" [(selection)]="products">
+                            {{devis.product.designation}}
+                        </p-table>
+                        </td>
+                        
                         <td style="width:14%; min-width:10rem;">
                             {{devis.quantity}}
                         </td>
@@ -86,9 +94,14 @@
 
 
                 <div class="field">
-                    <label for="datedevis">Date</label>
+                    <label for="datedevis">DateDevis</label>
                     <input type="date" pInputText id="datedevis" [(ngModel)]="devis.datedevis" >
                 </div>
+                <div class="field">
+                    <label for="product">Product</label>
+                    <input type="date" pInputText id="datedevis" [(ngModel)]="devis.datedevis" >
+                </div>
+
 
                 <div class="field">
                     <label for="quantity">Quantity</label>
@@ -134,7 +147,7 @@
                     </tr>
                 </ng-template>
      
-               
+            
         <div class="invoice">
             <div class="invoice-header">
                 <div class="invoice-company">

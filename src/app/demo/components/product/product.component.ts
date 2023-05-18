@@ -40,17 +40,19 @@ export class ProductComponent implements OnInit {
     idToget:number=NaN;
     
     id!: number;
+
+    iduser: number;
         
     MODE: string = 'CREATE';
 
     constructor(private productService: ProductService, private messageService: MessageService,
         public authService: AuthService, private userService: UserService, private router: Router) { 
-            this.id = this.authService.getAuthedUserID()
+            this.iduser = this.authService.getAuthedUserID()
         }
 
     ngOnInit() {
         ///this.productService.getProducts().then(data => this.products = data);
-        this.getProducts(this.id);
+        this.getProducts(this.iduser);
 
         this.cols = [
             { field: 'product', header: 'Product' },
@@ -63,19 +65,19 @@ export class ProductComponent implements OnInit {
 
     }
 
-    getProducts(id: number){
-        this.idToget= id;
+    getProducts(iduser: number){
+        this.idToget= iduser;
         this.userService.getUserById(this.idToget)
             .subscribe((data)=>{
                
-               if (data.roles[0].name ==='ADMIN'){
-                    if (data.roles[0].name === 'ADMIN'){
-                        this.productService.getProducts()
-                            .subscribe((data)=>{
+               if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' || data.roles[0].name ==='CLIENT'){
+                    
+                    this.productService.getProducts()
+                        .subscribe((data)=>{
                             this.products=data;  
                             console.log("Array -> "+this.products)
                 })
-            }        
+                   
               
                 } else{
                   //cas non
@@ -86,24 +88,67 @@ export class ProductComponent implements OnInit {
           })
         }
 
-    openNew() {
-        this.product = {};
-        this.submitted = false;
-        this.productDialog = true;
-    }
+    openNew(iduser :number) {
+        this.idToget= iduser;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
+               
+               if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
+
+                   this.product = {};
+                   this.submitted = false;
+                   this.productDialog = true;
+               }
+               else{
+                //cas non
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                this.router.navigate(['/auth/error'])
+              }
+            })
+    
+}
 
 
-    editProduct(id:number, data: Product) {
-        this.product=data;
-        this.productDialog = true; 
-        this.idToUpdate = id;
-        this.MODE = 'APPEND'      
+    editProduct(id:number, product: Product, iduser: number) {
+        this.idToget= iduser;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
+               
+               if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
+
+                this.product=product;
+                this.productDialog = true; 
+                this.idToUpdate = id;
+                this.MODE = 'APPEND'    
+               }
+               else{
+                //cas non
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                this.router.navigate(['/auth/error'])
+              }
+            })
+    
+         
      }
 
-    deleteProduct(id: number) {
-        this.deleteProductDialog = true;
-        this.product = { ...this.product }   
-        this.idToDel  = id
+    deleteProduct(id: number, iduser: number) {
+        this.idToget= iduser;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
+               
+               if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
+
+                this.deleteProductDialog = true;
+                this.product = { ...this.product }   
+                this.idToDel  = id
+               }
+               else{
+                //cas non
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                this.router.navigate(['/auth/error'])
+              }
+            })
+        
     }
 
     confirmDelete() {

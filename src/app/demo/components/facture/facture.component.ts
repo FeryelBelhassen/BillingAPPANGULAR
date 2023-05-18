@@ -34,6 +34,8 @@ export class FactureComponent implements OnInit {
 
     deleteFacturesDialog: boolean = false;
 
+    afficheFactureDialog: boolean = false;
+
     factures: Facture[] = [];
 
     facture!: Facture | any ;
@@ -66,29 +68,35 @@ export class FactureComponent implements OnInit {
 
     idToget:number=NaN;
 
+    idfacture:number=NaN;
+
     selectedProduct: any;
 
     selectedProducts = []
 
     formGroup!: FormGroup;
 
-    id: number;
+    id!: number;
+    total: number = 0;
 
+    iduser:number;
    // selectedProducts: Product[] = [];
+   
 
     
     constructor(private factureService: FactureService, private messageService: MessageService, 
         private clientService: ClientService , private productService: ProductService , private fb:FormBuilder,
         private http: HttpClient, private authService: AuthService, private userService: UserService,
         private router: Router) { 
-            this.id = this.authService.getAuthedUserID()
+            this.iduser = this.authService.getAuthedUserID()
         }
     
          
     
     ngOnInit() {
     
-        this.getFactures(this.id);
+        this.getFactures(this.iduser);
+        
        
         this.cols = [
             { field: 'numerofacture', header: 'NumeroFacture' },
@@ -111,12 +119,12 @@ export class FactureComponent implements OnInit {
 
         
 
-    getFactures(id: number){
-        this.idToget= id;
+    getFactures(iduser: number){
+        this.idToget= iduser;
         this.userService.getUserById(this.idToget)
             .subscribe((data)=>{
                
-               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT'){
+               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT' || data.roles[0].name ==='MAGASINIER'){
                   this.factureService.getAllFactures()
                      .subscribe((data)=>{
                         this.factures=data;  
@@ -132,11 +140,25 @@ export class FactureComponent implements OnInit {
           })
         }
 
-    openNew() {
-        this.facture={};
-        this.submitted = false;
-        this.MODE = 'CREATE';
-        this.DialogFacture = true;
+    openNew(iduser: number) {
+        this.idToget= iduser;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
+               
+               if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
+
+                this.facture={};
+                this.submitted = false;
+                this.MODE = 'CREATE';
+                this.DialogFacture = true;
+               }
+               else{
+                //cas non
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                this.router.navigate(['/auth/error'])
+              }
+            })
+       
      }
 
     ajouterClient(){
@@ -158,34 +180,47 @@ export class FactureComponent implements OnInit {
         window.print()
       }
 
-    printFacture(id: number) {
-        this.http.get<Facture>(`/factures/${id}`).subscribe(facture => {
-            const doc = new jsPDF();
-            doc.text(`Facture #${facture.id}`, 10, 10);
-            doc.text(`Client: ${facture.client}`, 10, 20);
-            doc.text(`Product: ${facture.product}`, 10, 30);
-            doc.text(`Date: ${facture.datefacture}`, 10, 40);
-            doc.text(`Montanttc: ${facture.montanttc}`, 10, 50);
-            doc.text(`Montantht: ${facture.montantht}`, 10, 60);
-            doc.save(`facture-${facture.id}.pdf`);
-          });
-        }
+
+    editFacture(id:number, facture:Facture, iduser:number) {
+        this.idToget= iduser;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
+               
+               if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
+
+                this.facture=facture;
+                this.DialogFacture = true; 
+                this.idToUpdate = id;
+                this.MODE = 'APPEND'
+               }
+               else{
+                //cas non
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                this.router.navigate(['/auth/error'])
+              }
+            })
         
-      
-      
-
-
-    editFacture(id:number, data:Facture) {
-        this.facture=data;
-        this.DialogFacture = true; 
-        this.idToUpdate = id;
-        this.MODE = 'APPEND'      
+             
      }
 
-     deleteFacture(id: number) {
-        this.deleteFactureDialog = true;
-        this.facture = { ...this.facture }   
-        this.idToDel  = id
+    deleteFacture(id: number, iduser: number) {
+        this.idToget= iduser;
+        this.userService.getUserById(this.idToget)
+            .subscribe((data)=>{
+               
+               if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
+
+                this.deleteFactureDialog = true;
+                this.facture = { ...this.facture }   
+                this.idToDel  = id
+               }
+               else{
+                //cas non
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+                this.router.navigate(['/auth/error'])
+              }
+            })
+    
     }
 
     confirmDelete() {
@@ -217,7 +252,23 @@ export class FactureComponent implements OnInit {
         this.productDialog = false;
         this.submitted = false;
     }
+
+    afficherFacture(id: number) {
+       this.afficheFactureDialog = true;
+        this.facture = { ...this.facture }   
+        this.idfacture  = id
+    }
    
+
+    calculateTotal(quantity: number, price: number): number {
+        if (typeof quantity === 'number' && typeof price === 'number') {
+          return quantity * price;
+        } else {
+          return 0;
+        }
+      }
+
+    
     saveFacture() {
         
             if (this.MODE === 'CREATE'){

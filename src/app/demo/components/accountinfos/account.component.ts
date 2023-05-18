@@ -87,7 +87,7 @@ export class AccountComponent implements OnInit {
         this.userService.getUserById(this.idToget)
           .subscribe((data)=>{
            
-            if (data.roles[0].name ==='ADMIN'){
+            if (data.roles[0].name ==='ADMIN' ){
               console.log(data.roles[0].name)
                 // cas oui 
               this.users = [data];
@@ -95,8 +95,8 @@ export class AccountComponent implements OnInit {
           
             } else{
               //cas non
-              this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
-              this.router.navigate(['/home'])
+              //this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
+              this.router.navigate(['/auth/error'])
             }
        
       })

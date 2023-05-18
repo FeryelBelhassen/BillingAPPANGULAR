@@ -30,3 +30,87 @@
   button {
     grid-column: 3/ span 1;
   }
+
+  .logo-image{
+    width: 100px;
+    height: 100px;
+    text-align: right;
+    float: right;
+  }
+
+  
+
+  .company-name{
+    font-weight: bold;
+    font-size: medium;
+  }
+
+  
+
+  .logo-nst{
+     float: left;
+     width: 150px;
+     height: 100px;
+  }
+
+  
+  .invoice-label {
+    display: inline-block;
+    width: 100px; /* Adjust the width as needed */
+    font-weight: bold; /* Optionally set the label in bold */
+    margin-left: 370px;
+  }
+
+  .invoice-value {
+    display: inline-block;
+    margin-left: 5px; /* Adjust the margin as needed */
+  }
+
+  .invoice-label1 {
+    display: inline-block;
+    width: 100px; /* Adjust the width as needed */
+    font-weight: bold; /* Optionally set the label in bold */
+    margin-left: 370px;
+  }
+
+  .invoice-value1 {
+    display: inline-block;
+    margin-left: 5px; /* Adjust the margin as needed */
+  }
+  .invoice-label2 {
+    display: inline-block;
+    width: 100px; /* Adjust the width as needed */
+    font-weight: bold; /* Optionally set the label in bold */
+    margin-left: 520px;
+  }
+
+  .invoice-value2 {
+    display: inline-block;
+    margin-left: 5px; /* Adjust the margin as needed */
+  }
+
+ 
+  .invoice-label3 {
+    display: inline-block;
+    width: 100px; /* Adjust the width as needed */
+    font-weight: bold; /* Optionally set the label in bold */
+    margin-left: 620px;
+  }
+
+  .invoice-value3 {
+    display: inline-block;
+    margin-left: 2px;
+  }
+
+ 
+  .print-button {
+    display: block;
+   
+  }
+  
+  @media print {
+    .print-button {
+      display: none;
+    }
+  }
+  
