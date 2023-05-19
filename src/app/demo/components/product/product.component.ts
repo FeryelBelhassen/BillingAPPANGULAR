@@ -6,6 +6,8 @@ import { ProductService } from '../../services/product.service';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { Route, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Client } from '../../domain/client';
 
 @Component({
     templateUrl: './product.component.html',
@@ -18,6 +20,8 @@ export class ProductComponent implements OnInit {
     deleteProductDialog: boolean = false;
 
     deleteProductsDialog: boolean = false;
+
+    commandeproductDialog: boolean = false;
 
     products: Product[] = [];
 
@@ -38,6 +42,8 @@ export class ProductComponent implements OnInit {
     idToUpdate:number=NaN;
 
     idToget:number=NaN;
+
+    idTocommande:number=NaN;
     
     id!: number;
 
@@ -45,8 +51,14 @@ export class ProductComponent implements OnInit {
         
     MODE: string = 'CREATE';
 
+    client!: Client;
+
+    selectedProduit! : any[];
+
+    clientID!: number;
+
     constructor(private productService: ProductService, private messageService: MessageService,
-        public authService: AuthService, private userService: UserService, private router: Router) { 
+        public authService: AuthService, private userService: UserService, private router: Router, private http: HttpClient) { 
             this.iduser = this.authService.getAuthedUserID()
         }
 
@@ -217,7 +229,20 @@ export class ProductComponent implements OnInit {
     
     }
 
+    commanderProduct(iduser: number): void {
+        const factureRequest = {
+          produits: [this.selectedProduit]
+        };
     
+        this.http.post<any>(`/api/commande/client/${this.iduser}/facture`, factureRequest)
+          .subscribe(facture => {
+            console.log('Facture créée :', facture);
+            // Ajoutez ici le code pour afficher un message de succès ou effectuer d'autres actions
+          });
+      }
+
+    
+      
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }

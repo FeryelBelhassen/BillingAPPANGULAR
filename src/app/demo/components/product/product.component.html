@@ -64,6 +64,7 @@
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product.id, product, iduser)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product.id, iduser)"></button>
+                                <button pButton pRipple icon="pi pi-box" class="p-button-rounded p-button-info" (click)="commanderProduct(iduser)"></button>
                             </div>
                         </td>
                     </tr>
@@ -120,5 +121,8 @@
             </div>
            
         </p-dialog>
+
+        
+        
     </div>
 </div>
