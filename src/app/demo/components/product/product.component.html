@@ -76,30 +76,30 @@
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="code">Code</label>
-                    <input type="text" pInputText id="code" [(ngModel)]="product.code" />
+                    <input type="text" pInputText id="code" [(ngModel)]="product.code" placeholder="Code" />
                 </div>
                 <div class="field">
                     <label for="designation">Designation</label>
-                    <input type="text" pInputText id="designation" [(ngModel)]="product.designation" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.designation}"/>
+                    <input type="text" pInputText id="designation" [(ngModel)]="product.designation" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.designation}" placeholder="Designation"/>
                 </div>
                 <div class="field">
                     <label for="quantity">Quantity</label>
-                    <p-inputNumber id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
+                    <p-inputNumber id="quantity" [(ngModel)]="product.quantity" placeholder="Quantity"></p-inputNumber>
                 </div>
                 <div class="field">
                 <label for="supplier">Supplier</label>
-                <input type="text" pInputText id="supplier" [(ngModel)]="product.supplier" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.supplier}"/>
+                <input type="text" pInputText id="supplier" [(ngModel)]="product.supplier" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.supplier}" placeholder="Supplier"/>
                 </div>
                 <div class="field">
                     <label for="price">Price</label>
-                    <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="TND" ></p-inputNumber>
+                    <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="TND" placeholder="Price"></p-inputNumber>
                 </div>
                
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-info" (click)="saveProduct()"></button>
             </ng-template>
         </p-dialog>
 
@@ -109,8 +109,8 @@
                 <span *ngIf="product">Are you sure you want to delete <b>{{product.designation}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteProductDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger" label="No" (click)="deleteProductDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-info" label="Yes" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
 

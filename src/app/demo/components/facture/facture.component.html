@@ -158,8 +158,8 @@
                
             </ng-template>
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveFacture()"></button>
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-info" (click)="saveFacture()"></button>
             </ng-template>
         </p-dialog>
 
@@ -235,8 +235,8 @@
                 <span *ngIf="facture">Are you sure you want to delete <b>{{facture.numerofacture}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteFactureDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger" label="No" (click)="deleteFactureDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-info" label="Yes" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
       <!--Print Facture-->    
