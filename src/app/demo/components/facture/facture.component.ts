@@ -258,7 +258,9 @@ export class FactureComponent implements OnInit {
         this.facture = { ...this.facture }   
         this.idfacture  = id
     }
-   
+    payerFacture(id:number){
+        this.router.navigate(['/payment'])
+    }
 
     calculateTotal(quantity: number, price: number): number {
         if (typeof quantity === 'number' && typeof price === 'number') {

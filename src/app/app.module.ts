@@ -39,6 +39,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
+import { PaymentModule } from './demo/components/payment/payment.module';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +66,9 @@ import { MessageService } from 'primeng/api';
     MultiSelectModule,
     TableModule,
     FormsModule,
-    MessagesModule
+    MessagesModule,
+    PaymentModule,
+    HttpClientModule
     
     
   ],
