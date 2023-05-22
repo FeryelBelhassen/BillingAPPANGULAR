@@ -129,11 +129,11 @@ export class UserComponent implements OnInit {
       
          this.userService.deleteUser(this.idToDel).subscribe((data) => {
             
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur supprimé', life: 3000 });
             this.ngOnInit();   
         }, error => {
           console.log(error);
-          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+          this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Erreur de suppression! ', life: 3000 });
           
         });
     }
@@ -156,12 +156,12 @@ export class UserComponent implements OnInit {
             };
         this.userService.createUser(toAdd).subscribe( data =>{
             console.log(data);
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur ajouté', life: 3000 });
             this.userDialog = false;
             this.ngOnInit();   
             }, error => {
                 console.log(error);
-                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Erreur d\'ajout! ', life: 3000 });
                 this.userDialog = false;
                 } );
             
@@ -176,12 +176,12 @@ export class UserComponent implements OnInit {
           }
         
         this.userService.updateUser(this.idToUpdate, toEdit).subscribe( (data) =>{
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User modifiée', life: 3000 });
             this.userDialog = false;
             this.ngOnInit();   
           }, error => {
             console.log(error);
-            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Erreur de modification! ', life: 3000 });
             this.userDialog = false;
             } );
     }

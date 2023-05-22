@@ -228,7 +228,7 @@ export class FactureComponent implements OnInit {
         this.factures = this.factures.filter(val => val.id !== this.facture.id);
       
          this.factureService.deleteFacture(this.idToDel).subscribe((data) => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Deleted', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture supprimée ', life: 3000 });
             this.ngOnInit();   
         }, error => {
           console.log(error);
@@ -287,12 +287,12 @@ export class FactureComponent implements OnInit {
                         
              this.factureService.createFacture(toAdd).subscribe( data =>{
                  console.log(data);
-                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Created', life: 3000 });
+                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture ajoutée', life: 3000 });
                  this.DialogFacture = false;
                  this.ngOnInit();   
                  }, error => {
                      console.log(error);
-                     this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                     this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Erreur d\'ajout! ', life: 3000 });
                      this.DialogFacture = false;
                 } );
 
@@ -308,12 +308,12 @@ export class FactureComponent implements OnInit {
           }
         
         this.factureService.updateFacture(this.idToUpdate, toEdit).subscribe( (data) =>{
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Updated', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture modifiée', life: 3000 });
             this.DialogFacture = false;
             this.ngOnInit();   
           }, error => {
             console.log(error);
-            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Erreur d\'e modification! ', life: 3000 });
             this.DialogFacture = false;
             } );
     }

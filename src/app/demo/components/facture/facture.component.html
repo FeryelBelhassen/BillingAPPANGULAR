@@ -80,13 +80,13 @@
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFacture(facture.id,facture, iduser)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteFacture(facture.id, iduser)"></button>
                                 <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info" (click)="afficherFacture(facture.id)"></button>
-                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info" (click)="payerFacture(facture.id)"></button>
+                                
                             </div>
                         
                     </tr>
                     <p-overlayPanel #op [style]="{'width': '450px'}" [showCloseIcon]="true">
                         <ng-template pTemplate="content" >
-                            <p-table  [value]="facture.product" selectionMode="single" [(selection)]="products"  [paginator]="true" [rows]="5" responsiveLayout="scroll">
+                            <p-table  [value]="facture.product" selectionMode="single" [(selection)]="products" >
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th pSortableColumn="name">Designation<p-sortIcon field="name"></p-sortIcon></th>
@@ -195,8 +195,8 @@
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialogClient()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveClient()"></button>
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="hideDialogClient()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-info" (click)="saveClient()"></button>
             </ng-template>
         </p-dialog>
  <!--Ajouter Product--> 
@@ -225,8 +225,8 @@
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialogProduct()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="hideDialogProduct()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-info" (click)="saveProduct()"></button>
             </ng-template>
         </p-dialog>
     
