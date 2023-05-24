@@ -176,7 +176,7 @@ export class UserComponent implements OnInit {
           }
         
         this.userService.updateUser(this.idToUpdate, toEdit).subscribe( (data) =>{
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User modifiée', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur modifié', life: 3000 });
             this.userDialog = false;
             this.ngOnInit();   
           }, error => {
