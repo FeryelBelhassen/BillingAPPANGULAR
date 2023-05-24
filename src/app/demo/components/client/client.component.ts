@@ -57,25 +57,25 @@ export class ClientComponent implements OnInit {
     facture!: Facture ;
 
     product!: Product;
-    
+
     facturess:Array<Facture> = [];
 
     MODE: string = 'CREATE';
 
 
     constructor(private clientService: ClientService, private messageService: MessageService,
-         private router:Router, private authService: AuthService, private userService: UserService) { 
+         private router:Router, private authService: AuthService, private userService: UserService) {
              this.id = this.authService.getAuthedUserID()  }
 
-    ngOnInit() {   
-        
+    ngOnInit() {
+
             this.cols = [
                 { field: 'name', header: 'Name' },
                 { field: 'email', header: 'Email' },
                 { field: 'adresse', header: 'Adresse' },
                 { field: 'telephone', header: 'Telephone' }
             ];
-    
+
     this.getClients(this.id);
     }
 
@@ -83,12 +83,12 @@ export class ClientComponent implements OnInit {
         this.idToget= id;
         this.userService.getUserById(this.idToget)
             .subscribe((data)=>{
-               
+
                if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='AGENT'){
 
                 this.clientService.getAllClients()
                     .subscribe((clients)=>{
-                        this.clients=clients;  
+                        this.clients=clients;
                         console.log("Array -> "+this.clients)
                 })
                 } else{
@@ -96,11 +96,11 @@ export class ClientComponent implements OnInit {
                   this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
                   this.router.navigate(['/home'])
                 }
-           
+
           })
         }
 
-    
+
     openNew() {
         this.client = {};
         this.submitted = false;
@@ -108,38 +108,32 @@ export class ClientComponent implements OnInit {
         this.clientDialog = true;
     }
 
-    ajouterFacture() {
-        this.facture={};
-        this.submitted = false;
-        this.MODE = 'CREATE';
-        this.DialogFacture = true;
-     }
 
     editClient(id:number, data: Client) {
         this.client=data;
-        this.clientDialog = true; 
+        this.clientDialog = true;
         this.idToUpdate = id;
-        this.MODE = 'APPEND'      
+        this.MODE = 'APPEND'
      }
 
 
      deleteClient(id: number) {
         this.deleteClientDialog = true;
-        this.client = { ...this.client }   
+        this.client = { ...this.client }
         this.idToDel  = id
     }
 
     confirmDelete() {
         this.deleteClientDialog = false;
         this.clients = this.clients.filter(val => val.id !== this.client.id);
-      
+
          this.clientService.deleteClient(this.idToDel).subscribe((data) => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Deleted', life: 3000 });
-            this.ngOnInit();   
+            this.ngOnInit();
         }, error => {
           console.log(error);
           this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-          
+
         });
     }
 
@@ -162,17 +156,17 @@ export class ClientComponent implements OnInit {
                 console.log(data);
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
                 this.clientDialog = false;
-                this.ngOnInit();   
+                this.ngOnInit();
                 }, error => {
                     console.log(error);
                     this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
                     this.clientDialog = false;
                     } );
-                
-    
-    
+
+
+
         } else if( this.MODE === 'APPEND') {
-           
+
             const toEdit: Client=  {
                 'username': this.client.username,
                 'email' :this.client.email ,
@@ -180,21 +174,21 @@ export class ClientComponent implements OnInit {
                 'adresse' : this.client.adresse,
                 'telephone': this.client.telephone
               }
-            
+
             this.clientService.updateClient(this.idToUpdate,toEdit).subscribe( (data) =>{
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Updated', life: 3000 });
                 this.clientDialog = false;
-                this.ngOnInit();   
+                this.ngOnInit();
               }, error => {
                 console.log(error);
                 this.clientDialog = false;
                 this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
                 } );
         }
-        
+
     }
 
-   
+
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }

@@ -1,61 +1,15 @@
+  <iframe title="dashboard" width="100%"
+          height="800px"
+          src="https://app.powerbi.com/reportEmbed?reportId=ae571d60-6640-4e19-a85c-d73b39e8b76e&autoAuth=true&ctid=2c2aec12-567a-4c5f-a447-e3c2f7ae8ffb"
+          frameborder="0" allowFullScreen="true"></iframe>
 
-<div class="grid">
-    <div class="col-12 lg:col-6 xl:col-3">
-        <p-toast></p-toast>
-        <p-messages></p-messages>
-        <div class="card mb-0">
-            <div class="flex justify-content-between mb-3">
-                <div>
-                    <span class="block text-500 font-medium mb-3">Orders</span>
-                    <div class="text-900 font-medium text-xl">152</div>
-                </div>
-                <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                    <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
-                </div>
-            </div>
-            <span class="text-green-500 font-medium">24 new </span>
-            <span class="text-500">since last visit</span>
-        </div>
-    </div>
-    <div class="col-12 lg:col-6 xl:col-3">
-        <div class="card mb-0">
-            <div class="flex justify-content-between mb-3">
-                <div>
-                    <span class="block text-500 font-medium mb-3">Revenue</span>
-                    <div class="text-900 font-medium text-xl">$2.100</div>
-                </div>
-                <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                    <i class="pi pi-map-marker text-orange-500 text-xl"></i>
-                </div>
-            </div>
-            <span class="text-green-500 font-medium">%52+ </span>
-            <span class="text-500">since last week</span>
-        </div>
-    </div>
-    <div class="col-12 lg:col-6 xl:col-3">
-        <div class="card mb-0">
-            <div class="flex justify-content-between mb-3">
-                <div>
-                    <span class="block text-500 font-medium mb-3">Users</span>
-                    <div class="text-900 font-medium text-xl">5</div>
-                </div>
-                <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                    <i class="pi pi-inbox text-cyan-500 text-xl"></i>
-                </div>
-            </div>
 
-        </div>
-    </div>
-    
+  <!--
+    <powerbi-report
+      [embedConfig] ="embedConfig"
+      [phasedEmbedding] = "false"
+      >
+  </powerbi-report>
+  !-->
 
-    
-        
-
-    <div class="col-12 xl:col-6">
-        <div class="card">
-            <h5>Sales Overview</h5>
-            <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
-        </div>
-</div>
-</div>
 

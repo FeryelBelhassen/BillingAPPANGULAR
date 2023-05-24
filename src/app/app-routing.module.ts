@@ -26,18 +26,17 @@ import { User } from './demo/domain/user';
         { path: 'factureavoir', loadChildren: () => import('./demo/components/factureavoir/factureavoir.module').then(m => m.FactureAvoirModule)},
         { path: 'account', loadChildren: () => import('./demo/components/accountinfos/user.module').then(m => m.AccountModule)},
         { path: 'error', loadChildren: () => import('./demo/components/auth/error/error.module').then(m => m.ErrorModule)},
-        { path: 'payment', loadChildren: () => import('./demo/components/payment/payment.module').then(m => m.PaymentModule)},
 
-      ]   
+      ]
     },
 
-    
-    
-    
+
+
+
     { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
     { path: 'notfound', component: NotfoundComponent },
     { path: '**', redirectTo: '/notfound' },
-    ], 
+    ],
     { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' })
   ],
   exports: [RouterModule]

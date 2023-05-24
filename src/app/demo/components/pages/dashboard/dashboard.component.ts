@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
-    
+
     templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit, OnDestroy {
@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
+    embedConfig : any
     constructor(private productService: ProductService, private factureService: FactureService, public layoutService: LayoutService) {
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
             this.initChart();
@@ -30,6 +31,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.embedConfig = {
+          type: 'report',
+          id: 'ae571d60-6640-4e19-a85c-d73b39e8b76e',
+          embedUrl: '',
+          accessToken: '2c2aec12-567a-4c5f-a447-e3c2f7ae8ffb',
+          settings: {
+            panes: {
+              filters: {
+                expanded: false,
+                  visible: false
+                }
+              }
+            }
+        }
+
+
+
         this.initChart();
         this.productService.getProductsSmall().then(data => this.products = data);
 

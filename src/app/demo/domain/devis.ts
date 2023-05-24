@@ -6,6 +6,6 @@ export class Devis {
     datedevis?: Date;
     quantity?: number;
     price?: number;
-    product?: Product;
+    product?: Product[];
 
 }

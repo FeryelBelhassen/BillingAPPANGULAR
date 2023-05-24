@@ -11,7 +11,7 @@
                 </ng-template>
 
                 <ng-template pTemplate="right">
-                    <button pbutton="" (click)="printDevis()" label="Print" type="button" icon="pi pi-Print" class="p-element p-button p-component" 
+                    <button pbutton="" (click)="printDevis()" label="Print" type="button" icon="pi pi-Print" class="p-element p-button p-component"
                     style="display: block; margin-bottom: 20px; margin-left: 6px;" fdprocessedid="pr7e6o">
                     <span class="p-button-icon p-button-icon-left pi pi-print" aria-hidden="true"></span>
                         <span class="p-button-label">Print</span></button>
@@ -28,21 +28,21 @@
                         </span>
                     </div>
                 </ng-template>
-              
+
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="numerodevis">NumeroDevis <p-sortIcon field="numerodevis"></p-sortIcon></th>
                         <th pSortableColumn="datedevis">DateDevis <p-sortIcon field="datedevis"></p-sortIcon></th>
-                      
-                        <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
-                        <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                        <th pSortableColumn="product">Produit<p-sortIcon field="product"></p-sortIcon></th>
+                        <th pSortableColumn="quantity">Quantité <p-sortIcon field="quantity"></p-sortIcon></th>
+                        <th pSortableColumn="price">Prix <p-sortIcon field="price"></p-sortIcon></th>
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
-                       
+
                         <th></th>
                     </tr>
                 </ng-template>
-               
+
                 <ng-template pTemplate="body" let-devis>
                     <tr>
                         <td style="width:14%; min-width:10rem;">
@@ -52,20 +52,21 @@
                             {{devis.numerodevis}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                       
+
                             {{devis.datedevis}}
                         </td>
-                        
-                        
+                        <td>
+                          <p-button (click)="op.toggle($event)" icon="pi pi-eye" styleClass="p-button-rounded p-button-text"></p-button>
+                        </td>
                         <td style="width:14%; min-width:10rem;">
                             {{devis.quantity}}
                         </td>
-                       
+
                         <td style="width:14%; min-width:8rem;">
-                         
+
                             {{devis.price | currency:'DT'}}
                         </td>
-                       
+
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editDevis(devis.id, devis)"></button>
@@ -73,14 +74,36 @@
                             </div>
                         </td>
                     </tr>
+                  <p-overlayPanel #op [style]="{'width': '450px'}" [showCloseIcon]="true">
+                    <ng-template pTemplate="content" >
+                      <p-table  [value]="devis.product" selectionMode="single" [(selection)]="products" >
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th pSortableColumn="name">Designation<p-sortIcon field="name"></p-sortIcon></th>
+                            <th pSortableColumn="quantity">Quantity<p-sortIcon field="quantity"></p-sortIcon></th>
+                            <th pSortableColumn="supplier">Supplier<p-sortIcon field="supplier"></p-sortIcon></th>
+                            <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-product>
+                          <tr [pSelectableRow]="rowData">
+                            <td>{{product.designation}}</td>
+                            <td>{{product.quantity}}</td>
+                            <td>{{product.supplier}}</td>
+                            <td>{{product.price}}</td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </ng-template>
+                  </p-overlayPanel>
                 </ng-template>
-            
+
             </p-table>
         </div>
 
         <p-dialog [(visible)]="devisDialog" [style]="{width: '450px'}" header="Devis Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-               
+
 
                 <div class="field">
                     <label for="numerodevis">NumeroDevis</label>
@@ -92,19 +115,19 @@
                     <label for="datedevis">DateDevis</label>
                     <input type="date" pInputText id="datedevis" [(ngModel)]="devis.datedevis" >
                 </div>
-              
+
 
 
                 <div class="field">
                     <label for="quantity">Quantity</label>
                     <p-inputNumber id="quantity" [(ngModel)]="devis.quantity"></p-inputNumber>
-                </div>    
-    
+                </div>
+
                 <div class="field">
                     <label for="price">Price</label>
                     <p-inputNumber id="price" [(ngModel)]="devis.price" mode="currency" currency="TND" ></p-inputNumber>
                 </div>
-                
+
             </ng-template>
 
             <ng-template pTemplate="footer">
@@ -122,7 +145,7 @@
                 <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger" label="No" (click)="deleteDevisDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-info" label="Yes" (click)="confirmDelete()"></button>
             </ng-template>
-        
+
         </p-dialog>
         <p-dialog [(visible)]="devisPrint" [style]="{width: '750px'}" header="INVOICE" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
@@ -134,12 +157,12 @@
                         <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
-                       
+
                         <th></th>
                     </tr>
                 </ng-template>
-     
-            
+
+
         <div class="invoice">
             <div class="invoice-header">
                 <div class="invoice-company">
@@ -170,22 +193,22 @@
                             <th>Line Total</th>
                         </tr>
                     </thead><tbody>
-                        
+
                         <tr>
                             <td>{{devis}}</td>
                             <td>{{devis.quantity}}</td>
                             <td>{{devis.price}}</td>
                             <td>$198.00</td>
                         </tr>
-                       
+
                     </tbody></table></div>
                     <div class="invoice-summary"><div class="invoice-notes"><b>NOTES</b><div></div></div>
                     <div><div class="invoice-details"><div class="invoice-label">SUBTOTAL</div>
                     <div class="invoice-value">$332.00</div>
                     <div class="invoice-label">VAT</div>
                     <div class="invoice-value">0</div>
-        <div class="invoice-label">TOTAL</div><div class="invoice-value">$332.00</div></div></div></div></div> 
-        <button pbutton="" (click)="print()" label="Print" type="button" icon="pi pi-Print" class="p-element p-button p-component" 
+        <div class="invoice-label">TOTAL</div><div class="invoice-value">$332.00</div></div></div></div></div>
+        <button pbutton="" (click)="print()" label="Print" type="button" icon="pi pi-Print" class="p-element p-button p-component"
         style="display: block; margin-bottom: 20px; margin-left: 6px;" fdprocessedid="pr7e6o">
         <span class="p-button-icon p-button-icon-left pi pi-print" aria-hidden="true"></span>
             <span class="p-button-label">Print</span></button>

@@ -9,13 +9,14 @@ import jwtDecode from 'jwt-decode';
 import * as  jwt from 'jsonwebtoken';
 import { Role } from '../domain/Role';
 import { Password } from 'primeng/password';
+import {environment} from "../../../environments/environment";
 const AUTH_API = 'http://localhost:8080/api/auth/';
-
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private  API_URL = environment.baseUrl+'api/auth/'
 
   private userSubject: BehaviorSubject<Useer>;
   public useer: Observable<Useer>;
@@ -33,7 +34,7 @@ export class AuthService {
 
   email!: string
   //username: string;
- 
+
 
   constructor(private router: Router, private http: HttpClient, public jwtHelper: JwtHelperService) {
     this.userSubject = new BehaviorSubject<Useer>(null!);
@@ -42,18 +43,18 @@ export class AuthService {
     this._userRole = this.userRole?.asObservable();
     this.userId = new BehaviorSubject<User>(null!);
     this._userId = this.userId?.asObservable();
-    this.id 
+    this.id
    }
-  
+
 
    getCurrentUser(): User | null {
     // Retrieve the user data from the authentication source
     // and return it as a User object
-    const userData = localStorage.getItem('user'); 
+    const userData = localStorage.getItem('user');
     return userData ? JSON.parse(userData) : null;
   }
-  
-  
+
+
    public get UserRole(): User{
     return this.userRole.value;
    }
@@ -78,12 +79,12 @@ export class AuthService {
       this.userValue.jwtToken = user.jwtToken;
     }else if (user.refreshToken) {
       this.userValue.refreshToken = user.refreshToken;
-    } 
+    }
   }
   public get userValue(): Useer {
     return this.userSubject.value;
   }
- 
+
   public isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
     // Check whether the token is expired and return
@@ -95,7 +96,7 @@ export class AuthService {
   }
 
 
-  
+
   /*isAdmin(): boolean {
     const user = this.getCurrentUser();
     console.log(user)
@@ -121,27 +122,27 @@ export class AuthService {
  login(username: string, password: string){
   let headers = new HttpHeaders();
   headers = headers.set('Content-Type', 'application/json');
-  
+
         let toSend = {
           'username': username,
           'password': password
         }
     this.username = username;
-    return this.http.post<any>(AUTH_API+"signin", toSend, {headers}) 
+    return this.http.post<any>(this.API_URL+"signin", toSend, {headers})
     .pipe( map( data => {
       this.userSubject.next(new Useer(username, data['accessToken'] ))
       this.userValue.refreshToken = data['refreshToken'];
       this.startRefreshTokenTimer()
-      this.userRole.next(new User(data['id'],data['email'], data['username'],password,data['roles']) )      
+      this.userRole.next(new User(data['id'],data['email'], data['username'],password,data['roles']) )
     }))
-   
-  
+
+
 
   }
-  
+
   register(username: string, email: string, password: string, role: {id: number, name: string }[]): Observable<any> {
     return this.http.post(
-      AUTH_API + 'signup',
+      this.API_URL + 'signup',
       {
         username,
         email,
@@ -151,15 +152,15 @@ export class AuthService {
     );
   }
 
- 
+
   getToken(){
     return localStorage.getItem('token');
   }
-  
-  
+
+
   logout(){
     localStorage.clear();
-    this.userSubject.next(null!)                         
+    this.userSubject.next(null!)
     this.router.navigate(['/auth/login']);
   }
 
@@ -172,7 +173,7 @@ export class AuthService {
   public getUsername(): string {
     return this.username;
   }
-  
+
   public getEmail(): string {
     return this.email;
   }
@@ -180,11 +181,11 @@ export class AuthService {
   public getPassword(): string {
     return this.password;
   }
-  
-  
+
+
   refreshToken(token:any) {
     // the expired token must be included in the Authorization header and the refresh in the body ?
-    return this.http.get<any>(AUTH_API +'refreshtoken' )
+    return this.http.get<any>(this.API_URL +'refreshtoken' )
         .pipe(map((data) => {
           console.log(data);
     }));
@@ -195,13 +196,13 @@ export class AuthService {
       const expires = new Date(jwtToken.exp * 1000);
       const timeout = expires.getTime() - Date.now() - (60 * 1000);
       this.refreshTokenTimeout = setTimeout(() => this.refreshToken(this.userValue.refreshToken).subscribe(), timeout);
-    
+
     }
-    
+
     private stopRefreshTokenTimer() {
       clearTimeout(this.refreshTokenTimeout);
     }
-    
+
 }
 function jwt_decode(token: string): { sub: string; name: string; role: string } {
   const decodedToken = jwtDecode(token) as { sub: string; name: string; role: string };

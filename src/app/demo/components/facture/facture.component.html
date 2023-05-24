@@ -6,11 +6,11 @@
                 <ng-template pTemplate="left">
                     <div class="my-2">
                         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew(iduser)"></button>
-                       
+
                     </div>
                 </ng-template>
 
-               
+
             </p-toolbar>
 
             <p-table #dt [value]="factures" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['numerofacture','client']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedFactures" selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -30,13 +30,12 @@
                         </th>
                         <th pSortableColumn="id" >ID <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="numero">Numero Facture <p-sortIcon field="numero"></p-sortIcon></th>
-                        <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th> 
+                        <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th>
                         <th pSortableColumn="product">Product<p-sortIcon field="product"></p-sortIcon></th>
                         <th pSortableColumn="datefacture">Date Facture <p-sortIcon field="datefacture"></p-sortIcon></th>
-                        <th pSortableColumn="montantttc">Montant TTC <p-sortIcon field="monatntttc"></p-sortIcon></th>
-                        <th pSortableColumn="montantht">Montant HT <p-sortIcon field="monatntht"></p-sortIcon></th>
-                        
-                        
+                        <th pSortableColumn="montantht">TOTAL <p-sortIcon field="monatntht"></p-sortIcon></th>
+
+
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
                         <th></th>
                     </tr>
@@ -52,37 +51,33 @@
                         <td style="width:14%; min-width:10rem;">
                             {{facture.numerofacture}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">                           
+                        <td style="width:14%; min-width:10rem;">
                             {{facture.client.username!}}
-                           
+
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            
+
                             <p-button (click)="op.toggle($event)" icon="pi pi-eye" styleClass="p-button-rounded p-button-text"></p-button>
-                           
+
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                          
+
                             {{facture.datefacture}}
                         </td>
                         <td style="width:14%; min-width:8rem;">
-                           
-                            {{facture.montanttc | currency:'DT'}}
+
+                            {{getTotal(facture)| currency:'DT'}}
                         </td>
-        
-                        <td style="width:14%; min-width:8rem;">
-                           
-                            {{facture.montantht | currency:'DT'}}
-                        </td>
+
 
 
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFacture(facture.id,facture, iduser)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteFacture(facture.id, iduser)"></button>
                                 <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info" (click)="afficherFacture(facture.id)"></button>
-                                
+
                             </div>
-                        
+
                     </tr>
                     <p-overlayPanel #op [style]="{'width': '450px'}" [showCloseIcon]="true">
                         <ng-template pTemplate="content" >
@@ -109,16 +104,16 @@
                 </ng-template>
             </p-table>
         </div>
-       
-        <!--Ajouter Facture--> 
-       
+
+        <!--Ajouter Facture-->
+
         <p-dialog [(visible)]="DialogFacture" [style]="{width: '450px'}" header="Facture Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field" >
                     <label for="numerofacture">Numero Facture</label>
                     <input type="text" pInputText id="numerofacture" [(ngModel)]="facture.numerofacture" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !facture.numerofacture}"/>
                 </div>
-                  
+
                <div class="field">
                     <div>
                         <div class="container">
@@ -126,11 +121,11 @@
                             <button pButton pRipple icon="pi pi-plus" (click)="ajouterClient()"></button>
                         </div>
                     </div>
-                
+
                     <p-dropdown [options]="clients" optionLabel="username" [(ngModel)]="facture.client" ></p-dropdown>
-                
+
             </div>
-               
+
                 <div class="field">
                 <div>
                     <div class="container">
@@ -138,16 +133,16 @@
                         <button pButton pRipple icon="pi pi-plus" (click)="ajouterProduct()"></button>
                     </div>
                 </div>
-                
+
                     <p-multiSelect [options]="products" optionLabel="designation" placeholder="Select a Product" [(ngModel)]="facture.product" ></p-multiSelect>
-              </div>       
-              
-              
+              </div>
+
+
                 <div class="field">
                 <label for="datefacture">Date Facture</label>
                 <input type="date" pInputText id="datefacture" [(ngModel)]="facture.datefacture" >
                 </div>
-               
+
                 <div class="field">
                      <label for="monatntttc">Montant TTC</label>
                     <p-inputNumber id="monatntttc" [(ngModel)]="facture.montanttc" mode="currency" currency="TND"></p-inputNumber>
@@ -156,7 +151,7 @@
                     <label for="montantht">Montant HT</label>
                     <p-inputNumber id="montantht" [(ngModel)]="facture.montantht" mode="currency" currency="TND"></p-inputNumber>
                 </div>
-               
+
             </ng-template>
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="hideDialog()"></button>
@@ -164,13 +159,13 @@
             </ng-template>
         </p-dialog>
 
-        <!--Ajouter Client--> 
+        <!--Ajouter Client-->
         <p-dialog [(visible)]="clientDialog" [style]="{width: '450px'}" header="Client Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                
+
                 <div class="field">
                     <label for="username">Username</label>
-                    <input type="text" pInputText id="name" 
+                    <input type="text" pInputText id="name"
                     [(ngModel)]="client.username" required autofocus
                      [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.username}" />
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.username"> Username is required.</small>
@@ -191,7 +186,7 @@
                     <label for="telephone">Telephone</label>
                     <input type="text" id="telephone" pInputText [(ngModel)]="client.telephone" required />
                 </div>
-                
+
             </ng-template>
 
             <ng-template pTemplate="footer">
@@ -199,7 +194,7 @@
                 <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-info" (click)="saveClient()"></button>
             </ng-template>
         </p-dialog>
- <!--Ajouter Product--> 
+ <!--Ajouter Product-->
         <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
@@ -229,7 +224,7 @@
                 <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-rounded p-button-info" (click)="saveProduct()"></button>
             </ng-template>
         </p-dialog>
-    
+
         <p-dialog [(visible)]="deleteFactureDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
@@ -240,14 +235,14 @@
                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-info" label="Yes" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
-      <!--Print Facture-->    
+      <!--Print Facture-->
         <p-dialog [(visible)]="afficheFactureDialog"  [style]="{width: '850px', height:'700px'}" header="FACTURE" [modal]="true" class="p-fluid">
             <p-table #dt [value]="factures" >
             <ng-template pTemplate="content">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="numero">Numero Facture <p-sortIcon field="numero"></p-sortIcon></th>
-                        <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th> 
+                        <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th>
                         <th pSortableColumn="product">Product<p-sortIcon field="product"></p-sortIcon></th>
                         <th pSortableColumn="datefacture">Date Facture <p-sortIcon field="datefacture"></p-sortIcon></th>
                         <th pSortableColumn="montantttc">Montant TTC <p-sortIcon field="monatntttc"></p-sortIcon></th>
@@ -256,22 +251,22 @@
                     </tr>
                 </ng-template>
             </ng-template>
-     
-                <ng-template pTemplate="body" let-facture >  
+
+                <ng-template pTemplate="body" let-facture >
                     <div *ngIf="facture.id === idfacture" class="invoice">
                         <!-- Rest of your invoice template code -->
-                      
+
                    <div class="invoice">
                    <div class="invoice-header">
                    <div class="invoice-company">
-                    
+
                     <img id="invoice-logo" alt="nst" class="logo-nst" src="/assets/demo/images/NST.png">
                     <div class="company-name">YOUR COMPANY</div>
                     <div class="company-name">NEURO SMART TECHNOLOGIES</div>
                     <div class="company-name">Technopole ElGhazela</div>
                    </div>
                     <div>
-                        
+
                         <div class="invoice-details">
                             <div class="invoice-label">DATE</div>
                             <div class="invoice-value">{{facture.datefacture}}</div>
@@ -280,7 +275,7 @@
                             <div class="invoice-label2">CUSTOMER </div>
                             <div class="invoice-value2">{{facture.client.username}}</div></div>
                         </div></div>
-               
+
                         <div class="invoice-items">
                             <p-table  [value]="facture.product" selectionMode="single" [(selection)]="products"  >
                                 <ng-template pTemplate="header">
@@ -303,20 +298,20 @@
                                 </ng-template>
                             </p-table>
                          </div>
-  
-            <div>      
-        <div class="invoice-label3">TOTAL</div><div class="invoice-value3">{{584}}</div></div></div>
-    
-        <button pbutton="" label="Print" type="button" icon="pi pi-Print" (click)="print()" style="width: 100px; height: 40px; margin-left: 700px;" class="p-element p-button p-component align-right print-button" >
-   
-        <span class="button" class="p-button-icon p-button-icon-left pi pi-print" label="Print" aria-hidden="true"></span>
-            <span class="p-button-label">Print</span></button>
-           
-        </div> 
-        </ng-template>
+
+                     <div>
+                       <div class="invoice-label3">TOTAL</div><div class="invoice-value3">{{getTotal(facture)}}</div></div></div>
+
+                      <button pbutton="" label="Print" type="button" icon="pi pi-Print" (click)="print()" style="width: 100px; height: 40px; margin-left: 700px;" class="p-element p-button p-component align-right print-button" >
+
+                        <span class="button" class="p-button-icon p-button-icon-left pi pi-print" label="Print" aria-hidden="true"></span>
+                        <span class="p-button-label">Print</span></button>
+
+                    </div>
+                </ng-template>
     </p-table>
         </p-dialog>
-    
-      
+
+
     </div>
 </div>

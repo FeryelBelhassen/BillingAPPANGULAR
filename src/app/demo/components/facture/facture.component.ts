@@ -43,7 +43,7 @@ export class FactureComponent implements OnInit {
     client!: Client ;
 
     product!: Product;
-    
+
     facturess:Array<Facture> = [];
 
     selectedFactures: Facture[] = [];
@@ -55,13 +55,13 @@ export class FactureComponent implements OnInit {
     statuses: any[] = [];
 
     rowsPerPageOptions = [5, 10, 20];
-   
+
     clients: Client[] | any;
 
     products: Product[] = [];
-    
+
     MODE: string = 'CREATE';
-    
+
     idToUpdate:number=NaN;
 
     idToDel:number=NaN;
@@ -81,23 +81,23 @@ export class FactureComponent implements OnInit {
 
     iduser:number;
    // selectedProducts: Product[] = [];
-   
 
-    
-    constructor(private factureService: FactureService, private messageService: MessageService, 
+
+
+    constructor(private factureService: FactureService, private messageService: MessageService,
         private clientService: ClientService , private productService: ProductService , private fb:FormBuilder,
         private http: HttpClient, private authService: AuthService, private userService: UserService,
-        private router: Router) { 
+        private router: Router) {
             this.iduser = this.authService.getAuthedUserID()
         }
-    
-         
-    
+
+
+
     ngOnInit() {
-    
+
         this.getFactures(this.iduser);
-        
-       
+
+
         this.cols = [
             { field: 'numerofacture', header: 'NumeroFacture' },
             { field: 'client', header: 'Client' },
@@ -109,7 +109,7 @@ export class FactureComponent implements OnInit {
 
         this.productService.getProducts().subscribe(data => {
             this.products = data;
-           
+
         });
 
         this.clientService.getAllClients().subscribe(data => {
@@ -117,26 +117,28 @@ export class FactureComponent implements OnInit {
         });
     }
 
-        
+
 
     getFactures(iduser: number){
         this.idToget= iduser;
         this.userService.getUserById(this.idToget)
             .subscribe((data)=>{
-               
-               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='CLIENT' || data.roles[0].name ==='MAGASINIER'){
+               if (data.roles[0].name ==='ADMIN' || data.roles[0].name ==='MAGASINIER'){
                   this.factureService.getAllFactures()
                      .subscribe((data)=>{
-                        this.factures=data;  
-                        console.log("Array -> "+this.factures)
-                })      
-              
+                        this.factures=data;
+                        console.log("Array -> "+this.factures)})
+                } else if(data.roles[0].name ==='CLIENT' ) {
+                this.factureService.getFactureParClient(this.idToget)
+                  .subscribe((data)=>{
+                    this.factures=data;
+                    console.log("Array -> "+this.factures)})
                 } else{
                   //cas non
                   this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
                   this.router.navigate(['/home'])
                 }
-           
+
           })
         }
 
@@ -144,7 +146,7 @@ export class FactureComponent implements OnInit {
         this.idToget= iduser;
         this.userService.getUserById(this.idToget)
             .subscribe((data)=>{
-               
+
                if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
 
                 this.facture={};
@@ -158,7 +160,7 @@ export class FactureComponent implements OnInit {
                 this.router.navigate(['/auth/error'])
               }
             })
-       
+
      }
 
     ajouterClient(){
@@ -167,10 +169,10 @@ export class FactureComponent implements OnInit {
         this.MODE = 'CREATE';
         this.clientDialog = true;
      }
-    
+
 
     ajouterProduct(){
-        this.product={};
+        this.product={code: 0, designation: "", price: 0, quantity: 0, supplier: ""};
         this.submitted = false;
         this.MODE = 'CREATE';
         this.productDialog = true;
@@ -185,11 +187,11 @@ export class FactureComponent implements OnInit {
         this.idToget= iduser;
         this.userService.getUserById(this.idToget)
             .subscribe((data)=>{
-               
+
                if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
 
                 this.facture=facture;
-                this.DialogFacture = true; 
+                this.DialogFacture = true;
                 this.idToUpdate = id;
                 this.MODE = 'APPEND'
                }
@@ -199,19 +201,19 @@ export class FactureComponent implements OnInit {
                 this.router.navigate(['/auth/error'])
               }
             })
-        
-             
+
+
      }
 
     deleteFacture(id: number, iduser: number) {
         this.idToget= iduser;
         this.userService.getUserById(this.idToget)
             .subscribe((data)=>{
-               
+
                if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
 
                 this.deleteFactureDialog = true;
-                this.facture = { ...this.facture }   
+                this.facture = { ...this.facture }
                 this.idToDel  = id
                }
                else{
@@ -220,20 +222,20 @@ export class FactureComponent implements OnInit {
                 this.router.navigate(['/auth/error'])
               }
             })
-    
+
     }
 
     confirmDelete() {
         this.deleteFactureDialog = false;
         this.factures = this.factures.filter(val => val.id !== this.facture.id);
-      
+
          this.factureService.deleteFacture(this.idToDel).subscribe((data) => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture supprimée ', life: 3000 });
-            this.ngOnInit();   
+            this.ngOnInit();
         }, error => {
           console.log(error);
           this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
-          
+
         });
     }
 
@@ -255,7 +257,7 @@ export class FactureComponent implements OnInit {
 
     afficherFacture(id: number) {
        this.afficheFactureDialog = true;
-        this.facture = { ...this.facture }   
+        this.facture = { ...this.facture }
         this.idfacture  = id
     }
     payerFacture(id:number){
@@ -270,26 +272,27 @@ export class FactureComponent implements OnInit {
         }
       }
 
-    
+
     saveFacture() {
-        
-            if (this.MODE === 'CREATE'){
+
+      if (this.MODE === 'CREATE'){
              const toAdd: Facture = {
-              
+
                 'numerofacture': this.facture.numerofacture,
                 'client' :this.facture.client ,
                 'product': this.facture.product as Product[],
                 'datefacture' : this.facture.datefacture,
                 'montanttc': this.facture.montanttc,
-                'montantht': this.facture.montantht
+                'montantht': this.facture.montantht,
+                'total':0
                 };
                 console.log(this.facture)
-                        
+
              this.factureService.createFacture(toAdd).subscribe( data =>{
                  console.log(data);
                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture ajoutée', life: 3000 });
                  this.DialogFacture = false;
-                 this.ngOnInit();   
+                 this.ngOnInit();
                  }, error => {
                      console.log(error);
                      this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Erreur d\'ajout! ', life: 3000 });
@@ -298,19 +301,21 @@ export class FactureComponent implements OnInit {
 
     }
     else if( this.MODE === 'APPEND') {
+        // @ts-ignore
         const toEdit: Facture=  {
             'numerofacture': this.facture.numerofacture,
             'client' :this.facture.client ,
             'product':this.products,
             'datefacture' : this.facture.datefacture,
             'montanttc': this.facture.montanttc,
-            'montantht': this.facture.montantht
+            'montantht': this.facture.montantht,
+            'total': 0
           }
-        
+
         this.factureService.updateFacture(this.idToUpdate, toEdit).subscribe( (data) =>{
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture modifiée', life: 3000 });
             this.DialogFacture = false;
-            this.ngOnInit();   
+            this.ngOnInit();
           }, error => {
             console.log(error);
             this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Erreur d\'e modification! ', life: 3000 });
@@ -331,13 +336,13 @@ export class FactureComponent implements OnInit {
         console.log(data);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
         this.clientDialog = false;
-        this.ngOnInit();   
+        this.ngOnInit();
         }, error => {
             console.log(error);
             this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
             this.clientDialog = false;
             } );
-        
+
     }
 
     saveProduct() {
@@ -353,7 +358,7 @@ export class FactureComponent implements OnInit {
         console.log(this.products.push(product));
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
         this.productDialog = false;
-        this.ngOnInit();   
+        this.ngOnInit();
         }, error => {
             console.log(error);
             this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
@@ -366,5 +371,13 @@ export class FactureComponent implements OnInit {
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
-    
+
+  getTotal(facture: Facture): number {
+      var total = 0
+    facture.product.forEach((item)=> {
+        total += item?.price * item?.quantity
+      })
+      return total
+
+  }
 }

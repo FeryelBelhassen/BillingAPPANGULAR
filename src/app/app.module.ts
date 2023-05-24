@@ -39,14 +39,13 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
-import { PaymentModule } from './demo/components/payment/payment.module';
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
     NotfoundComponent,
 
-    
+
   ],
   imports: [
     BrowserModule,
@@ -67,22 +66,21 @@ import { HttpClientModule } from '@angular/common/http';
     TableModule,
     FormsModule,
     MessagesModule,
-    PaymentModule,
     HttpClientModule
-    
-    
+
+
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy},
         UserService, FactureService, EventService, IconService, NodeService,
         PhotoService, ProductService,JwtHelperService, AuthService, AuthGuard, MessageService,
-      
+
         { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
 
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-   
-  
+
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
