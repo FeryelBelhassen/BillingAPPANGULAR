@@ -38,7 +38,7 @@ export class FactureComponent implements OnInit {
 
     factures: Facture[] = [];
 
-    facture!: Facture | any ;
+    facture!: Facture ;
 
     client!: Client ;
 
@@ -77,10 +77,11 @@ export class FactureComponent implements OnInit {
     formGroup!: FormGroup;
 
     id!: number;
+
     total: number = 0;
 
     iduser:number;
-   // selectedProducts: Product[] = [];
+
 
 
 
@@ -103,8 +104,8 @@ export class FactureComponent implements OnInit {
             { field: 'client', header: 'Client' },
             { field: 'product', header: 'Product' },
             { field: 'datefacture', header: 'DateFacture' },
-            { field: 'montantht', header: 'MontantHT'  },
-            { field: 'montantttc', header: 'MonatntTTC' },
+            { field: 'total', header: 'Total'  }
+            
         ];
 
         this.productService.getProducts().subscribe(data => {
@@ -149,7 +150,7 @@ export class FactureComponent implements OnInit {
 
                if (data.roles[0].name ==='ADMIN'  || data.roles[0].name ==='MAGASINIER' ){
 
-                this.facture={};
+                this.facture= new Facture('',[],[],new Date,0);
                 this.submitted = false;
                 this.MODE = 'CREATE';
                 this.DialogFacture = true;
@@ -230,7 +231,7 @@ export class FactureComponent implements OnInit {
         this.factures = this.factures.filter(val => val.id !== this.facture.id);
 
          this.factureService.deleteFacture(this.idToDel).subscribe((data) => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture supprimée ', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Deleted ', life: 3000 });
             this.ngOnInit();
         }, error => {
           console.log(error);
@@ -260,9 +261,7 @@ export class FactureComponent implements OnInit {
         this.facture = { ...this.facture }
         this.idfacture  = id
     }
-    payerFacture(id:number){
-        this.router.navigate(['/payment'])
-    }
+   
 
     calculateTotal(quantity: number, price: number): number {
         if (typeof quantity === 'number' && typeof price === 'number') {
@@ -282,20 +281,18 @@ export class FactureComponent implements OnInit {
                 'client' :this.facture.client ,
                 'product': this.facture.product as Product[],
                 'datefacture' : this.facture.datefacture,
-                'montanttc': this.facture.montanttc,
-                'montantht': this.facture.montantht,
-                'total':0
+                'total': this.facture.total
                 };
                 console.log(this.facture)
 
              this.factureService.createFacture(toAdd).subscribe( data =>{
                  console.log(data);
-                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture ajoutée', life: 3000 });
+                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Created', life: 3000 });
                  this.DialogFacture = false;
                  this.ngOnInit();
                  }, error => {
                      console.log(error);
-                     this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Erreur d\'ajout! ', life: 3000 });
+                     this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
                      this.DialogFacture = false;
                 } );
 
@@ -307,18 +304,16 @@ export class FactureComponent implements OnInit {
             'client' :this.facture.client ,
             'product':this.products,
             'datefacture' : this.facture.datefacture,
-            'montanttc': this.facture.montanttc,
-            'montantht': this.facture.montantht,
-            'total': 0
+            'total': this.facture.total
           }
 
         this.factureService.updateFacture(this.idToUpdate, toEdit).subscribe( (data) =>{
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture modifiée', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facture Updated', life: 3000 });
             this.DialogFacture = false;
             this.ngOnInit();
           }, error => {
             console.log(error);
-            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Erreur d\'e modification! ', life: 3000 });
+            this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
             this.DialogFacture = false;
             } );
     }
@@ -352,6 +347,7 @@ export class FactureComponent implements OnInit {
             'quantity':this.product.quantity ,
             'supplier': this.product.supplier ,
             'price': this.product.price ,
+            
         };
         this.products.push(product);
         this.productService.createProduct(product).subscribe( data =>{

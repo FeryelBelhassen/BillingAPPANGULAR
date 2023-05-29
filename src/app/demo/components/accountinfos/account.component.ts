@@ -4,7 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { UserService } from '../../services/user.service';
 import { User } from '../../domain/user';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 //import { Role } from '../../domain/ERole';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -12,6 +12,8 @@ import { ERole } from '../../domain/Erole';
 import { Role } from '../../domain/Role';
 import { error } from 'console';
 import { AuthService } from '../../services/auth.service';
+import { resourceUsage } from 'process';
+import { Url } from 'url';
 
 @Component({
     templateUrl: './account.component.html',
@@ -54,9 +56,12 @@ export class AccountComponent implements OnInit {
     idToUpdate:number=NaN;
 
     id!: number;
+
     idToget:number=NaN;
     
     rowsPerPageOptions = [5, 10, 20];
+
+    avatarUrl: string = '';
     
 
 
@@ -80,46 +85,46 @@ export class AccountComponent implements OnInit {
            
 
         this.showDialog(this.id);
+        this.getAvatarByRole(this.id);
     }
     
     showDialog(id: number){
         this.idToget= id;
         this.userService.getUserById(this.idToget)
           .subscribe((data)=>{
-           
-            if (data.roles[0].name ==='ADMIN' ){
+                
               console.log(data.roles[0].name)
                 // cas oui 
               this.users = [data];
               console.log(this.users)
           
-            } else{
-              //cas non
-              //this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Error 404 ', life: 6000 });
-              this.router.navigate(['/auth/error'])
-            }
-       
       })
     }
 
    
+   
+    getAvatarByRole(id: number) {
+      this.userService.getUserById(id).subscribe(
+        (data: any) => {
+          if (data.roles[0].name === 'ADMIN') {
+            this.avatarUrl = 'assets/demo/images/avatar/admin.jpg';
+          } else if (data.roles[0].name === 'CLIENT') {
+            this.avatarUrl = 'assets/demo/images/avatar/client.png';
+          } else if(data.roles[0].name === 'MAGASINIER') {
+            this.avatarUrl = 'assets/demo/images/avatar/magasinier.png';
+          }
+          else {
+            this.avatarUrl = 'assets/demo/images/avatar/agent.png';
+          }
+        },
+        (error: any) => {
+          
+        }
+      );
+    }
 
-    getAvatarByRole(role_name: string): string {
-       
-          switch (role_name) {
-            case 'admin':
-              return 'billing.jpg';
-            case 'agent':
-              return 'billinglogo.png';
-            case 'magasinier':
-              return 'img_avatar2.png';
-            case 'client':
-              return 'magasinier-avatar.jpg';
-            default:
-              return 'default-avatar.jpg';
-          }  
+     
       
-}
 
 
     openNew() {

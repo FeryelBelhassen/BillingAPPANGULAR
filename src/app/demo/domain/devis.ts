@@ -1,11 +1,20 @@
 import { Product } from "./product";
 
 export class Devis {
+    constructor( numerodevis: string,  product: Product[], datedevis: Date, price: number) {
+      this.numerodevis = numerodevis;
+      this.product = product;
+      this.datedevis = datedevis;
+      this.price = price;
+    }
+
     id?:number;
-    numerodevis?: number;
+    numerodevis?: string;
     datedevis?: Date;
-    quantity?: number;
     price?: number;
     product?: Product[];
 
-}
+  
+  }
+  
+

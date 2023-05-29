@@ -33,7 +33,7 @@
                         <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th>
                         <th pSortableColumn="product">Product<p-sortIcon field="product"></p-sortIcon></th>
                         <th pSortableColumn="datefacture">Date Facture <p-sortIcon field="datefacture"></p-sortIcon></th>
-                        <th pSortableColumn="montantht">TOTAL <p-sortIcon field="monatntht"></p-sortIcon></th>
+                        <th pSortableColumn="total">TOTAL <p-sortIcon field="total"></p-sortIcon></th>
 
 
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
@@ -74,7 +74,7 @@
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFacture(facture.id,facture, iduser)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteFacture(facture.id, iduser)"></button>
-                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info" (click)="afficherFacture(facture.id)"></button>
+                                <button pButton pRipple icon="pi pi-print" class="p-button-rounded p-button-info" (click)="afficherFacture(facture.id)"></button>
 
                             </div>
 
@@ -138,19 +138,12 @@
               </div>
 
 
-                <div class="field">
-                <label for="datefacture">Date Facture</label>
-                <input type="date" pInputText id="datefacture" [(ngModel)]="facture.datefacture" >
+                <div  class="field">
+                   <label for="datefacture">Date Facture</label>
+                   <input type="date" pInputText id="datefacture" [(ngModel)]="facture.datefacture" >
                 </div>
 
-                <div class="field">
-                     <label for="monatntttc">Montant TTC</label>
-                    <p-inputNumber id="monatntttc" [(ngModel)]="facture.montanttc" mode="currency" currency="TND"></p-inputNumber>
-                    </div>
-                <div class="field">
-                    <label for="montantht">Montant HT</label>
-                    <p-inputNumber id="montantht" [(ngModel)]="facture.montantht" mode="currency" currency="TND"></p-inputNumber>
-                </div>
+                
 
             </ng-template>
             <ng-template pTemplate="footer">
@@ -272,7 +265,7 @@
                             <div class="invoice-value">{{facture.datefacture}}</div>
                             <div class="invoice-label1">FACTURE #</div>
                             <div class="invoice-value1">{{facture.numerofacture}}</div>
-                            <div class="invoice-label2">CUSTOMER </div>
+                            <div class="invoice-label2">CLIENT </div>
                             <div class="invoice-value2">{{facture.client.username}}</div></div>
                         </div></div>
 

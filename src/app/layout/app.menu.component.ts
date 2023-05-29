@@ -39,37 +39,36 @@ export class AppMenuComponent implements OnInit {
 
 
         {
-            label: 'Pages',
-            icon: 'pi pi-fw pi-briefcase',
+            
             items: [
 
                 {
-                    label: 'Product',
+                    label: 'Products',
                     icon: 'pi pi-fw pi-box',
                     routerLink: ['/product']
                 },
 
                 {
-                    label: 'Facture',
+                    label: 'Factures',
                     icon: 'pi pi-fw pi-book',
                     routerLink: ['/facture']
                 },
 
                 {
-                    label: 'FactureAvoir',
+                    label: 'Factures Avoir',
                     icon: 'pi pi-fw pi-book',
                     routerLink: ['/factureavoir']
                 },
 
                 {
-                    label: 'Devis ',
+                    label: 'Invoice ',
                     icon: 'pi pi-fw pi-dollar',
-                    routerLink: ['/devis']
+                    routerLink: ['/invoice']
                 },
 
                 {
-                    label: 'Client',
-                    icon: 'pi pi-fw pi-user',
+                    label: 'Clients',
+                    icon: 'pi pi-fw pi-users',
                     routerLink: ['/client']
                 },
 
@@ -92,18 +91,17 @@ export class AppMenuComponent implements OnInit {
 
 
         {
-            label: 'Pages',
-            icon: 'pi pi-fw pi-briefcase',
+            
             items: [
 
                 {
-                    label: 'Product',
+                    label: 'Products',
                     icon: 'pi pi-fw pi-box',
                     routerLink: ['/product']
                 },
 
                 {
-                    label: 'Facture',
+                    label: 'Factures',
                     icon: 'pi pi-fw pi-book',
                     routerLink: ['/facture']
                 },
@@ -115,9 +113,9 @@ export class AppMenuComponent implements OnInit {
                 },
 
                 {
-                    label: 'Devis ',
+                    label: 'Invoice ',
                     icon: 'pi pi-fw pi-dollar',
-                    routerLink: ['/devis']
+                    routerLink: ['/invoice']
                 },
 
             
@@ -132,7 +130,7 @@ export class AppMenuComponent implements OnInit {
     modelAgent = [
 
         {
-            label: 'home',
+            label:'home',
             items: [
                 { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/pages/home'] }
             ]
@@ -140,14 +138,13 @@ export class AppMenuComponent implements OnInit {
 
 
         {
-            label: 'Pages',
-            icon: 'pi pi-fw pi-briefcase',
+            
             items: [
 
 
                 {
-                    label: 'Client',
-                    icon: 'pi pi-fw pi-user',
+                    label: 'Clients',
+                    icon: 'pi pi-fw pi-users',
                     routerLink: ['/client'],
                     
                 },
@@ -162,7 +159,7 @@ export class AppMenuComponent implements OnInit {
     modelClient = [
 
         {
-            label: 'home',
+            label:'home',
             items: [
                 { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/pages/home'] }
                 
@@ -172,18 +169,17 @@ export class AppMenuComponent implements OnInit {
 
 
         {
-            label: 'Pages',
-            icon: 'pi pi-fw pi-briefcase',
+           
             items: [
 
                 {
-                    label: 'Product',
+                    label: 'Products',
                     icon: 'pi pi-fw pi-box',
                     routerLink: ['/product']
                 },
 
                 {
-                    label: 'Facture',
+                    label: 'Factures',
                     icon: 'pi pi-fw pi-book',
                     routerLink: ['/facture']
                 },
@@ -195,9 +191,9 @@ export class AppMenuComponent implements OnInit {
                 },
 
                 {
-                    label: 'Devis ',
+                    label: 'Invoice ',
                     icon: 'pi pi-fw pi-dollar',
-                    routerLink: ['/devis']
+                    routerLink: ['/invoice']
                 },
 
              

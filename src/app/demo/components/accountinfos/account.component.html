@@ -5,7 +5,9 @@
         <p-toast></p-toast>
         <h2>User Profile</h2>
         <div class="user-profile">
-            <img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar" class="avatar">
+            
+            <img [src]="avatarUrl" class="avatar"/>
+        
             <div class="user-details" *ngFor="let user of users">
               <h4>{{ user.username }}</h4>
               <p>Email: {{ user.email }}</p>
