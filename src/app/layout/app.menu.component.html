@@ -53,9 +53,10 @@
 <ul class="layout-menu">
     <div class="container">
     
-      <img src="assets/layout/images/img_avatar2.png" alt="Avatar" class="avatar">
+      <img [src]="avatarUrl" class="avatar"/>
       <div class="cog-icon">
-              <p class="username" > {{username}} </p>
+              <p class="username" style="font-size: large; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; 
+              margin-left: 20px;"> {{username}} </p>
       </div>
     </div>
     

@@ -23,7 +23,8 @@ export class AppMenuComponent implements OnInit {
     public username: string;
 
     roles: string;
-    
+    avatarUrl: string = '';
+
     id: number;
     items = [{ label: 'Item 1' }, { label: 'Item 2' }, { label: 'Item 3' }];
     modelAdmin: any =[
@@ -238,9 +239,30 @@ export class AppMenuComponent implements OnInit {
             this.models = this.modelClient;
           } 
         });
-      
+        this.getAvatarByRole(this.id);
         
 }
+
+getAvatarByRole(id: number) {
+    this.userService.getUserById(id).subscribe(
+      (data: any) => {
+        if (data.roles[0].name === 'ADMIN') {
+          this.avatarUrl = 'assets/demo/images/avatar/admin.jpg';
+        } else if (data.roles[0].name === 'CLIENT') {
+          this.avatarUrl = 'assets/demo/images/avatar/Client.png';
+        } else if(data.roles[0].name === 'MAGASINIER') {
+          this.avatarUrl = 'assets/demo/images/avatar/magasinier.png';
+        }
+        else {
+          this.avatarUrl = 'assets/demo/images/avatar/agent.png';
+        }
+      },
+      (error: any) => {
+        
+      }
+    );
+  }
+
 }
     
    

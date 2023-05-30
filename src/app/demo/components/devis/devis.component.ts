@@ -4,8 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { DevisService } from '../../services/devis.service';
 import { Devis } from '../../domain/devis';
-import { Client } from '../../domain/client';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { ProductService } from '../../services/product.service';
@@ -241,35 +240,30 @@ export class DevisComponent implements OnInit {
       }
 
 
-      saveDevis() {
-        let totalPrice = 0;
+    saveDevis() {
       
-        if (this.devis.product) {
-          this.devis.product.forEach((product: Product) => {
-            totalPrice += product.price;
-          });
-        }
-      
-        if (this.MODE === 'CREATE') {
-          const toAdd: Devis = {
+      if (this.MODE === 'CREATE') {
+        const toAdd: Devis = {
             'numerodevis': this.devis.numerodevis,
             'product': this.devis.product as Product[],
             'datedevis': this.devis.datedevis,
             'price': this.devis.price
-          };
+         };
       
-          this.devisService.createDevis(toAdd).subscribe(data => {
-            console.log(data);
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Invoice Created', life: 3000 });
-            this.Dialogdevis = false;
-            this.ngOnInit();
+        this.devisService.createDevis(toAdd).subscribe(data => {
+          console.log(data);
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Invoice Created', life: 3000 });
+          this.Dialogdevis = false;
+          this.ngOnInit();
           }, error => {
-            console.log(error);
-            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur s\'est produite!', life: 3000 });
-            this.Dialogdevis = false;
+          console.log(error);
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur s\'est produite!', life: 3000 });
+          this.Dialogdevis = false;
           });
       
-        } else if (this.MODE === 'APPEND') {
+        } 
+        
+        else if (this.MODE === 'APPEND') {
           const toEdit: Devis = {
             numerodevis: this.devis.numerodevis,
             product: this.devis.product as Product[],
@@ -281,7 +275,8 @@ export class DevisComponent implements OnInit {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Invoice Updated', life: 3000 });
             this.Dialogdevis = false;
             this.ngOnInit();
-          }, error => {
+          }, 
+          error => {
             console.log(error);
             this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur s\'est produite!', life: 3000 });
             this.Dialogdevis = false;
@@ -289,39 +284,39 @@ export class DevisComponent implements OnInit {
         }
       }
       
-saveProduct() {
-    if (this.MODE === 'CREATE'){
-        const toAdd: Product = {
-            'code':this.product.code,
-            'designation':this.product.designation ,
-            'quantity':this.product.quantity ,
-            'supplier': this.product.supplier ,
-            'price': this.product.price
-            };
-        this.productService.createProduct(toAdd).subscribe( data =>{
-            console.log(data);
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-            this.productDialog = false;
-            this.ngOnInit();
-            }, error => {
-                console.log(error);
-                this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+    saveProduct() {
+        if (this.MODE === 'CREATE'){
+            const toAdd: Product = {
+                'code':this.product.code,
+                'designation':this.product.designation ,
+                'quantity':this.product.quantity ,
+                'supplier': this.product.supplier ,
+                'price': this.product.price
+                };
+            this.productService.createProduct(toAdd).subscribe( data =>{
+                console.log(data);
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
                 this.productDialog = false;
-                } );
+                this.ngOnInit();
+                }, error => {
+                    console.log(error);
+                    this.messageService.add({severity: 'error',summary: 'Erreur',detail: ' Une erreure s\'est produite! ', life: 3000 });
+                    this.productDialog = false;
+                    } );
 
-    } 
-}
+        } 
+    }
 
    
-    getPrice(): number {
-        if (this.product && typeof this.product.price === 'number') {
-          console.log('Prix du produit:', this.product.price);
-          return this.product.price;
-        } else {
-          console.log('Erreur: Prix du produit indisponible');
-          return 0;
-        }
-      }
+   
+    getTotal(devis: Devis): number {
+        var total = 0
+      devis.product?.forEach((item)=> {
+          total += item?.price * item?.quantity
+        })
+        return total
+  
+    }
       
       
 
@@ -330,12 +325,5 @@ saveProduct() {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
 
-   /* getTotal(devis: Devis): number {
-      var total = 0
-      devis.product.forEach((item)=> {
-        total += item?.price * item?.quantity
-      })
-      return total
-
-  }*/
+  
 }

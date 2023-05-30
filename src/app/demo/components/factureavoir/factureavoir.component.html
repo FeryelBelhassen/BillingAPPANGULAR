@@ -35,8 +35,7 @@
                         <th pSortableColumn="client">Client<p-sortIcon field="client"></p-sortIcon></th> 
                         <th pSortableColumn="product">Product<p-sortIcon field="product"></p-sortIcon></th>
                         <th pSortableColumn="datefactureavoir">Date Facture <p-sortIcon field="datefactureavoir"></p-sortIcon></th>
-                        <th pSortableColumn="montantttc">Montant TTC <p-sortIcon field="monatntttc"></p-sortIcon></th>
-                        <th pSortableColumn="montantht">Montant HT <p-sortIcon field="monatntht"></p-sortIcon></th>
+                        <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th><i style="width: 5rem" class="pi pi-cog"></i></th>
                         <th></th>
                     </tr>
@@ -54,22 +53,19 @@
                            
                         </td>
                         <td style="width:14%; min-width:10rem;">                           
-                            {{factureavoir.product[0].designation}}
-                           
+                            <p-button (click)="op.toggle($event)" icon="pi pi-box" styleClass="p-button-rounded p-button-text"></p-button>  
                         </td>
                         <td style="width:14%; min-width:10rem;">
                           
                             {{factureavoir.datefacture}}
                         </td>
-                        <td style="width:14%; min-width:8rem;">
-                           
-                            {{factureavoir.montanttc | currency:'DT'}}
+                        <td>
+                            <ng-container *ngFor="let product of factureavoir.product">
+                                <div>{{product.price}}</div>
+                            </ng-container>
                         </td>
         
-                        <td style="width:14%; min-width:8rem;">
-                           
-                            {{factureavoir.montantht | currency:'DT'}}
-                        </td>
+                      
                        
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFactureAvoir(factureavoir.id,factureavoir)"></button>
@@ -77,6 +73,28 @@
                             </div>
                         
                     </tr>
+                    <p-overlayPanel #op [style]="{'width': '450px'}" [showCloseIcon]="true">
+                        <ng-template pTemplate="content" >
+                            <p-table  [value]="factureavoir.product" selectionMode="single" [(selection)]="products" >
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th pSortableColumn="name">Designation<p-sortIcon field="name"></p-sortIcon></th>
+                                        <th pSortableColumn="quantity">Quantity<p-sortIcon field="quantity"></p-sortIcon></th>
+                                        <th pSortableColumn="supplier">Supplier<p-sortIcon field="supplier"></p-sortIcon></th>
+                                        <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-product>
+                                    <tr [pSelectableRow]="rowData">
+                                        <td>{{product.designation}}</td>
+                                        <td>{{product.quantity}}</td>
+                                        <td>{{product.supplier}}</td>
+                                        <td>{{product.price}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </ng-template>
+                    </p-overlayPanel>
                 </ng-template>
             </p-table>
         </div>
@@ -108,9 +126,7 @@
                         <button pButton pRipple icon="pi pi-plus" (click)="ajouterProduct()"></button>
                     </div>
                 </div>
-                
-                    <p-dropdown  [options]="products" optionLabel="designation"  [(ngModel)]="factureavoir.product"></p-dropdown>
-                
+                <p-multiSelect [options]="products" optionLabel="designation" placeholder="Select a Product" [(ngModel)]="factureavoir.product" ></p-multiSelect>
                 
               </div>       
               
@@ -121,13 +137,12 @@
                 </div>
                
                 <div class="field">
-                     <label for="monatntttc">Montant TTC</label>
-                    <p-inputNumber id="monatntttc" [(ngModel)]="factureavoir.montanttc" mode="currency" currency="TND"></p-inputNumber>
-                    </div>
-                <div class="field">
-                    <label for="montantht">Montant HT</label>
-                    <p-inputNumber id="montantht" [(ngModel)]="factureavoir.montantht" mode="currency" currency="TND"></p-inputNumber>
-                </div>
+                    <label for="price">Price</label>
+                    <ng-container *ngFor="let product of factureavoir.product">
+                       <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="TND"></p-inputNumber>
+                   </ng-container>
+                  
+               </div>
                
             </ng-template>
             <ng-template pTemplate="footer">

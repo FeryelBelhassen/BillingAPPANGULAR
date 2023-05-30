@@ -109,7 +109,7 @@ export class AccountComponent implements OnInit {
           if (data.roles[0].name === 'ADMIN') {
             this.avatarUrl = 'assets/demo/images/avatar/admin.jpg';
           } else if (data.roles[0].name === 'CLIENT') {
-            this.avatarUrl = 'assets/demo/images/avatar/client.png';
+            this.avatarUrl = 'assets/demo/images/avatar/Client.png';
           } else if(data.roles[0].name === 'MAGASINIER') {
             this.avatarUrl = 'assets/demo/images/avatar/magasinier.png';
           }

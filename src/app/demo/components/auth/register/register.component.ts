@@ -13,11 +13,9 @@ export class RegisterComponent implements OnInit {
 
 
   roles = [
-    { id: 3, name: "User" },
-    { id: 1, name: "Admin" },
-    { id: 2, name: "Agent" },
-    { id: 4, name: "Magasinier" },
-    { id: 5, name: "Client" }
+    { id: 2, name: "AGENT" },
+    { id: 4, name: "MAGASINIER" },
+    { id: 5, name: "CLIENT" }
   ];
   
   

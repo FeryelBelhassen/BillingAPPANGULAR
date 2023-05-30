@@ -14,7 +14,6 @@ export class Facture {
     client: Client []  ;
     product: Product[];
     datefacture: Date;
-
     total: number;
 
 }

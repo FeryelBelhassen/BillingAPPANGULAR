@@ -57,8 +57,7 @@ export class FactureAvoirComponent implements OnInit {
     clients: Client[] | any;
 
     products: Product[] = [];
-
-
+  
     MODE: string = 'CREATE';
 
     idToUpdate:number=NaN;
@@ -71,10 +70,7 @@ export class FactureAvoirComponent implements OnInit {
 
     id :number;
 
-    productList: Product []=[{
-        'code' : 0 , 'designation': '', 'quantity': 0 ,
-        'supplier': '' , 'price': 0
-      }];
+    price: number = 0;
 
 
     constructor(private factureavoirService: FactureAvoirService, private messageService: MessageService,
@@ -200,17 +196,14 @@ export class FactureAvoirComponent implements OnInit {
 
     saveFactureAvoir() {
 
-        /*const productList = Array (this.facture.product);
-        console.log(productList)*/
-
             if (this.MODE === 'CREATE'){
              const toAdd: FactureAvoir = {
                 'numfactureavoir': this.factureavoir.numfactureavoir,
                 'client' :this.factureavoir.client ,
-                'product':this.products,
+                'product':this.factureavoir.product as Product[],
                 'datefacture' : this.factureavoir.datefacture,
-                'montanttc': this.factureavoir.montanttc,
-                'montantht': this.factureavoir.montantht
+                'price': this.factureavoir.price
+              
                 };
                 console.log(this.factureavoir)
 
@@ -230,10 +223,10 @@ export class FactureAvoirComponent implements OnInit {
         const toEdit: FactureAvoir=  {
             'numfactureavoir': this.factureavoir.numfactureavoir,
             'client' :this.factureavoir.client ,
-            'product':this.products,
+            'product':this.factureavoir.product as Product[],
             'datefacture' : this.factureavoir.datefacture,
-            'montanttc': this.factureavoir.montanttc,
-            'montantht': this.factureavoir.montantht
+            'price': this.factureavoir.price,
+           
           }
 
         this.factureavoirService.updateFactureAvoir(this.idToUpdate, toEdit).subscribe( (data) =>{

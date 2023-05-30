@@ -6,10 +6,8 @@ export class FactureAvoir {
     numfactureavoir?: number;
     client?: Client[];
     datefacture?: Date; 
-    product?: Product[] = [];
-    montanttc?: number;
-    montantht?: number;
- 
-    
+    product?: Product[];
+    price?: number;
+   
 
 }
